@@ -1,0 +1,45 @@
+P actions make_etude
+P aster_root /usr
+P consbtc oui
+P corefilesize unlimited
+P cpresok RESNOOK
+P debug nodebug
+P display mbgm6aab-VirtualBox:0
+P facmtps 1
+P follow_output yes
+P lang en
+P mclient mbgm6aab-VirtualBox
+P memjob 8388608
+P memory_limit 8192.0
+P mode interactif
+P mpi_nbcpu 1
+P mpi_nbnoeud 1
+P nbmaxnook 5
+P noeud localhost
+P nomjob goldak3D
+P origine ASTK 2018.1.final
+P platform Linux64
+P profastk mbgm6aab@mbgm6aab-VirtualBox:/home/mbgm6aab/st_int_2021/tg8/goldak3D.astk
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_exec asrun.plugins.server.SSHServer
+P proxy_dir /tmp
+P rep_trav /tmp/mbgm6aab-mbgm6aab-VirtualBox-interactif_5343
+P serveur mbgm6aab-VirtualBox.
+P soumbtc oui
+P time_limit 13920.0
+P tpsjob 233
+P uclient mbgm6aab
+P username mbgm6aab
+P version v14.4_smeca
+A args 
+A memjeveux 1024.0
+A tpmax 13920.0
+F comm /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/Goldak3D_steadystate.comm D  1
+F mmed /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/Newpass5Mesh.med D  20
+F libr /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/materialData_.66 D  66
+F libr /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/pythonFuncsGoldak.67 D  67
+F libr /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/pythonFuncsDE.68 D  68
+F libr /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/Calib/TG8_3D_Steadystate.rmed R  81
+R base /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/Calib/TG8_3D_Steadystate.base RC 0
+F mess /home/mbgm6aab/Documents/EDFShit/st_int_2021/tg8/Calib/Goldak3D_Steadystate.mess R  6
