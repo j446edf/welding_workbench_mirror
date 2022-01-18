@@ -1,4 +1,27 @@
-#DEBUT()
+# DEFINE INPUTS
+# 1) thermal conductivity for parent material
+# 1a) user choice
+# 2) thermal diffusivity for parent material (OPTIONAL based on 1a)
+# 3) latent heat for parent material (OPTIONAL based on 1a)
+
+# 4) thermal conductivity for weld material
+# 4a) user choice
+# 5) thermal diffusivity for weld material (OPTIONAL based on 4a)
+# 6) latent heat for weld material (OPTIONAL based on 4a)
+
+# DEFINE OUTPUTS
+# 1) Parent material property definition based on diffusivity (OPTIONAL based on 1a)
+# 2) Parent material property definition based on enthalpy (OPTIONAL based on 1a)
+# 3) weld material property definition based on diffusivity (OPTIONAL based on 4a)
+# 4) weld material property definition based on enthalpy (OPTIONAL based on 4a)
+# 5) material field definition (parent + weld)
+
+
+
+##
+### INPUT 1) thermal conductivity for parent material
+##
+
 #Define material of ferritic steel SA508 Gr3 Cl1 (Propaties are provided by Prof. Smith) "Protocol for finite element simulations.."
 	# lambda Conductivity isotropic function of the temperature for SA508 Gr3 Cl1
 LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
@@ -19,28 +42,7 @@ LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
                            PROL_DROITE='CONSTANT',		# Extension on right by last value
                            PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
                        );
-# #SOPHIA DATA
-# LSA=DEFI_FONCTION(NOM_PARA='TEMP',
-                     # VALE=(
-                           # 27., 14.2,
-                           # 77., 15.1,
-                           # 127., 16.,
-                           # 177., 16.8,
-                           # 227., 17.7,
-                           # 327., 19.5,
-                           # 427., 21.3,
-                           # 527., 23.,
-                           # 627., 24.8,
-                           # 727., 26.5,
-                           # 827., 28.3,
-                           # 927., 30.1,
-                           # 1027., 31.8,
-                           # 1127., 33.6,
-                           # 1227., 35.3,
-                           # 1327., 37.1,),                    
-                           # PROL_DROITE='CONSTANT',		# Extension on right by last value
-                           # PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
-                       # );
+
 
 LF= CALC_FONCTION ( # Converted to Wmm^-1K^-1
              INFO=2,
@@ -51,7 +53,11 @@ LF= CALC_FONCTION ( # Converted to Wmm^-1K^-1
              PROL_GAUCHE = 'LINEAIRE',
 			);
 
-	# Thermal conductivity divided by density and specific heat capacity at constant pressure also known as Thermal diffusivity 
+##
+### INPUT 2) thermal diffusivity for parent material (OPTIONA:)
+##
+
+# Thermal conductivity divided by density and specific heat capacity at constant pressure also known as Thermal diffusivity 
 
 RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
                       VALE        = (
@@ -73,25 +79,6 @@ RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
                            PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
 
 
-# #SOPHIA DATA - Cp = J/kg/K
-# RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP',
-                      # VALE        = (
-                           # 20., 444.,
-                           # 100., 465.,
-                           # 200., 486.,
-                           # 300., 502.,
-                           # 400., 519.,
-                           # 500., 536., 
-                           # 600., 578., 
-                           # 700., 595.,
-                           # 800., 611.,
-                           # 900., 628.,
-                           # 1204., 733.,
-                           # 1316., 766.,
-					 # ),
-                           # PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
-                           # PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
-
 #Input RhoCp = J K^-1 mm^-3
 RCPF=CALC_FONCTION(
              INFO=2,
@@ -100,6 +87,11 @@ RCPF=CALC_FONCTION(
              NOM_PARA    ='TEMP',
              PROL_DROITE = 'LINEAIRE',
              PROL_GAUCHE = 'LINEAIRE');
+
+
+##
+### INPUT 3) latent heat for parent material (OPTIONA:)
+##
 
 LH_FUSION = 3.E5 # J
 ENTHAL1=DEFI_FONCTION( # Jkg^-1
@@ -133,26 +125,22 @@ ENTHAL=CALC_FONCTION(
              PROL_GAUCHE = 'LINEAIRE');
 
 
-#SA508=DEFI_MATERIAU(THER_NL=_F( RHO_CP = RCPF,LAMBDA = LF,),); #<---- SAME AS TG5
-SA508=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LF,BETA = ENTHAL,), )
-'''
-# Artificial conductivity increase in melt
-################################# INCONEL
-LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
-                     VALE=(
-                           21., 11.8,
-                           315., 17.3,
-                           482., 20.4,
-                           649., 23.7,
-                           760., 25.8,
-                           870., 27.9,
-                           1204., 33.9,
-                           1316., 36.2,),
-                           PROL_DROITE='CONSTANT',		# Extension on right by last value
-                           PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
-                       );
+##
+### OUTPUT 1) Parent material property definition based on diffusivity (OPTIONAL)
+##
 
-'''
+#SA508=DEFI_MATERIAU(THER_NL=_F( RHO_CP = RCPF,LAMBDA = LF,),); #<---- SAME AS TG5
+
+##
+### OUTPUT 2) Parent material property definition based on enthalpy (OPTIONAL)
+##
+SA508=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LF,BETA = ENTHAL,), )
+
+
+##
+### INPUT 4) thermal conductivity for weld material
+##
+
 # Artificial conductivity increase in melt
 ################################# INCONEL
 LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
@@ -181,6 +169,9 @@ LFI= CALC_FONCTION (
              PROL_GAUCHE = 'LINEAIRE',
 			);
 
+##
+### INPUT 5) thermal diffusivty for weld material
+##
 #J K^-1 mm^-3
 RHOCPI= DEFI_FONCTION(NOM_PARA    = 'TEMP',
                       VALE        = (
@@ -208,6 +199,9 @@ RCPFI=CALC_FONCTION(
              PROL_DROITE = 'LINEAIRE',
              PROL_GAUCHE = 'LINEAIRE');
 
+##
+### INPUT 6) enthalpy for weld material
+##
 LH_FUSIONI = 3.E5 # J
 ENTHI=DEFI_FONCTION( # Jkg^-1
        NOM_PARA='TEMP',
@@ -237,6 +231,17 @@ ENTHAI=CALC_FONCTION(
              PROL_DROITE = 'LINEAIRE',
              PROL_GAUCHE = 'LINEAIRE');
 
+##
+### OUTPUT 3) weld material property definition based on diffusivity (OPTIONAL)
+##
+
+##
+### OUTPUT 4) weld material property definition based on enthalpy (OPTIONAL)
+##
 IN52M=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LFI,BETA = ENTHAI,), )
 
+##
+### OUTPUT 5) material field definition (parent + weld)
+##
+IMATE=AFFE_MATERIAU(MAILLAGE=M,AFFE=(_F(GROUP_MA='Group_parent',MATER=SA508),_F(GROUP_MA='Group_weld',MATER=IN52M),),);
 #FIN()

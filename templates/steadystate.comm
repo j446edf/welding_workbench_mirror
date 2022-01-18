@@ -12,27 +12,15 @@ MO=AFFE_MODELE(MAILLAGE=M, AFFE=_F(TOUT='OUI',PHENOMENE='MECANIQUE',MODELISATION
 MOTH=AFFE_MODELE(MAILLAGE=M, AFFE=_F(TOUT='OUI',PHENOMENE='THERMIQUE',MODELISATION='3D'))
 
 ##
-####### LOAD SA508 Gr3 Cl1 material properties
+####### LOAD material properties
 ##
 INCLUDE(UNITE=66)
-# IMATE=AFFE_MATERIAU(      MAILLAGE=M,
-                             # AFFE=_F(TOUT = 'OUI',
-                                    # MATER = SA508),
-                       # );
 
-IMATE=AFFE_MATERIAU(MAILLAGE=M,AFFE=(_F(GROUP_MA='Group_parent',MATER=SA508),_F(GROUP_MA='Group_weld',MATER=IN52M),),);
+
                        
 ##
 ####### Create Thermal loading - Initial Reference state
 ##
-# TIMPO=DEFI_CONSTANTE(VALE=50.0,);		# temperature at infinity in degrees Celsius (standard ambient temperature) 24C at pass 1, 50C all others
-# TIMPP=DEFI_CONSTANTE(VALE=50.0,);		# Interpass temperature in degrees Celsius (standard ambient temperature)
-# TIMPO_W=TIMPO;					        # temperature at infinity in degrees Celsius (standard ambient temperature)
-# TIMP_SW=TIMPO;					        # temperature of heatsink
-# HECHA=DEFI_CONSTANTE(VALE=8.E-6,);		# coefficient of heat exchange [W/(mm^2*K)]
-# SIG=DEFI_CONSTANTE(VALE=5.6704E-14,);   # boltmann constant, [W/(mm^2*K^4)]
-# EPS=DEFI_CONSTANTE(VALE=0.7,);			# emissivity of the grey body [reference 1]
-# F_SYM=DEFI_CONSTANTE(VALE=0,);          # Heat flux in body
 INCLUDE(UNITE=50)
 
 CH_GEOM=CREA_CHAMP(TYPE_CHAM='NOEU_GEOM_R',
@@ -43,18 +31,6 @@ CH_GEOM=CREA_CHAMP(TYPE_CHAM='NOEU_GEOM_R',
 
 ####### MOVING SPECIMEN VELOCITY
 # Weld Torch Path
-#v_nom = 1.17 #1.42
-# VITESS=CREA_CHAMP(TYPE_CHAM='NOEU_DEPL_R',
-                  # OPERATION='AFFE',
-                  # MAILLAGE=M,
-                  # AFFE=_F(TOUT='OUI',
-                          # NOM_CMP=('DX','DY','DZ'),
-                          # VALE=(0.,0.,v_nom),),);
-# # Initial position of Heat source
-# HSX0=0.
-# HSY0=30.
-# HSZ0=0.
-# beam=1.   # Welding beam is set to off
 INCLUDE(UNITE=51)
 
 
@@ -62,76 +38,16 @@ INCLUDE(UNITE=51)
 ##
 ####### Heat source definition
 ##
-
-
-# Weld params
-# AMBIENT TEMP Pass 1-5 = [20., 20., 20., 20., 20.]
-# INITIAL TEMP Pass 1-5 = [20., 50., 50., 50., 50.]
-# INTERPASS TEMP TEMP Pass 1-5 = [50., 50., 50., 50., 50.]
-
-# Weld parameters
-
-# ## Weld speed Pass 1-5 [1.22, 1.22, 1.42, 1.42, 1.42]
-# ita = 0.8 # efficiency Pass 1-5 = [0.7, 0.7, 0.7, 0.7, 0.7]
-# I = 220 #Current (Amps) Pass 1-5 = [240, 240, 200, 200, 200]
-# V = 12.5 #Voltage (V) Pass 1-5 [11, 11, 11, 11, 11]
-# Qnom = ita * I * V # Nominal heat source
-# Ifluc = 0 # Fluctuating component of current
-# Qfamp = ita * Ifluc * V # Fluctuating heat source
-# Q = Qnom + Qfamp*np.sin(0.) # Total heat imparted initialised at sin(0.) (no fluctutation)
-
 INCLUDE(UNITE=52)
 
 
-# ## Heat source types
-# heatSourceType='GOLDAK'
-# #heatSourceType='ELLIPSOID'
-
-# if heatSourceType == 'GOLDAK':
-	# # Variable dimensions
-	# a = 2.          #### x lateral direction
-	# b = 2. #1.5*a     #### y vertical
-	# cr = 1.3*a #5.85 #3.8 #1.3*a    #### Z direction of travel (rear portion)     # -> 1.3*a obtained from macrograph
-	# cf = .8*a #3.65 #3.8 #0.8*a #1.5*a #### Z direction of travel (front portion)    # -> 0.8*a obtained from macrograph
-	
-	# # Fixed dimensions satisfying ff + fr = 2 https://link.springer.com/article/10.1007/s40194-018-00678-w
-	# ff = 2*cf / (cr + cf)
-	# fr = 2*cr / (cr + cf)
-	
-	# # Load GOLDAK python functions
-	# INCLUDE(UNITE=67)	
-
-# if heatSourceType == 'ELLIPSOID':
-	# ra = 3.8 # 4. #.2   #### Z direction of travel
-	# rv = .8 # 0.8 #3.5   #### y vertical              # <---- maybe be better to increase to 1mm?
-	# rl = 9. # 6. #3.5   #### x lateral direction     # <---- maybe better to increase to 4.5
-	# Va = (4./3.)*np.pi*ra*rv*rl
-	
-	# # Load ELLIPSOID python functions
-	# INCLUDE(UNITE=68)	
-		
-
-# if heatSourceType == 'GOLDAK':
-	# FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)		
-# if heatSourceType == 'ELLIPSOID':
-	# FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)		
-
+# ## Load and intialise Heat source types
 INCLUDE(UNITE=53)
-# # Initial heat flux field
-# CHTEMP0=CREA_CHAMP(OPERATION='AFFE',
-                   # TYPE_CHAM='NOEU_TEMP_F',
-                   # MAILLAGE=M,
-                   # AFFE=_F(TOUT='OUI',
-                           # NOM_CMP='TEMP',
-                           # VALE_F=FONC0),)
 
 ##
 ####### Create heat flux field for a linear moving heat source 10mm/s - Z direction
 ##
 
-Z_t = 0.
-Y_t = 0.
-X_t = 0.
 beam=1.
 vz=0.
 
@@ -163,25 +79,14 @@ CHAR_W_=AFFE_CHAR_THER_F(MODELE=MOTH,
                          FLUX_REP=_F(GROUP_MA='Group_downstream',FLUN=F_SYM,), # Adiabatic condition (no heat flux)
                          );
 
-                     
-# HSX = HSX0 
-# HSY = HSY0 
-# HSZ = HSZ0 
-# Q = Qnom 
-# if heatSourceType == 'GOLDAK':
-	# FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)		
-# if heatSourceType == 'ELLIPSOID':
-	# FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)			
-# QSO = CREA_CHAMP (TYPE_CHAM = 'NOEU_SOUR_F',
-                  # OPERATION = 'AFFE',
-                  # MAILLAGE=M,
-                  # AFFE=_F(TOUT='OUI',
-                          # NOM_CMP='SOUR',
-                          # VALE_F=FONC),);
+
 
 CHS=AFFE_CHAR_THER_F(MODELE=MOTH,
                      SOURCE=_F(TOUT='OUI',SOUR=FONC,),);	
 
+##
+####### Run steady state analysis
+##
 Tsteady=THER_NON_LINE_MO(MODELE=MOTH,
                        CHAM_MATER=IMATE,
                        #INCREMENT=_F(LIST_INST=LIST1DT,PRECISION=1.E-10,),
