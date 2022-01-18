@@ -24,9 +24,8 @@
 
 #Define material of ferritic steel SA508 Gr3 Cl1 (Propaties are provided by Prof. Smith) "Protocol for finite element simulations.."
 	# lambda Conductivity isotropic function of the temperature for SA508 Gr3 Cl1
-LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
-                     VALE=(
-					20,	39.5,
+
+parent_lsa_from_GUI=[20,	39.5,
 					100,	41.3,
 					200,	42.5,
 					300,	41.8,
@@ -38,7 +37,9 @@ LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
 					900,	33.6,
 					1000,	34.1,
 					1100,	34.8,
-					1200,	37.7,),
+					1200,	37.7,]
+LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
+                     VALE=(parent_lsa_from_GUI),
                            PROL_DROITE='CONSTANT',		# Extension on right by last value
                            PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
                        );
@@ -58,10 +59,7 @@ LF= CALC_FONCTION ( # Converted to Wmm^-1K^-1
 ##
 
 # Thermal conductivity divided by density and specific heat capacity at constant pressure also known as Thermal diffusivity 
-
-RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
-                      VALE        = (
-                                         20.0, 442.,
+parent_lrhocpsa_from_GUI=[20.0, 442.,
                                          100.0, 480.,
                                          200.0, 531.,
                                          300.0, 554.,
@@ -73,8 +71,10 @@ RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
                                          900.0, 770.,
                                          1000.0, 745.,
                                          1100.0, 750.,
-                                         1200.0, 767.,
-					 ),
+                                         1200.0, 767.,]
+
+RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
+                      VALE        = (parent_lrhocpsa_from_GUI),
                            PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
                            PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
 
@@ -92,11 +92,8 @@ RCPF=CALC_FONCTION(
 ##
 ### INPUT 3) latent heat for parent material (OPTIONA:)
 ##
-
 LH_FUSION = 3.E5 # J
-ENTHAL1=DEFI_FONCTION( # Jkg^-1
-       NOM_PARA='TEMP',
-       VALE=(    0.0,      0.0,
+parent_enthalpy_from_GUI=[0.0,      0.0,
                20.0,      8840.0,#JK/kg
                100.0,    45720.0,
                200.0,    96270.0,
@@ -111,7 +108,12 @@ ENTHAL1=DEFI_FONCTION( # Jkg^-1
                1100.0,   747220.0,
                1200.0,   823070.0,
                1375.0,   957295.0,
-               1400.0,  (957295.+LH_FUSION), ),
+               1400.0,  (957295.+LH_FUSION),]
+
+
+ENTHAL1=DEFI_FONCTION( # Jkg^-1
+       NOM_PARA='TEMP',
+       VALE=(parent_enthalpy_from_GUI),
        PROL_DROITE='LINEAIRE',
        PROL_GAUCHE='LINEAIRE',)
 
@@ -143,9 +145,7 @@ SA508=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LF,BETA = ENTHAL,), )
 
 # Artificial conductivity increase in melt
 ################################# INCONEL
-LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
-                     VALE=(
-                           21., 11.8,
+weld_lsa_from_GUI=[21., 11.8,
                            315., 17.3,
                            482., 20.4,
                            649., 23.7,
@@ -155,7 +155,9 @@ LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
                            1316., 36.2, 
                            1400., 36.3, # <-- Force circulation
 #                           3000.,2*360.), # <-- Lambda 1
-                           1800.,1*360.), # <-- Lambda 2
+                           1800.,1*360.]
+LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
+                     VALE=(weld_lsa_from_GUI), # <-- Lambda 2
                            PROL_DROITE='CONSTANT',		# Extension on right by last value
                            PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
                        );
@@ -173,9 +175,7 @@ LFI= CALC_FONCTION (
 ### INPUT 5) thermal diffusivty for weld material
 ##
 #J K^-1 mm^-3
-RHOCPI= DEFI_FONCTION(NOM_PARA    = 'TEMP',
-                      VALE        = (
-                           20., 3.66,
+weld_rhocpsa_from_GUI=[20., 3.66,
                            100., 3.83,
                            200., 4.01,
                            300., 4.14,
@@ -186,8 +186,10 @@ RHOCPI= DEFI_FONCTION(NOM_PARA    = 'TEMP',
                            800., 5.04,
                            900., 5.18,
                            1204., 6.04,
-                           1316., 6.32,
-					 ),
+                           1316., 6.32,]
+#INCLUDE(UNITE=90) # <-- all user inputs from GUI
+RHOCPI= DEFI_FONCTION(NOM_PARA    = 'TEMP',
+                      VALE        = (weld_rhocpsa_from_GUI),
                            PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
                            PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
 
@@ -203,9 +205,7 @@ RCPFI=CALC_FONCTION(
 ### INPUT 6) enthalpy for weld material
 ##
 LH_FUSIONI = 3.E5 # J
-ENTHI=DEFI_FONCTION( # Jkg^-1
-       NOM_PARA='TEMP',
-       VALE=(    0.0,      0.0,
+weld_enthalpy_from_GUI=[0.0,      0.0,
                20.0,      8714.0,#JK/kg
                100.0,    44381.0,
                200.0,    91048.0,
@@ -218,7 +218,10 @@ ENTHI=DEFI_FONCTION( # Jkg^-1
                900.0,   473845.0,
                1204.0,   676874.0,
                1300.0,   747502.0,
-               1350.0,  (747502.+LH_FUSIONI), ),
+               1350.0,  (747502.+LH_FUSIONI),]
+ENTHI=DEFI_FONCTION( # Jkg^-1
+       NOM_PARA='TEMP',
+       VALE=(weld_enthalpy_from_GUI),
        PROL_DROITE='LINEAIRE',
        PROL_GAUCHE='LINEAIRE',)
 
