@@ -1,0 +1,17 @@
+
+
+# GUI NEEDS TO CREATE THIS
+
+##
+####### Weld torch parameters
+##
+# If Linear
+## Weld speed Pass 1-5 [1.22, 1.22, 1.42, 1.42, 1.42]
+ita = 0.8 # efficiency Pass 1-5 = [0.7, 0.7, 0.7, 0.7, 0.7]
+I = 220 #Current (Amps) Pass 1-5 = [240, 240, 200, 200, 200]
+V = 12.5 #Voltage (V) Pass 1-5 [11, 11, 11, 11, 11]
+Qnom = ita * I * V # Nominal heat source
+Ifluc = 0 # Fluctuating component of current
+Qfamp = ita * Ifluc * V # Fluctuating heat source
+Q = Qnom + Qfamp*np.sin(0.) # Total heat imparted initialised at sin(0.) (no fluctutation)
+Q = Qnom 

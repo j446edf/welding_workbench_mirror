@@ -1,0 +1,16 @@
+
+
+# GUI NEEDS TO CREATE THIS
+
+##
+####### Create Thermal loading - Initial Reference state
+##
+TIMPO=DEFI_CONSTANTE(VALE=50.0,);		# temperature at infinity in degrees Celsius (standard ambient temperature) 24C at pass 1, 50C all others
+TIMPP=DEFI_CONSTANTE(VALE=50.0,);		# Interpass temperature in degrees Celsius (standard ambient temperature)
+TIMPO_W=TIMPO;					        # temperature at infinity in degrees Celsius (standard ambient temperature)
+TIMP_SW=TIMPO;					        # temperature of heatsink
+HECHA=DEFI_CONSTANTE(VALE=8.E-6,);		# coefficient of heat exchange [W/(mm^2*K)]
+SIG=DEFI_CONSTANTE(VALE=5.6704E-14,);   # boltmann constant, [W/(mm^2*K^4)]
+EPS=DEFI_CONSTANTE(VALE=0.7,);			# emissivity of the grey body [reference 1]
+F_SYM=DEFI_CONSTANTE(VALE=0,);          # Heat flux in body
+

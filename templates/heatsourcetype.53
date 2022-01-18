@@ -1,0 +1,57 @@
+
+
+# GUI NEEDS TO CREATE THIS
+
+
+
+## Heat source types
+heatSourceType='GOLDAK'
+#heatSourceType='ELLIPSOID'
+
+if heatSourceType == 'GOLDAK':
+	# Variable dimensions
+	a = 2.          #### x lateral direction
+	b = 2. #1.5*a     #### y vertical
+	cr = 1.3*a #5.85 #3.8 #1.3*a    #### Z direction of travel (rear portion)     # -> 1.3*a obtained from macrograph
+	cf = .8*a #3.65 #3.8 #0.8*a #1.5*a #### Z direction of travel (front portion)    # -> 0.8*a obtained from macrograph
+	
+	# Fixed dimensions satisfying ff + fr = 2 https://link.springer.com/article/10.1007/s40194-018-00678-w
+	ff = 2*cf / (cr + cf)
+	fr = 2*cr / (cr + cf)
+	
+	# Load GOLDAK python functions
+	INCLUDE(UNITE=67)	
+
+if heatSourceType == 'ELLIPSOID':
+	ra = 3.8 # 4. #.2   #### Z direction of travel
+	rv = .8 # 0.8 #3.5   #### y vertical              # <---- maybe be better to increase to 1mm?
+	rl = 9. # 6. #3.5   #### x lateral direction     # <---- maybe better to increase to 4.5
+	Va = (4./3.)*np.pi*ra*rv*rl
+	
+	# Load ELLIPSOID python functions
+	INCLUDE(UNITE=68)	
+		
+
+if heatSourceType == 'GOLDAK':
+	FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)		
+if heatSourceType == 'ELLIPSOID':
+	FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)		
+
+# Initial heat flux field
+CHTEMP0=CREA_CHAMP(OPERATION='AFFE',
+                   TYPE_CHAM='NOEU_TEMP_F',
+                   MAILLAGE=M,
+                   AFFE=_F(TOUT='OUI',
+                           NOM_CMP='TEMP',
+                           VALE_F=FONC0),)
+
+if heatSourceType == 'GOLDAK':
+	FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)		
+if heatSourceType == 'ELLIPSOID':
+	FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)			
+QSO = CREA_CHAMP (TYPE_CHAM = 'NOEU_SOUR_F',
+                  OPERATION = 'AFFE',
+                  MAILLAGE=M,
+                  AFFE=_F(TOUT='OUI',
+                          NOM_CMP='SOUR',
+                          VALE_F=FONC),);

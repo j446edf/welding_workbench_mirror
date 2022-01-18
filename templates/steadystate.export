@@ -42,6 +42,10 @@ F mmed /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/Newpass1Mesh.med
 F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/materialData.66 D 66
 F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsGoldak.67 D 67
 F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsDE.68 D 68
+F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/environment.50 D 50
+F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldPath.51 D 51
+F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldParams.52 D 52
+F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/heatsourcetype.53 D 53
 F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.rmed R 81
 R base /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.base RC 0
 F mess /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.mess R 6
