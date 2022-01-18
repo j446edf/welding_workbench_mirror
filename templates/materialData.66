@@ -1,0 +1,242 @@
+#DEBUT()
+#Define material of ferritic steel SA508 Gr3 Cl1 (Propaties are provided by Prof. Smith) "Protocol for finite element simulations.."
+	# lambda Conductivity isotropic function of the temperature for SA508 Gr3 Cl1
+LSA=DEFI_FONCTION(NOM_PARA='TEMP', # CONFIRMED TG5 PROTOCOL Wm^-1K^-1
+                     VALE=(
+					20,	39.5,
+					100,	41.3,
+					200,	42.5,
+					300,	41.8,
+					400,	39.6,
+					500,	36.9,
+					600,	34.7,
+					700,	33.4,
+					800,	33.2,
+					900,	33.6,
+					1000,	34.1,
+					1100,	34.8,
+					1200,	37.7,),
+                           PROL_DROITE='CONSTANT',		# Extension on right by last value
+                           PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
+                       );
+# #SOPHIA DATA
+# LSA=DEFI_FONCTION(NOM_PARA='TEMP',
+                     # VALE=(
+                           # 27., 14.2,
+                           # 77., 15.1,
+                           # 127., 16.,
+                           # 177., 16.8,
+                           # 227., 17.7,
+                           # 327., 19.5,
+                           # 427., 21.3,
+                           # 527., 23.,
+                           # 627., 24.8,
+                           # 727., 26.5,
+                           # 827., 28.3,
+                           # 927., 30.1,
+                           # 1027., 31.8,
+                           # 1127., 33.6,
+                           # 1227., 35.3,
+                           # 1327., 37.1,),                    
+                           # PROL_DROITE='CONSTANT',		# Extension on right by last value
+                           # PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
+                       # );
+
+LF= CALC_FONCTION ( # Converted to Wmm^-1K^-1
+             INFO=2,
+             COMB        =_F ( FONCTION = LSA,
+                               COEF     = 1.0E-3 ),
+	     NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE',
+			);
+
+	# Thermal conductivity divided by density and specific heat capacity at constant pressure also known as Thermal diffusivity 
+
+RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP', #Jkg^-1K^-1 CP only
+                      VALE        = (
+                                         20.0, 442.,
+                                         100.0, 480.,
+                                         200.0, 531.,
+                                         300.0, 554.,
+                                         400.0, 605.,
+                                         500.0, 683.,
+                                         600.0, 750.,
+                                         700.0, 923., 
+                                         800.0, 839.,
+                                         900.0, 770.,
+                                         1000.0, 745.,
+                                         1100.0, 750.,
+                                         1200.0, 767.,
+					 ),
+                           PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
+                           PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
+
+
+# #SOPHIA DATA - Cp = J/kg/K
+# RHOCPSA= DEFI_FONCTION(NOM_PARA    = 'TEMP',
+                      # VALE        = (
+                           # 20., 444.,
+                           # 100., 465.,
+                           # 200., 486.,
+                           # 300., 502.,
+                           # 400., 519.,
+                           # 500., 536., 
+                           # 600., 578., 
+                           # 700., 595.,
+                           # 800., 611.,
+                           # 900., 628.,
+                           # 1204., 733.,
+                           # 1316., 766.,
+					 # ),
+                           # PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
+                           # PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
+
+#Input RhoCp = J K^-1 mm^-3
+RCPF=CALC_FONCTION(
+             INFO=2,
+             COMB        =_F(FONCTION = RHOCPSA,
+                               COEF     = 8.E-6),#kg/mm^3
+             NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE');
+
+LH_FUSION = 3.E5 # J
+ENTHAL1=DEFI_FONCTION( # Jkg^-1
+       NOM_PARA='TEMP',
+       VALE=(    0.0,      0.0,
+               20.0,      8840.0,#JK/kg
+               100.0,    45720.0,
+               200.0,    96270.0,
+               300.0,   150520.0,
+               400.0,   208470.0,
+               500.0,   272870.0,
+               600.0,   344520.0,
+               700.0,   428170.0,
+               800.0,   516270.0,
+               900.0,   596720.0,
+               1000.0,   672470.0,
+               1100.0,   747220.0,
+               1200.0,   823070.0,
+               1375.0,   957295.0,
+               1400.0,  (957295.+LH_FUSION), ),
+       PROL_DROITE='LINEAIRE',
+       PROL_GAUCHE='LINEAIRE',)
+
+# Input enthalpy - JK/mm^3
+ENTHAL=CALC_FONCTION(
+             INFO=2,
+             COMB        =_F(FONCTION = ENTHAL1,
+                               COEF     = 8.0E-6),#kg/mm^3
+             NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE');
+
+
+#SA508=DEFI_MATERIAU(THER_NL=_F( RHO_CP = RCPF,LAMBDA = LF,),); #<---- SAME AS TG5
+SA508=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LF,BETA = ENTHAL,), )
+'''
+# Artificial conductivity increase in melt
+################################# INCONEL
+LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
+                     VALE=(
+                           21., 11.8,
+                           315., 17.3,
+                           482., 20.4,
+                           649., 23.7,
+                           760., 25.8,
+                           870., 27.9,
+                           1204., 33.9,
+                           1316., 36.2,),
+                           PROL_DROITE='CONSTANT',		# Extension on right by last value
+                           PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
+                       );
+
+'''
+# Artificial conductivity increase in melt
+################################# INCONEL
+LSAI=DEFI_FONCTION(NOM_PARA='TEMP',
+                     VALE=(
+                           21., 11.8,
+                           315., 17.3,
+                           482., 20.4,
+                           649., 23.7,
+                           760., 25.8,
+                           870., 27.9,
+                           1204., 33.9,
+                           1316., 36.2, 
+                           1400., 36.3, # <-- Force circulation
+#                           3000.,2*360.), # <-- Lambda 1
+                           1800.,1*360.), # <-- Lambda 2
+                           PROL_DROITE='CONSTANT',		# Extension on right by last value
+                           PROL_GAUCHE='CONSTANT',		# Extension on left by last value	
+                       );
+
+LFI= CALC_FONCTION (
+             INFO=2,
+             COMB        =_F ( FONCTION = LSAI,
+                               COEF     = 1.0E-3 ), # W mm^-1 K^-1
+	     NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE',
+			);
+
+#J K^-1 mm^-3
+RHOCPI= DEFI_FONCTION(NOM_PARA    = 'TEMP',
+                      VALE        = (
+                           20., 3.66,
+                           100., 3.83,
+                           200., 4.01,
+                           300., 4.14,
+                           400., 4.28,
+                           500., 4.42, 
+                           600., 4.77, 
+                           700., 4.91,
+                           800., 5.04,
+                           900., 5.18,
+                           1204., 6.04,
+                           1316., 6.32,
+					 ),
+                           PROL_DROITE = 'LINEAIRE',		# Extension on right by last value
+                           PROL_GAUCHE = 'LINEAIRE');		# Extension on left by last value	
+
+RCPFI=CALC_FONCTION(
+             INFO=2,
+             COMB        =_F(FONCTION = RHOCPI,
+                               COEF     = 1E-3),
+             NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE');
+
+LH_FUSIONI = 3.E5 # J
+ENTHI=DEFI_FONCTION( # Jkg^-1
+       NOM_PARA='TEMP',
+       VALE=(    0.0,      0.0,
+               20.0,      8714.0,#JK/kg
+               100.0,    44381.0,
+               200.0,    91048.0,
+               300.0,   139560.0,
+               400.0,   189679.0,
+               500.0,   241464.0,
+               600.0,   296167.0,
+               700.0,   353786.0,
+               800.0,   413012.0,
+               900.0,   473845.0,
+               1204.0,   676874.0,
+               1300.0,   747502.0,
+               1350.0,  (747502.+LH_FUSIONI), ),
+       PROL_DROITE='LINEAIRE',
+       PROL_GAUCHE='LINEAIRE',)
+
+# Input enthalpy - JK/mm^3
+ENTHAI=CALC_FONCTION(
+             INFO=2,
+             COMB        =_F(FONCTION = ENTHI,
+                               COEF     = 8.4E-6),#kg/mm^3
+             NOM_PARA    ='TEMP',
+             PROL_DROITE = 'LINEAIRE',
+             PROL_GAUCHE = 'LINEAIRE');
+
+IN52M=DEFI_MATERIAU( THER_NL=_F(  LAMBDA = LFI,BETA = ENTHAI,), )
+
+#FIN()

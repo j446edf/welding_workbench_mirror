@@ -1,0 +1,36 @@
+#DEBUT=()
+def heat_source_loc(x0,y0,z0):
+	HSL = [x0,y0,z0]
+	return HSL
+
+def calc_qff(x,y,z):
+	global ra
+	global rv
+	global rl
+	global Va
+	global Q
+	#q_ff = np.exp( -( ((x/rl)**2) + ((y/rv)**2) + ((z/ra)**2) ) )
+	q_ff = np.exp( -3.*( ((x/rl)**2) + ((y/rv)**2) + ((z/ra)**2) ) ) # Semi-ellipsoidal description from T.Flint
+	
+	return q_ff
+
+def run_q_calc(xm,ym,zm,HSL):
+	global ra
+	global rv
+	global rl
+	global Va
+	global Q
+	# Transform to Zeta coordinate (Realtive to moving heat source)
+	x=xm-HSL[0] # x-position relative to HSL
+	y=ym-HSL[1] # y-position relative to HSL
+	z=zm-HSL[2] # z-position relative to HSL
+	
+	if y > 0: # You are in top of the ellipsoid
+		q_xyz = 0.
+	else:
+		#q_xyz = (Q/Va)*calc_qff(x,y,z)
+		q_xyz = (     (  6*(3**0.5)*Q  )  /  (  ra*rv*rl*(np.pi)*(np.pi**0.5)  )     )*calc_qff(x,y,z)  # Semi-ellipsoidal description from T.Flint
+	
+	return q_xyz
+#FIN()			
+
