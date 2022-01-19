@@ -1,3 +1,4 @@
+# INPUT 1) thermal conductivity for parent material
 parent_lsa_from_GUI=[20,	39.5,
 					100,	41.3,
 					200,	42.5,
@@ -13,11 +14,11 @@ parent_lsa_from_GUI=[20,	39.5,
 					1200,	37.7,]
 
 #
-
+# INPUT 1a) user choice parent def
 user_choice_parent_def=2
 
 #
-
+# INPUT 2) thermal diffusivity for parent material (OPTIONA:)
 parent_lrhocpsa_from_GUI=[20.0, 442.,
 	                                         100.0, 480.,
 	                                         200.0, 531.,
@@ -33,7 +34,7 @@ parent_lrhocpsa_from_GUI=[20.0, 442.,
 	                                         1200.0, 767.,]					
 
 #
-	                                         
+# INPUT 3) latent heat for parent material (OPTIONA:)                       
 LH_FUSION = 3.E5 # J
 
 parent_enthalpy_from_GUI=[0.0,      0.0,
@@ -54,7 +55,7 @@ parent_enthalpy_from_GUI=[0.0,      0.0,
 	               1400.0,  (957295.+LH_FUSION),]	                                         
 	               
 #
-
+# INPUT 4) thermal conductivity for weld material
 weld_lsa_from_GUI=[21., 11.8,
                            315., 17.3,
                            482., 20.4,
@@ -68,9 +69,10 @@ weld_lsa_from_GUI=[21., 11.8,
                            1800.,1*360.]
                            
 #
-
+# INPUT 4a) user choice weld def
 user_choice_weld_def=2
 
+# INPUT 5) thermal diffusivty for weld material
 weld_rhocpsa_from_GUI=[20., 3.66,
 	                           100., 3.83,
 	                           200., 4.01,
@@ -85,7 +87,7 @@ weld_rhocpsa_from_GUI=[20., 3.66,
 	                           1316., 6.32,]
 	                           
 #
-
+# INPUT 6) enthalpy for weld material
 LH_FUSIONI = 3.E5 # J
 
 weld_enthalpy_from_GUI=[0.0,      0.0,
