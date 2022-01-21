@@ -81,7 +81,7 @@ class Ui_moduleMeta(object):
 		self.Finish = QtWidgets.QPushButton(self.centralWidget)
 		self.Finish.setGeometry(QtCore.QRect(540, 600, 89, 25))
 		self.Finish.setObjectName("Finish")
-		self.Finish.clicked.connect(self.clicked)
+		#self.Finish.clicked.connect(self.clicked)
 		
 		self.CCT = QtWidgets.QCheckBox(self.centralWidget)
 		self.CCT.setGeometry(QtCore.QRect(80, 560, 92, 23))
@@ -126,73 +126,7 @@ class Ui_moduleMeta(object):
 		self.retranslateUi(moduleMeta)
 		QtCore.QMetaObject.connectSlotsByName(moduleMeta)
 		
-		
-	def clicked(self):
-		#import globals
-		getT_Aust = self.T_Aust.toPlainText().strip()
-		getT_End = self.T_End.toPlainText().strip()
-		getGS = self.GS.toPlainText().strip()
-		getCR = self.CR.toPlainText().strip()
-		getUSR = self.USR.toPlainText().strip()
-		
-		getGGM = self.GGM.currentText()
-		getM = self.Material.currentText()
-		getAM = self.AE13.currentText()
-		
-		my_env=os.environ.copy()
-		
-		if self.CCT.isChecked():
-			my_env["CCT"]="Yes"
-		else:
-			my_env["CCT"]="No"
-			
-		if self.TTT.isChecked():
-			my_env["TTT"]="Yes"
-		else:
-			my_env["TTT"]="No"
-		
-		if getM=="USER":
-			getUSR = self.USR.toPlainText().strip()
-			my_env["USER_M"]=getUSR
-		
-		my_env["T_A"]=getT_Aust
-		my_env["T_E"]=getT_End
-		my_env["G_S"]=getGS
-		my_env["C_R"]=getCR
-		
-		my_env["GG_M"]=getGGM
-		my_env["M"]=getM
-		my_env["A_M"]=getAM
-		
-		command=[]		
-		#command.append("export T_A="+str(getT_Aust)+";")
-		#command.append("export T_E="+str(getT_End)+";")
-		#command.append("export G_S="+str(getGS)+";")
-		command.append("./basicBatchpro.sh;")
-		#command.append("unset T_A;")
-		#command.append("unset T_E;")
-		#command.append("unset G_S;")
-		command.append("$T_A;")
-		command.append("$T_E;")
-		command.append("$G_S;")
-		command.append("$C_R;")
-		command.append("$GG_M;")
-		command.append("$M;")
-		command.append("$A_M;")
-		commandMe=""
-		for i in command:
-			commandMe+=i
-		#print(getT_Aust)
-		#print(getT_End)
-		# print(getGS)
-		# print(commandMe)
-		#p=subprocess.Popen(["sh",commandMe], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env,)
-		#p=subprocess.Popen(["sh",commandMe,'getT_Aust'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env,)
-		#proc_fb = sub.Popen(["xterm", "-e",FOLDER_Supervisor+'/runFUELBRICK_MAIN.sh',str(globals.ramFB),str(globals.mpi_or_not),str(globals.ncpusfb)])
-		########p=subprocess.Popen(["sh","sudo","./basicBatchpro.sh","$T_A","$T_E","$G_S","$C_R","$GG_M","$M","$A_M"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env)
-		p=subprocess.Popen(["xterm","-e","./basicBatchpro.sh",],env=my_env)
-		#p=subprocess.Popen(["sh",commandMe], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-		outputCall = p.communicate()
+	
 
 	def retranslateUi(self, moduleMeta):
 		_translate = QtCore.QCoreApplication.translate

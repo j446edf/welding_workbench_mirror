@@ -11,7 +11,8 @@ import subprocess
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 
-from module_metallurgy import Ui_moduleMeta
+#from module_metallurgy import Ui_moduleMeta
+from boilerModule1Meta import ModuleMetaMainWindow
 
 class Ui_module1(object):
     def setupUi(self, module1):
@@ -25,7 +26,7 @@ class Ui_module1(object):
         self.pushButton_mod1_1 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_mod1_1.setGeometry(QtCore.QRect(480, 160, 201, 181))
         self.pushButton_mod1_1.setObjectName("pushButton_mod1_1")
-        self.pushButton_mod1_1.clicked.connect(self.clickpushButton_mod1_1)
+        #self.pushButton_mod1_1.clicked.connect(self.clickpushButton_mod1_1)
         module1.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(module1)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 24))
@@ -39,13 +40,11 @@ class Ui_module1(object):
         QtCore.QMetaObject.connectSlotsByName(module1)
 
 
-    def clickpushButton_mod1_1(self):
-        self.window = QMainWindow()
-        self.ui = Ui_moduleMeta()
-        self.ui.setupUi(self.window)
-        self.window.show()
-
-
+    # def clickpushButton_mod1_1(self):  #< ----- Import directly module_metallurgy (no buttoon events)
+        # self.window3 = QMainWindow()
+        # self.window3 = ModuleMetaMainWindow()
+        # self.window3.show()
+    
     def retranslateUi(self, module1):
         _translate = QtCore.QCoreApplication.translate
         module1.setWindowTitle(_translate("module1", "MainWindow"))
