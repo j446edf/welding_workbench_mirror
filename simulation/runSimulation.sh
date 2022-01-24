@@ -11,33 +11,40 @@
 #### You need to set these up front ################################################################################
 ####################################################################################################################
 #source /home/mbgm6aab/codes/tfel/master/install/env.sh
-export pathToSalome='/home/mbgm6aab/salome_meca/appli_V2019.0.3_universal'
-export pathToHere=$( pwd )
-export srcDir='/home/mbgm6aab/Documents/weldingworkbench'
+#export pathToSalome='/home/mbgm6aab/salome_meca/appli_V2019.0.3_universal'
+#export pathToHere=$( pwd )
+#export srcDir='/home/mbgm6aab/Documents/weldingworkbench'
 ####################################################################################################################
 ####################################################################################################################
 
-rm -r $srcDir/simulation/tmp
-mkdir $srcDir/simulation/tmp
+####################################################################################################################
+### Set environment variables
+####################################################################################################################
+source user.config
 
 ####################################################################################################################
-### Build Mesh
+### File Management
 ####################################################################################################################
-#$pathToSalome/salome -t $pathToHere/buildGeom.py
-#$pathToSalome/salome shell killSalome.py		
+rm -r $USER_WELDWB_srcDir/simulation/tmp
+rm $USER_WELDWB_pathToHere/unsetMe
+mkdir $USER_WELDWB_srcDir/simulation/tmp
 
 ####################################################################################################################
 ### Launch simulation
 ####################################################################################################################
-pushd $srcDir/simulation/tmp
-cp $srcDir/templates/* .
-$pathToSalome/salome shell -- as_run $srcDir/simulation/tmp/steadystate.export
-$pathToSalome/salome shell killSalome.py		
+pushd $USER_WELDWB_srcDir/simulation/tmp
+cp $USER_WELDWB_srcDir/templates/* .
+$USER_WELDWB_pathToSalome/salome shell -- as_run $USER_WELDWB_srcDir/simulation/tmp/steadystate.export
+$USER_WELDWB_pathToSalome/salome shell killSalome.py	
+popd	
+
+####################################################################################################################
+### Clear environment variables
+####################################################################################################################
+printenv | grep 'USER_WELDWB_' | sed 's/=.*//' | sed 's/USER_/unset USER_'/ > $USER_WELDWB_pathToHere/unsetMe 
+source $USER_WELDWB_pathToHere/unsetMe
+rm ./unsetMe
 
 ####################################################################################################################
 ### END
 ####################################################################################################################
-unset pathToSalome
-unset pathToHere
-unset srcDir
-
