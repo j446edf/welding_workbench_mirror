@@ -6,41 +6,58 @@
 ######################################
 
 # Please refer to Issue:
-# https://gitlab.cs.man.ac.uk/mbgm6aab/weldingworkbench/issues/2
+# https://gitlab.cs.man.ac.uk/mbgm6aab/weldingworkbench/issues/5
 
-#### You need to set these up front ################################################################################
 ####################################################################################################################
-#source /home/mbgm6aab/codes/tfel/master/install/env.sh
-#export pathToSalome='/home/mbgm6aab/salome_meca/appli_V2019.0.3_universal'
-#export pathToHere=$( pwd )
-#export srcDir='/home/mbgm6aab/Documents/weldingworkbench'
+### Checking pre-requisites
 ####################################################################################################################
-####################################################################################################################
+checkZen=$( whereis zenity )
+if [[ -z $checkZen ]]
+then 
+	echo you need Zenity installed on your system
+	echo Do you wish to install it? y/n
+	read installZen
+	if [ $installZen == 'y' ]
+	then
+		apt install zenity
+	else
+		echo Terminating Program
+		exit 1
+	fi
+else
+	echo Zenity found on system
+fi
 
 ####################################################################################################################
 ### Check user profile exists
 ####################################################################################################################
-checkConfig=$(ls ./ | grep 'user.config')
+checkConfig=$( ls ./ | grep 'user.config')
 
 if [ -z $checkConfig ] 
 then 
-echo 'File does not exist'
-echo 'Creating user.config'
-echo export USER_WELDWB_pathToSalome="'"/home/mbgm6aab/salome_meca/appli_V2019.0.3_universal"'" > user.config
-echo export USER_WELDWB_pathToHere="$""("" pwd "")" >> user.config
-echo export USER_WELDWB_srcDir="'"/home/mbgm6aab/Documents/weldingworkbench"'" >> user.config
-cat user.config
-
+	echo 'File does not exist'
+	echo 'Creating user.config'
+	. ./setupSalomeMeca.sh
 else
-echo 'File does exist'
+	echo 'File does exist'
 fi
 
 ####################################################################################################################
 ### Set environment variables
 ####################################################################################################################
-source user.config
-
+if [ -e user.config ] 
+then
+	source user.config
+	printenv | grep 'USER'
+else
+	echo "Configuration failed!"
+	echo "Try running cleanEnv.sh then runWeldingWB.sh"
+	echo "Terminating program"
+	exit 1
+fi
 ####################################################################################################################
 ### Launch Workbench
 ####################################################################################################################
-python ./GUI/boiler.py &
+pushd $USER_WELDWB_pathToHere/GUI
+python boiler.py &
+popd
