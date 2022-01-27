@@ -127,3 +127,10 @@ gui_torch_lin_vnom = 1.17
 gui_torch_x0 = 0.
 gui_torch_y0 = 30.
 gui_torch_z0 = 0.
+
+###############################
+### GUI INPUTS FOR Process params
+###############################
+gui_weld_ita = 0.8
+gui_weld_I = 220.
+gui_weld_V = 12.5
