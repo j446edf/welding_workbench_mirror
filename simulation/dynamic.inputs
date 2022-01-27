@@ -104,3 +104,14 @@ weld_enthalpy_from_GUI=[0.0,      0.0,
 	               1204.0,   676874.0,
 	               1300.0,   747502.0,
 	               1350.0,  (747502.+LH_FUSIONI),]
+	               
+###############################
+### GUI INPUTS FOR Thermal BC
+###############################
+
+gui_t_inf = 50.
+gui_t_ipp = 50.
+gui_hecha =8.E-6
+gui_sig =5.6704E-14
+gui_eps = 0.7
+gui_f_sym = 0.
