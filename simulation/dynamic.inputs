@@ -134,3 +134,20 @@ gui_torch_z0 = 0.
 gui_weld_ita = 0.8
 gui_weld_I = 220.
 gui_weld_V = 12.5
+
+
+###############################
+### GUI INPUTS FOR Heat source type
+###############################
+#User can only choose Goldak/Ellipsoid
+
+gui_heat_source_type = 'GOLDAK'
+gui_goldak_a = 2.
+gui_goldak_b = 2.
+gui_goldak_cr = 1.3*2. #1.3*a
+gui_goldak_cf = 0.8*2. #0.8*a
+
+# gui_heat_source_type = 'ELLIPSOID'
+# gui_ellipsoid_ra = 3.8
+# gui_ellipsoid_rv = 0.8
+# gui_ellipsoid_rl = 9.

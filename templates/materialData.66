@@ -18,10 +18,6 @@
 
 
 
-## LOAD USER DYNAMIC INPUTS
-INCLUDE(UNITE=90)
-
-
 
 ### INPUT 1) thermal conductivity for parent material
 

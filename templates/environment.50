@@ -1,11 +1,5 @@
 
 
-# GUI NEEDS TO CREATE THIS
-
-
-## LOAD USER DYNAMIC INPUTS
-INCLUDE(UNITE=90)
-
 ##
 ####### Create Thermal loading (BC)- Initial Reference state
 ##

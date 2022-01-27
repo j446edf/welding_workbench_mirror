@@ -1,10 +1,4 @@
 
-
-# GUI NEEDS TO CREATE THIS
-
-## LOAD USER DYNAMIC INPUTS
-INCLUDE(UNITE=90)
-
 ##
 ####### Weld torch path type
 ##
