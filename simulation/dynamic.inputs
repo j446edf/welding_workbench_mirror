@@ -115,3 +115,15 @@ gui_hecha =8.E-6
 gui_sig =5.6704E-14
 gui_eps = 0.7
 gui_f_sym = 0.
+
+###############################
+### GUI INPUTS FOR Torch path type
+###############################
+
+gui_torch_path = 'LINEAR' # OR 'CIRCULAR' OR 'USER'
+
+# The following appear in the case of 'LINEAR'
+gui_torch_lin_vnom = 1.17
+gui_torch_x0 = 0.
+gui_torch_y0 = 30.
+gui_torch_z0 = 0.
