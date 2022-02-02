@@ -1,0 +1,346 @@
+#!/usr/bin/env python
+import numpy as np
+import time
+all_times=[]
+time_1 = time.time()
+all_times.append([time.time()-time_1,'Start'])
+DEBUT(PAR_LOT='NON')
+
+
+
+## LOAD USER DYNAMIC INPUTS
+INCLUDE(UNITE=90)
+
+##
+####### READING MESH 
+##
+M=LIRE_MAILLAGE(FORMAT='MED', UNITE=20)
+MO=AFFE_MODELE(MAILLAGE=M, AFFE=_F(TOUT='OUI',PHENOMENE='MECANIQUE',MODELISATION='3D'))
+MOTH=AFFE_MODELE(MAILLAGE=M, AFFE=_F(TOUT='OUI',PHENOMENE='THERMIQUE',MODELISATION='3D'))
+
+##
+####### LOAD SA508 Gr3 Cl1 material properties
+##
+INCLUDE(UNITE=66)
+                       
+##
+####### Create Thermal loading - Initial Reference state
+##
+INCLUDE(UNITE=50)
+
+
+
+CHAR_REF=AFFE_CHAR_THER_F(MODELE=MOTH,
+              FLUX_REP=_F(GROUP_MA='Group_Of_All_Volumes',FLUN=F_SYM,),
+              ECHANGE=(_F(GROUP_MA=('Group_convection','Group_radiation'),COEF_H=HECHA,TEMP_EXT=TIMPO,),),      # Exchange with outside temperature over surfaces       
+              RAYONNEMENT=_F(GROUP_MA=('Group_radiation',),SIGMA=SIG,EPSILON=EPS,TEMP_EXT=TIMPO,),  # Defination of radiaction
+              );
+
+
+CH_GEOM=CREA_CHAMP(TYPE_CHAM='NOEU_GEOM_R',
+                   OPERATION='EXTR',
+                   MAILLAGE=M,
+                   NOM_CHAM='GEOMETRIE',);
+
+
+####### MOVING SPECIMEN VELOCITY
+# Weld Torch Path
+INCLUDE(UNITE=51)
+
+# Weld torch path functions
+INCLUDE(UNITE=49)
+
+
+######################################################
+weldLength=100.
+v_nom = 1.67 #1.42
+t_on=1.
+t_dwell=4.
+t_rampUp=6.51
+t_rampDown=t_rampUp + ((weldLength-(0.5*(t_rampUp - t_dwell)*v_nom))/v_nom)
+t_dwell2=t_rampDown+0.01
+t_off=t_dwell2+0.01
+t_cool=np.round(t_off+1.)
+# The following appear in the case of 'USER'
+# ds/dt of torch
+dsdt_torch=np.array([[0.,0.],#Start
+            [t_on,v_nom],#beam on  0
+            [t_dwell,v_nom],#Dwell  0
+            [t_rampUp,v_nom],#Ramp up
+            [t_rampDown,v_nom],#Ramp down
+            [t_dwell2,0.],#Dwell2
+            [t_off,0.],#beam off
+            [t_cool,0.],])#cooling phase begins
+
+# Torch Path
+'''
+path_torch=np.array([[0.,0.,0.],#Start
+            [0.5,0.5,0.],#beam on
+            [1.,0.,0.],#Dwell
+            [0.5,-1.,0],#Ramp up
+            [0.,0.,0],])#cooling phase begins
+'''
+# Define a circular path on a plate
+circSegs=360
+path_torch=np.zeros([circSegs,3])
+pathNormals_torch=np.zeros([circSegs,3])
+
+# path_torch		= TAU (TORCH DIRECTION)
+# pathNormals_torch	= N (TORCH VERTICAL)
+# normals_torch		= TAU X N (LATERAL DIRECTION)
+
+circ_rad=weldLength/2./np.pi
+for i in range(0,(circSegs)):
+    theta = (i/(circSegs))*2*np.pi
+    path_torch[i,0] = circ_rad*np.sin(theta) 
+    path_torch[i,1] = 40.
+    path_torch[i,2] = circ_rad*np.cos(theta)
+    
+    pathNormals_torch[i,0]=0.
+    pathNormals_torch[i,1]=1.
+    pathNormals_torch[i,2]=0
+    #Circle in X-Z with normal in OY.
+
+norm_0=np.array([[0.,-10.,0.]])
+dir_0=np.array([[1.,0.,0.]])
+
+# Compute direction (tangent) vector from path data
+
+direction_torch=getDirection(path_torch,dir_0)
+normals_torch = getTangentNormals(direction_torch,pathNormals_torch)
+
+# Compute dS from path data
+dS_torch=getDeltaS(path_torch)
+
+# Compute S from path data
+S_torch=getCumS(dS_torch)
+
+# Compute S from dsdt data
+S_dsdt_torch=getS_dsdt(dsdt_torch)
+S_t_torch=setTimesPath(S_torch,S_dsdt_torch)
+
+# Extract out global path/time history_d # <------ USED to set position of torch in global space
+rowz,colz = path_torch.shape
+path_time_torch = np.zeros((rowz,colz+1))
+for i in range(0,rowz):
+    for j in range(0,colz+1):
+        if j == 0:
+            path_time_torch[i][j] = S_t_torch[i][j]
+        else:
+            path_time_torch[i][j] = path_torch[i][j-1]
+print('path_time_torch',path_time_torch)
+# Extract out global tangent/time history # <------ USED to set direction of torch in global space
+rowz,colz = direction_torch.shape
+tangent_time_torch = np.zeros((rowz,colz+1))
+for i in range(0,rowz):
+    for j in range(0,colz+1):
+        if j == 0:
+            tangent_time_torch[i][j] = S_t_torch[i][j]
+        else:
+            tangent_time_torch[i][j] = direction_torch[i][j-1]
+
+# Extract out global normal/time history # <------ USED to set orientation of torch in global space
+rowz,colz = normals_torch.shape
+normals_time_torch = np.zeros((rowz,colz+1))
+for i in range(0,rowz):
+    for j in range(0,colz+1):
+        if j == 0:
+            normals_time_torch[i][j] = S_t_torch[i][j]
+        else:
+            normals_time_torch[i][j] = normals_torch[i][j-1]
+
+print('normals_time_torch',normals_time_torch)
+
+# Extract out global pathNormals/time history # <------ USED to set orientation of torch in global space
+rowz,colz = pathNormals_torch.shape
+pathNormals_time_torch = np.zeros((rowz,colz+1))
+for i in range(0,rowz):
+    for j in range(0,colz+1):
+        if j == 0:
+            pathNormals_time_torch[i][j] = S_t_torch[i][j]
+        else:
+            pathNormals_time_torch[i][j] = pathNormals_torch[i][j-1]
+
+print('pathNormals_time_torch',pathNormals_time_torch)
+
+# Initial position of Heat source
+HSX0=path_time_torch[0,1]
+HSY0=path_time_torch[0,2]
+HSZ0=path_time_torch[0,3]
+beam=0.   # Welding beam is set to off
+#print('initial opsition: ',HSX0,HSY0,HSZ0)
+#s=input('Pause here')
+
+##
+####### Heat source definition
+##
+INCLUDE(UNITE=52)
+
+
+# ## Load and intialise Heat source types
+INCLUDE(UNITE=53)
+
+##################### Run simulation
+
+# t=[]
+# for i in range(0,int(t_cool+1)):
+    # t.append(i)
+    
+# INTRODUCED TO REFINE THE COMPUTATION------
+def no_steps(t_0,t_n,dn):
+    t_s=(t_0)
+    t_e=np.ceil(t_n)
+    steps=int((t_e-t_s)/dn)
+    listOut=np.linspace(t_s,t_e,steps).tolist()
+    return listOut
+
+t=[]
+it_me=no_steps(0.,t_off,1.)
+for i in it_me:
+    t.append(i)
+'''
+print('time steps: ',t)
+print('Path_tim:\n',getBCS(t,path_time_torch))
+print('Tangent_time:\n',getBCS(t,tangent_time_torch))
+print('Normal_time:\n',getBCS(t,normals_time_torch))
+
+
+print('Interpolating outside of time base, S_t_torch:')
+print(S_t_torch)
+print('t=',t)
+print(getBCS(t,S_t_torch))
+s=input('Pause here')
+'''
+X_t = getBCS(t,path_time_torch)
+tau_t = getBCS(t,tangent_time_torch)
+n_t = getBCS(t,pathNormals_time_torch)
+txn_t = getBCS(t,normals_time_torch)
+
+# path_torch		= TAU (TORCH DIRECTION)
+# pathNormals_torch	= N (TORCH VERTICAL)
+# normals_torch		= TAU X N (LATERAL DIRECTION)
+HS0_loc=transform2Local(X_t[0,1],X_t[0,2],X_t[0,3],[tau_t[0,1],tau_t[0,2],tau_t[0,3]],[n_t[0,1],n_t[0,2],n_t[0,3]],[txn_t[0,1],txn_t[0,2],txn_t[0,3]])
+print('you see')
+print(HS0_loc[0],len(HS0_loc[0]),type(HS0_loc[0]))
+
+
+FONC=[None]*len(t)
+QSO=[None]*len(t)
+CHS=[None]*len(t)
+for i in range(0,len(t)):
+    if t[i]<t_on:
+        beam=0.
+    else:
+        if t[i] >= t_off:
+            beam=0.
+        else:
+            if t[i] < t_dwell:
+                beam = (t[i]-t_on)/(t_dwell-t_on)
+            else:
+                beam=1.         
+    # velocity profile
+    if t[i] < t_dwell:
+        vz=0.
+    else:
+        if t[i] < t_rampUp:
+            vz = v_nom*(t[i]-t_dwell)/(t_rampUp-t_dwell)
+        else:
+            if t[i] < t_rampDown:
+                vz = v_nom
+            else:
+                if t[i] < t_dwell2:
+                    vz = (t[i]-t_rampDown)/(t_dwell2-t_rampDown)
+                else:
+                    vz =0.
+
+    # Calculate dt
+    if i > 0:
+        dt = t[i] - t[i-1]
+    else:
+        dt = 0.1
+
+
+    # Update HSX, HSY, HSZ
+    # Transform into HS_tau, HS_pathNormals, HS_normals
+    V_mat=np.array([[tau_t[i,1],n_t[i,1],txn_t[i,1]],[tau_t[i,2],n_t[i,2],txn_t[i,2]],[tau_t[i,3],n_t[i,3],txn_t[i,3]]])
+    V_inv=np.linalg.inv(V_mat)
+    U_mat = np.array([[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]])
+    C_mat = np.matmul(U_mat,V_inv)
+    a_vect = np.array([[X_t[i,1],X_t[i,2],X_t[i,3]]])
+    b_vect = np.matmul(a_vect,C_mat)
+
+    # Comput Q => beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ)) EXCEPT USE LOCAL COORDINATES
+    HSX=transform2Local(X_t[i,1],X_t[i,2],X_t[i,3],[tau_t[i,1],tau_t[i,2],tau_t[i,3]],[n_t[i,1],n_t[i,2],n_t[i,3]],[txn_t[i,1],txn_t[i,2],txn_t[i,3]])[0][0] # <-- B1 NOT HSX
+    HSY=transform2Local(X_t[i,1],X_t[i,2],X_t[i,3],[tau_t[i,1],tau_t[i,2],tau_t[i,3]],[n_t[i,1],n_t[i,2],n_t[i,3]],[txn_t[i,1],txn_t[i,2],txn_t[i,3]])[0][1] # <-- B2 NOT HSY
+    HSZ=transform2Local(X_t[i,1],X_t[i,2],X_t[i,3],[tau_t[i,1],tau_t[i,2],tau_t[i,3]],[n_t[i,1],n_t[i,2],n_t[i,3]],[txn_t[i,1],txn_t[i,2],txn_t[i,3]])[0][2] # <-- B3 NOT HSZ
+    V_vectors=[[tau_t[i,1],tau_t[i,2],tau_t[i,3]],[n_t[i,1],n_t[i,2],n_t[i,3]],[txn_t[i,1],txn_t[i,2],txn_t[i,3]]]
+    
+    #FONC[i]=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(transform2Localtau(X,Y,Z,U_vectors[0],U_vectors[1],U_vectors[2]),transform2Localpnorm(X,Y,Z,U_vectors[0],U_vectors[1],U_vectors[2]),transform2Localn(X,Y,Z,U_vectors[0],U_vectors[1],U_vectors[2]),heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam, U_vectors=U_vectors, transform2Localn=transform2Localn, transform2Localpnorm=transform2Localpnorm, transform2Localtau=transform2Localtau)
+    #FONC[i]=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ),U_vectors)', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam, U_vectors=U_vectors, transform2Localtau=transform2Localtau, transform2Localpnorm=transform2Localpnorm, transform2Localn=transform2Localn)
+    FONC[i]=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ),V_vectors)', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam, V_vectors=V_vectors, transform2Local=transform2Local)
+    QSO[i] = CREA_CHAMP (TYPE_CHAM = 'NOEU_SOUR_F',
+                   OPERATION = 'AFFE',
+                   MAILLAGE=M,
+                   #OPTION='SOUR_ELGA',
+                   AFFE=_F(TOUT='OUI',
+                           NOM_CMP='SOUR',
+                           VALE_F=FONC[i]),);
+
+    #s=input('gemmas hand')
+    CHS[i]=AFFE_CHAR_THER_F(MODELE=MOTH,
+                      SOURCE=_F(TOUT='OUI',SOUR=FONC[i],),);
+
+s=input('Pause here')
+
+
+##
+####### Thermal Analysis - Initial Reference state
+##
+THNONLI2=THER_NON_LINE(MODELE=MOTH,
+                       CHAM_MATER=IMATE,
+                       EXCIT=(_F(CHARGE=CHAR_REF,),),);
+
+
+CHAR_W=AFFE_CHAR_THER_F(MODELE=MOTH,
+			 FLUX_REP=_F(GROUP_MA='Group_base',FLUN=F_SYM,),
+                         ECHANGE=(_F(GROUP_MA=('Group_convection','Group_radiation',),COEF_H=HECHA,TEMP_EXT=TIMPO_W,),),
+                         RAYONNEMENT=_F(GROUP_MA=('Group_radiation',),SIGMA=SIG,EPSILON=EPS,TEMP_EXT=TIMPO_W,),
+                         TEMP_IMPO=_F(GROUP_MA=('Group_base',),TEMP=TIMPP,),
+                         );
+
+##
+####### Thermal Analysis - Welding Process
+##
+LIST1T=DEFI_LIST_REEL(VALE=(t))
+
+LIST1DT=DEFI_LIST_INST(DEFI_LIST=_F(LIST_INST=LIST1T),
+                      ECHEC=_F(ACTION='DECOUPE',
+                               SUBD_METHODE='MANUEL',
+                               SUBD_PAS=5,
+                               SUBD_NIVEAU=5,),)
+
+try:
+    #for i in range(0,20):
+    for i in range(0,len(t)-1):
+         THNONLI2=THER_NON_LINE(reuse=THNONLI2,
+                       MODELE=MOTH,
+                       CHAM_MATER=IMATE,
+                       EXCIT=(_F(CHARGE=CHS[i],),_F(CHARGE=CHAR_W,),),
+                       INCREMENT=_F(LIST_INST=LIST1DT,NUME_INST_FIN=i+1,PRECISION=1.E-10,),
+                       ETAT_INIT=_F(EVOL_THER=THNONLI2,PRECISION=1.E-10),
+                       NEWTON=_F(ITER_LINE_MAXI=3,REAC_ITER=5,),
+                       PARM_THETA=1,
+                       CONVERGENCE=_F(RESI_GLOB_RELA=0.01,ITER_GLOB_MAXI=100,),
+                       ARCHIVAGE=_F(PRECISION=1.E-10,CRITERE='RELATIF',),
+                       SOLVEUR=_F(RENUM='METIS',
+                                  STOP_SINGULIER='OUI',
+                                  ELIM_LAGR='NON',
+                                  NPREC=8,
+                                  METHODE='MULT_FRONT',),
+                       );
+except:
+	print('simulation failed')
+
+IMPR_RESU(FORMAT='MED',VERSION_MED='4.0.0',UNITE=81,RESU=_F(RESULTAT=THNONLI2))
+
+FIN()

@@ -19,10 +19,8 @@ if heatSourceType == 'GOLDAK':
     # Load GOLDAK python functions
     INCLUDE(UNITE=67)   
     
-    #FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)        
-    #FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)        
     FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)        
-    FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)        
+    #FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qfr=calc_qfr, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)        
 
 if heatSourceType == 'ELLIPSOID':
     ra = gui_ellipsoid_ra # 4. #.2   #### Z direction of travel
@@ -34,7 +32,7 @@ if heatSourceType == 'ELLIPSOID':
     INCLUDE(UNITE=68)   
     
     FONC0=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX0, HSY=HSY0, HSZ=HSZ0, beam=beam)       
-    FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)           
+    #FONC=FORMULE(NOM_PARA=['X','Y','Z'], VALE='beam*run_q_calc(X,Y,Z,heat_source_loc(HSX,HSY,HSZ))', heat_source_loc=heat_source_loc, calc_qff=calc_qff, run_q_calc=run_q_calc, HSX=HSX, HSY=HSY, HSZ=HSZ, beam=beam)           
         
 
 
@@ -46,13 +44,6 @@ CHTEMP0=CREA_CHAMP(OPERATION='AFFE',
                            NOM_CMP='TEMP',
                            VALE_F=FONC0),)
 
-
-QSO = CREA_CHAMP (TYPE_CHAM = 'NOEU_SOUR_F',
-                  OPERATION = 'AFFE',
-                  MAILLAGE=M,
-                  AFFE=_F(TOUT='OUI',
-                          NOM_CMP='SOUR',
-                          VALE_F=FONC),);
 
 
 

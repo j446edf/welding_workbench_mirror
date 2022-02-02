@@ -2,15 +2,25 @@
 
 #[t,x,y,z]
 import numpy as np
-torch_velocity=1.
+
 
 
 def getBCS(xi,tableData):
     '''
     Takes a table of data, tableData, and returns the interpolated values, yi, for given ordinate values, xi
     '''
-    yi = np.interp(xi,tableData[:,0],tableData[:,1])
-    return yi
+    
+    rowz,colz = tableData.shape
+    rowzi = len(xi)
+    tabVars = np.zeros([rowzi,colz])
+    for i in range(1,colz):
+        yi = np.interp(xi,tableData[:,0],tableData[:,i])
+        #print(yi)
+        tabVars[:,i] = yi
+        
+    #yi = np.interp(xi,tableData[:,0],tableData[:,1])
+    #return yi
+    return tabVars
 
 def getDisplacement(vel_torch,HS0):
 	'''
@@ -99,23 +109,31 @@ def setTimesPath(S_torch,S_dsdt_torch):
 #############################
 # Confirmed Functions
 #############################
-def getDirection(path_torch):
+def getDirection(path_torch,dir_0):
 	'''
 	Calculates the tangential directions from the input path
 	'''
 	rowz,colz = path_torch.shape
 	direction_torch = np.zeros((rowz,colz))
 	for i in range(0,rowz):
-		if i == (rowz-1):
-			direction_torch[i] = direction_torch[i-1]
+		if i == 0:
+			direction_torch[i] = dir_0
 		else:
-			direction_torch[i] = path_torch[i+1] - path_torch[i]
+			if i == (rowz-1):
+				direction_torch[i] = direction_torch[i-1]
+			else:
+				direction_torch[i] = path_torch[i] - path_torch[i-1]
+#		if i == (rowz-1):
+#			direction_torch[i] = direction_torch[i-1]
+#		else:
+#			direction_torch[i] = path_torch[i+1] - path_torch[i]
 	return direction_torch
 
 
 def getNormals(direction_torch,norm_0):
 	'''
-	Calculates the normal directions from the tangent and norm0
+	Calculates the normal directions from the tangent and norm0.
+	Normal to path of weld torch AND normal to Direction of weld torch
 	'''
 	rowz,colz = direction_torch.shape
 	normals_torch = np.zeros((rowz,colz))
@@ -127,6 +145,36 @@ def getNormals(direction_torch,norm_0):
 				normals_torch[i] = normals_torch[i-1]
 			else:
 				normals_torch[i] = np.cross(direction_torch[i],direction_torch[i-1])
+	return normals_torch
+	
+def getPathNormals(direction_torch,normals_torch):
+	'''
+	Calculates the normal directions from the tangent and norm0.
+	Normal to path of weld torch BUT parallel to Direction of weld torch
+	Inverse gradient of directions, i.e. direction m from y = mx +c then normal = 1/m
+	'''
+	rowz,colz = direction_torch.shape
+	pathNormals_torch = np.zeros((rowz,colz))
+	for i in range(0,rowz):
+		#print(np.array(direction_torch[i]))
+		#print(np.array(normals_torch[i]))
+		#print(np.cross(np.array(normals_torch[i]),np.array(direction_torch[i])))
+		pathNormals_torch[i] = np.cross(direction_torch[i],normals_torch[i])
+	return pathNormals_torch
+	
+def getTangentNormals(direction_torch,pathNormals_torch):
+	'''
+	Calculates the normal directions from the tangent and norm0.
+	Normal to path of weld torch BUT parallel to Direction of weld torch
+	Inverse gradient of directions, i.e. direction m from y = mx +c then normal = 1/m
+	'''
+	rowz,colz = direction_torch.shape
+	normals_torch = np.zeros((rowz,colz))
+	for i in range(0,rowz):
+		#print(np.array(direction_torch[i]))
+		#print(np.array(normals_torch[i]))
+		#print(np.cross(np.array(normals_torch[i]),np.array(direction_torch[i])))
+		normals_torch[i] = np.cross(direction_torch[i],pathNormals_torch[i])
 	return normals_torch
 #############################
 weldLength=100.
@@ -170,44 +218,73 @@ dsdt_torch=np.array([[0.,0.],#Start
 			[t_cool,0.],])#cooling phase begins
 
 # Torch Path
+'''
 path_torch=np.array([[0.,0.,0.],#Start
 			[0.5,0.5,0.],#beam on
 			[1.,0.,0.],#Dwell
 			[0.5,-1.,0],#Ramp up
 			[0.,0.,0],])#cooling phase begins
-			
-norm_0=np.array([[0.,0.,1.]])
+'''
+# Define a circular path on a plate
+circSegs=20
+path_torch=np.zeros([circSegs,3])
+pathNormals_torch=np.zeros([circSegs,3])
+circ_rad=weldLength/2./np.pi
+for i in range(0,(circSegs)):
+	theta = (i/(circSegs))*2*np.pi
+	path_torch[i,0] = circ_rad*np.sin(theta) + circ_rad
+	path_torch[i,1] = circ_rad*np.cos(theta)
+	path_torch[i,2] = 0.
+	pathNormals_torch[i,0]=0.
+	pathNormals_torch[i,1]=0.
+	pathNormals_torch[i,2]=1.
+
+norm_0=np.array([[0.,-10.,0.]])
+dir_0=np.array([[1.,0.,0.]])
+
+# Define weld Top directions for a circular path on a plate
+
+
 ######################################################
 
 # Compute direction (tangent) vector from path data
 
 	
-direction_torch=getDirection(path_torch)
+direction_torch=getDirection(path_torch,dir_0)
 
 print('path_torch',path_torch)
 print('direction_torch',direction_torch)
 
-# Compute nomal vector from path tangent vector and norm0
-normals_torch = getNormals(direction_torch,norm_0)
+normals_torch = getTangentNormals(direction_torch,pathNormals_torch)
 print('normals_torch',normals_torch)
+'''
+# Compute nomal vector to the plane of the weld torch path (normal to tangent vector)
+normals_torch = getNormals(direction_torch,norm_0)
 
+#print('normals_torch',normals_torch)
 
+# Compute nomal vector from path but parallel to tangent vector 
+pathNormals_torch = getPathNormals(direction_torch,normals_torch)
+'''
+print('pathNormals_torch',pathNormals_torch)
 
 # Compute dS from path data
 dS_torch=getDeltaS(path_torch)
-
+print('dS_torch',dS_torch)
+s=input('pause me here...')
 # Compute S from path data
 S_torch=getCumS(dS_torch)
-
+print('S_torch',S_torch)
+s=input('pause me here...')
 # Compute S from dsdt data
 S_dsdt_torch=getS_dsdt(dsdt_torch)
 print('S_dsdt_torch',S_dsdt_torch)
 print('vel_torch',vel_torch)
-
+s=input('pause me here...')
 # Extract times at which path is satisfied by velocity profile
 S_t_torch=setTimesPath(S_torch,S_dsdt_torch)
 print('S_t_torch',S_t_torch)
-
+s=input('pause me here...')
 # Extract out global path/time history_d # <------ USED to set position of torch in global space
 rowz,colz = path_torch.shape
 path_time_torch = np.zeros((rowz,colz+1))
@@ -245,6 +322,21 @@ print('normals_time_torch',normals_time_torch)
 ######
 # DATA can be used in a simulation
 
+t=[]
+for i in range(0,10):
+	t.append(i)
+	
+print('time steps: ',t)
+print('Path_tim:\n',getBCS(t,path_time_torch))
+print('Tangent_time:\n',getBCS(t,tangent_time_torch))
+print('Normal_time:\n',getBCS(t,normals_time_torch))
+
+
+print('Interpolating outside of time base, S_t_torch:')
+print(S_t_torch)
+print('t=',t)
+print(getBCS(t,S_t_torch))
+'''
 # Loop through instances
 # At each instance, obtain the current position as well as the tangent and normal directions 
 convert [HSX,HSY,HSZ] => [HStau, HSn, HStauxn] # <-heat source position in weld torch coordinates
@@ -259,3 +351,4 @@ if p(tau) - HStau >= 0:
 else:
 	Qfr
 # ---> Compute q from this information
+'''

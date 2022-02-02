@@ -1,3 +1,5 @@
+#import numpy as np
+
 # INPUT 1) thermal conductivity for parent material
 parent_lsa_from_GUI=[20,	39.5,
 					100,	41.3,
@@ -120,13 +122,24 @@ gui_f_sym = 0.
 ### GUI INPUTS FOR Torch path type
 ###############################
 
-gui_torch_path = 'LINEAR' # OR 'CIRCULAR' OR 'USER'
+gui_torch_path = 'USER' # 'LINEAR' OR 'CIRCULAR' OR 'USER'
 
-# The following appear in the case of 'LINEAR'
-gui_torch_lin_vnom = 1.17
-gui_torch_x0 = 0.
-gui_torch_y0 = 30.
-gui_torch_z0 = 0.
+
+if gui_torch_path == 'LINEAR' :
+    # The following appear in the case of 'LINEAR'
+    gui_torch_lin_vnom = 1.17
+    gui_torch_x0 = 0.
+    gui_torch_y0 = 30.
+    gui_torch_z0 = 0.
+
+if gui_torch_path == 'USER' :
+    # The following appear in the case of 'LINEAR'
+    gui_torch_lin_vnom = 1.17
+    gui_torch_x0 = 0.
+    gui_torch_y0 = 30.
+    gui_torch_z0 = 0.
+
+
 
 ###############################
 ### GUI INPUTS FOR Process params
@@ -142,10 +155,10 @@ gui_weld_V = 12.5
 #User can only choose Goldak/Ellipsoid
 
 gui_heat_source_type = 'GOLDAK'
-gui_goldak_a = 2.
-gui_goldak_b = 2.
-gui_goldak_cr = 1.3*2. #1.3*a
-gui_goldak_cf = 0.8*2. #0.8*a
+gui_goldak_a = 10.
+gui_goldak_b = 10.
+gui_goldak_cr = 1.3*10. #1.3*a
+gui_goldak_cf = 0.8*10. #0.8*a
 
 # gui_heat_source_type = 'ELLIPSOID'
 # gui_ellipsoid_ra = 3.8

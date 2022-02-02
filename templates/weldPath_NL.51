@@ -1,0 +1,30 @@
+
+##
+####### Weld torch path type
+##
+if gui_torch_path == 'LINEAR':
+    v_nom = gui_torch_lin_vnom
+    VITESS=CREA_CHAMP(TYPE_CHAM='NOEU_DEPL_R',
+                  OPERATION='AFFE',
+                  MAILLAGE=M,
+                  AFFE=_F(TOUT='OUI',
+                          NOM_CMP=('DX','DY','DZ'),
+                          VALE=(0.,0.,v_nom),),);
+# Initial position of Heat source
+    HSX0=gui_torch_x0
+    HSY0=gui_torch_y0
+    HSZ0=gui_torch_z0
+    beam=1.   # Welding beam is set to off
+
+    HSX = HSX0 
+    HSY = HSY0 
+    HSZ = HSZ0 
+
+
+# If circular
+if gui_torch_path == 'CIRCULAR':
+	print("Need to implement a solution")
+
+# If user defined
+if gui_torch_path == 'USER':
+	print("Need to implement a solution")
