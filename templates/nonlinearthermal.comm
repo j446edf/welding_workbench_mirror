@@ -52,25 +52,25 @@ INCLUDE(UNITE=49)
 
 
 ######################################################
-weldLength=100.
-v_nom = 1.67 #1.42
-t_on=1.
-t_dwell=4.
-t_rampUp=6.51
-t_rampDown=t_rampUp + ((weldLength-(0.5*(t_rampUp - t_dwell)*v_nom))/v_nom)
-t_dwell2=t_rampDown+0.01
-t_off=t_dwell2+0.01
-t_cool=np.round(t_off+1.)
+# weldLength=100.
+# v_nom = 1.67 #1.42
+# t_on=1.
+# t_dwell=4.
+# t_rampUp=6.51
+# t_rampDown=t_rampUp + ((weldLength-(0.5*(t_rampUp - t_dwell)*v_nom))/v_nom)
+# t_dwell2=t_rampDown+0.01
+# t_off=t_dwell2+0.01
+# t_cool=np.round(t_off+1.)
 # The following appear in the case of 'USER'
-# ds/dt of torch
-dsdt_torch=np.array([[0.,0.],#Start
-            [t_on,v_nom],#beam on  0
-            [t_dwell,v_nom],#Dwell  0
-            [t_rampUp,v_nom],#Ramp up
-            [t_rampDown,v_nom],#Ramp down
-            [t_dwell2,0.],#Dwell2
-            [t_off,0.],#beam off
-            [t_cool,0.],])#cooling phase begins
+# # ds/dt of torch
+# dsdt_torch=np.array([[0.,0.],#Start
+            # [t_on,v_nom],#beam on  0
+            # [t_dwell,v_nom],#Dwell  0
+            # [t_rampUp,v_nom],#Ramp up
+            # [t_rampDown,v_nom],#Ramp down
+            # [t_dwell2,0.],#Dwell2
+            # [t_off,0.],#beam off
+            # [t_cool,0.],])#cooling phase begins
 
 # Torch Path
 '''
@@ -79,6 +79,8 @@ path_torch=np.array([[0.,0.,0.],#Start
             [1.,0.,0.],#Dwell
             [0.5,-1.,0],#Ramp up
             [0.,0.,0],])#cooling phase begins
+'''
+
 '''
 # Define a circular path on a plate
 circSegs=360
@@ -100,9 +102,12 @@ for i in range(0,(circSegs)):
     pathNormals_torch[i,1]=1.
     pathNormals_torch[i,2]=0
     #Circle in X-Z with normal in OY.
-
-norm_0=np.array([[0.,-10.,0.]])
-dir_0=np.array([[1.,0.,0.]])
+'''
+# Data from GUI
+dsdt_torch=np.array(gui_torch_dsdt)
+path_torch=np.array(gui_torch_path_torch)
+pathNormals_torch=np.array(gui_torch_pathNormals_torch)
+dir_0=np.array(gui_torch_dir0)
 
 # Compute direction (tangent) vector from path data
 
@@ -193,6 +198,16 @@ def no_steps(t_0,t_n,dn):
     steps=int((t_e-t_s)/dn)
     listOut=np.linspace(t_s,t_e,steps).tolist()
     return listOut
+
+weldLength=100.
+v_nom = 1.67 #1.42
+t_on=1.
+t_dwell=4.
+t_rampUp=6.51
+t_rampDown=t_rampUp + ((weldLength-(0.5*(t_rampUp - t_dwell)*v_nom))/v_nom)
+t_dwell2=t_rampDown+0.01
+t_off=t_dwell2+0.01
+t_cool=np.round(t_off+1.)
 
 t=[]
 it_me=no_steps(0.,t_off,1.)
