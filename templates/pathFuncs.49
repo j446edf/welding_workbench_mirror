@@ -8,10 +8,12 @@ def getBCS(xi,tableData):
     rowz,colz = tableData.shape
     rowzi = len(xi)
     tabVars = np.zeros([rowzi,colz])
+    tabVars[:,0] = xi
     for i in range(1,colz):
         yi = np.interp(xi,tableData[:,0],tableData[:,i])
         #print(yi)
         tabVars[:,i] = yi
+
         
     #yi = np.interp(xi,tableData[:,0],tableData[:,1])
     #return yi

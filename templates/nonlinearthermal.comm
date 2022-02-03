@@ -108,6 +108,7 @@ dsdt_torch=np.array(gui_torch_dsdt)
 path_torch=np.array(gui_torch_path_torch)
 pathNormals_torch=np.array(gui_torch_pathNormals_torch)
 dir_0=np.array(gui_torch_dir0)
+beam_torch=np.array(gui_torch_beam)
 
 # Compute direction (tangent) vector from path data
 
@@ -167,7 +168,8 @@ for i in range(0,rowz):
             pathNormals_time_torch[i][j] = pathNormals_torch[i][j-1]
 
 print('pathNormals_time_torch',pathNormals_time_torch)
-
+        
+                    
 # Initial position of Heat source
 HSX0=path_time_torch[0,1]
 HSY0=path_time_torch[0,2]
@@ -209,6 +211,10 @@ t_dwell2=t_rampDown+0.01
 t_off=t_dwell2+0.01
 t_cool=np.round(t_off+1.)
 
+
+
+##### To come from GUI
+## Time steps for simulation
 t=[]
 it_me=no_steps(0.,t_off,1.)
 for i in it_me:
@@ -226,10 +232,13 @@ print('t=',t)
 print(getBCS(t,S_t_torch))
 s=input('Pause here')
 '''
+
+## Interpolate the torch conditions for the individual timesteps
 X_t = getBCS(t,path_time_torch)
 tau_t = getBCS(t,tangent_time_torch)
 n_t = getBCS(t,pathNormals_time_torch)
 txn_t = getBCS(t,normals_time_torch)
+beam_t = getBCS(t,beam_torch)
 
 # path_torch		= TAU (TORCH DIRECTION)
 # pathNormals_torch	= N (TORCH VERTICAL)
@@ -243,38 +252,39 @@ FONC=[None]*len(t)
 QSO=[None]*len(t)
 CHS=[None]*len(t)
 for i in range(0,len(t)):
-    if t[i]<t_on:
-        beam=0.
-    else:
-        if t[i] >= t_off:
-            beam=0.
-        else:
-            if t[i] < t_dwell:
-                beam = (t[i]-t_on)/(t_dwell-t_on)
-            else:
-                beam=1.         
-    # velocity profile
-    if t[i] < t_dwell:
-        vz=0.
-    else:
-        if t[i] < t_rampUp:
-            vz = v_nom*(t[i]-t_dwell)/(t_rampUp-t_dwell)
-        else:
-            if t[i] < t_rampDown:
-                vz = v_nom
-            else:
-                if t[i] < t_dwell2:
-                    vz = (t[i]-t_rampDown)/(t_dwell2-t_rampDown)
-                else:
-                    vz =0.
+    # if t[i]<t_on:
+        # beam=0.
+    # else:
+        # if t[i] >= t_off:
+            # beam=0.
+        # else:
+            # if t[i] < t_dwell:
+                # beam = (t[i]-t_on)/(t_dwell-t_on)
+            # else:
+                # beam=1.         
+    # # velocity profile
+    # if t[i] < t_dwell:
+        # vz=0.
+    # else:
+        # if t[i] < t_rampUp:
+            # vz = v_nom*(t[i]-t_dwell)/(t_rampUp-t_dwell)
+        # else:
+            # if t[i] < t_rampDown:
+                # vz = v_nom
+            # else:
+                # if t[i] < t_dwell2:
+                    # vz = (t[i]-t_rampDown)/(t_dwell2-t_rampDown)
+                # else:
+                    # vz =0.
 
-    # Calculate dt
-    if i > 0:
-        dt = t[i] - t[i-1]
-    else:
-        dt = 0.1
+    # # Calculate dt
+    # if i > 0:
+        # dt = t[i] - t[i-1]
+    # else:
+        # dt = 0.1
 
-
+    # Beam conditions:
+    beam = float(beam_t[i,1])
     # Update HSX, HSY, HSZ
     # Transform into HS_tau, HS_pathNormals, HS_normals
     V_mat=np.array([[tau_t[i,1],n_t[i,1],txn_t[i,1]],[tau_t[i,2],n_t[i,2],txn_t[i,2]],[tau_t[i,3],n_t[i,3],txn_t[i,3]]])
