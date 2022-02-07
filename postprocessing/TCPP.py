@@ -85,7 +85,7 @@ Hexa_3D=[]
 for i in range(0,len(TC_LOCS)):
 	TC_MESHES.append(smesh.Mesh(TC_CUBES[i]))
 	Regular_1D.append(TC_MESHES[i].Segment())
-	Number_of_Segments_1.append(Regular_1D[i].NumberOfSegments(1))
+	Number_of_Segments_1.append(Regular_1D[i].NumberOfSegments(2))
 	Quadrangle_2D.append(TC_MESHES[i].Quadrangle(algo=smeshBuilder.QUADRANGLE))
 	Hexa_3D.append(TC_MESHES[i].Hexahedron(algo=smeshBuilder.Hexa))
 	isDone = TC_MESHES[i].Compute()
@@ -94,6 +94,15 @@ for i in range(0,len(TC_LOCS)):
 	smesh.SetName(Quadrangle_2D[i].GetAlgorithm(), 'Quadrangle_2D_'+str(i))
 	smesh.SetName(Number_of_Segments_1[i], 'Number of Segments_1_'+str(i))
 	smesh.SetName(TC_MESHES[i].GetMesh(), 'Mesh_'+str(i))
+	
+	
+	aCriteria = []
+	aCriterion = smesh.GetCriterion(SMESH.NODE,SMESH.FT_BelongToGeom,SMESH.FT_Undefined,TC_VERTS[i])
+	aCriteria.append(aCriterion)
+	aFilter_1 = smesh.GetFilterFromCriteria(aCriteria)
+	aFilter_1.SetMesh(TC_MESHES[i].GetMesh())
+	Group_1 = TC_MESHES[i].GroupOnFilter( SMESH.NODE, 'Group_TC', aFilter_1 )
+
 
 for i in range(0,len(TC_LOCS)):
 	try:

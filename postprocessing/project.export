@@ -1,0 +1,41 @@
+P actions make_etude
+P aster_root /home/talha/salome_meca/V2019.0.3_universal/tools/Code_aster_frontend-20190
+P consbtc oui
+P corefilesize unlimited
+P cpresok RESNOOK
+P debug nodebug
+P display ubudualboot:1
+P facmtps 1
+P follow_output yes
+P lang en
+P mclient ubudualboot
+P memjob 8290304
+P memory_limit 8096.0
+P mode interactif
+P mpi_nbcpu 1
+P mpi_nbnoeud 1
+P nbmaxnook 5
+P noeud localhost
+P nomjob goldak3D
+P origine ASTK 2018.1.final
+P platform Linux64
+P profastk talha@ubudualboot:/home/talha/Desktop/copyhere/tekken/goldak3D.astk
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_exec asrun.plugins.server.SSHServer
+P proxy_dir /tmp
+P rep_trav /tmp/talha-ubudualboot-interactif_13078
+P serveur localhost
+P soumbtc oui
+P time_limit 13920.0
+P tpsjob 233
+P uclient talha
+P username talha
+P version v14.4_smeca
+A args -max_base 600000
+A memjeveux 1012.0
+A tpmax 13920.0
+F comm /home/mbgm6aab/Documents/weldingworkbench/postprocessing/project.comm D  1
+F libr /home/mbgm6aab/Documents/weldingworkbench/postprocessing/dynamic.inputs D  90
+R base /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base DC 0
+F mess /home/mbgm6aab/Documents/weldingworkbench/postprocessing/proj.mess R  6
