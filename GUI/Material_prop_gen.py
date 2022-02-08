@@ -270,49 +270,65 @@ class Ui_MainWindow(object):
 		rowCount4 = self.Table_W2.rowCount()
 		columnCount = 2
 		for i in range(rowCount1):
-			for j in range(columnCount):
-				Parent_cond.append(float(self.Table_P1.item(i,j).text()))
+			if self.Table_P1.item(i,0) and self.Table_P1.item(i,0).text():
+				if self.Table_P1.item(i,1) and self.Table_P1.item(i,1).text():
+					for j in range(columnCount):
+						Parent_cond.append(float(self.Table_P1.item(i,j).text()))
+				else:
+					print("Cell empty --> Next row")	
+			else:
+				print("Cell empty --> Next row")									
 				
 		for i in range(rowCount2):
-			for j in range(columnCount):
-				Parent_2.append(float(self.Table_P2.item(i,j).text()))
+			if self.Table_P2.item(i,0) and self.Table_P2.item(i,0).text():
+				if self.Table_P2.item(i,1) and self.Table_P2.item(i,1).text():
+					for j in range(columnCount):
+						Parent_2.append(float(self.Table_P2.item(i,j).text()))
+				else:
+					print("Cell empty --> Next row")	
+			else:
+				print("Cell empty --> Next row")	
 		
 		for i in range(rowCount3):
-			for j in range(columnCount):
-				Weld_cond.append(float(self.Table_W1.item(i,j).text()))
+			if self.Table_W1.item(i,0) and self.Table_W1.item(i,0).text():
+				if self.Table_W1.item(i,1) and self.Table_W1.item(i,1).text():
+					for j in range(columnCount):
+						Weld_cond.append(float(self.Table_W1.item(i,j).text()))
+				else:
+					print("Cell empty --> Next row")	
+			else:
+				print("Cell empty --> Next row")	
 		
 		for i in range(rowCount4):
-			for j in range(columnCount):
-				Weld_2.append(float(self.Table_W2.item(i,j).text()))
+			if self.Table_W2.item(i,0) and self.Table_W2.item(i,0).text():
+				if self.Table_W2.item(i,1) and self.Table_W2.item(i,1).text():
+					for j in range(columnCount):
+						Weld_2.append(float(self.Table_W2.item(i,j).text()))
+				else:
+					print("Cell empty --> Next row")	
+			else:
+				print("Cell empty --> Next row")
 				
 		Lines = []
-		Lines.append('parent_lsa_from_GUI=' + str(Parent_cond))
-		Lines.append('\n')
+		Lines.append('parent_lsa_from_GUI=' + str(Parent_cond) + '\n' + '\n')
 		if int(self.P2.currentIndex()) == 0:
-			Lines.append('user_choice_parent_def=1 #diffusivity')
-			Lines.append('parent_lrhocpsa_from_GUI=' + str(Parent_2))
-			Lines.append('\n')
-			Lines.append('\n')
+			Lines.append('user_choice_parent_def=1 #diffusivity' + '\n' + '\n')
+			Lines.append('parent_lrhocpsa_from_GUI=' + str(Parent_2) + '\n' + '\n' + '\n')
 		else:
-			Lines.append('user_choice_parent_def=2 #enthalpy')
-			Lines.append('parent_enthalpy_from_GUI=' + str(Parent_2))
-			Lines.append('\n')
-			Lines.append('\n')
+			Lines.append('user_choice_parent_def=2 #enthalpy' + '\n' + '\n')
+			Lines.append('parent_enthalpy_from_GUI=' + str(Parent_2) + '\n' + '\n' + '\n')
 			
-		Lines.append('weld_lsa_from_GUI= ' + str(Weld_cond))
-		Lines.append('\n')
+		Lines.append('weld_lsa_from_GUI= ' + str(Weld_cond) + '\n' + '\n')
 		if int(self.W2.currentIndex()) == 0:
-			Lines.append('user_choice_weld_def=1 #diffusivity')
-			Lines.append('weld_rhocpsa_from_GUI=' + str(Weld_2))
-			Lines.append('\n')
+			Lines.append('user_choice_weld_def=1 #diffusivity' + '\n' + '\n')
+			Lines.append('weld_rhocpsa_from_GUI=' + str(Weld_2) + '\n' + '\n' + '\n')
 		else:
-			Lines.append('user_choice_weld_def=2 #enthalpy')
-			Lines.append('weld_enthalpy_from_GUI=' + str(Weld_2))
-			Lines.append('\n')
+			Lines.append('user_choice_weld_def=2 #enthalpy' + '\n' + '\n')
+			Lines.append('weld_enthalpy_from_GUI=' + str(Weld_2) + '\n' + '\n' + '\n')
 		
 		with open('outputs.txt', 'w') as f:
-			#f.writelines(Lines)
-			f.write('\n'.join(Lines))
+			f.writelines(Lines)
+
 		
 
 	def retranslateUi(self, MainWindow):
