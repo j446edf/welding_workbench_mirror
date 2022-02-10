@@ -2,3 +2,5 @@ simulation/tmp/
 GUI/__pycache__/
 simulation/user.config
 user.config
+postprocessing/*.resu
+postprocessing/*.csv
