@@ -35,7 +35,7 @@ class ModuleWeldPathMainWindow:
 
 	def removeRow1(self):
 		if self.ui.v_t_table.rowCount() > 0:
-			self.ui.v_t_table.removeRow(self.v_t_table.rowCount()-1)
+			self.ui.v_t_table.removeRow(self.ui.v_t_table.rowCount()-1)
 			
 	def addRow2(self):
 		rowCount2 = self.ui.path_table.rowCount()
@@ -43,7 +43,7 @@ class ModuleWeldPathMainWindow:
 
 	def removeRow2(self):
 		if self.ui.path_table.rowCount() > 0:
-			self.ui.path_table.removeRow(self.path_table.rowCount()-1)
+			self.ui.path_table.removeRow(self.ui.path_table.rowCount()-1)
 			
 	def ok(self):
 		Lines = []
