@@ -1,16 +1,26 @@
+"""
+author: EDF Energy R&D UKC
+"""
 import sys
 import os
 import subprocess
+import inspect
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
 from PyQt5.QtWidgets import QMainWindow
-import inspect
 
-class Ui_moduleHeatSource(object):
-    def setupUi(self, moduleHeatSource):
-        moduleHeatSource.setObjectName("moduleHeatSource")
-        moduleHeatSource.resize(494, 417)
-        self.centralwidget = QtWidgets.QWidget(moduleHeatSource)
+class UiModuleHeatSource(object):
+    """
+    heat source gui module
+    """
+
+    def setupUi(self, module_heat_source):
+        """
+        setup GUI
+        """
+        module_heat_source.setObjectName("module_heat_source")
+        module_heat_source.resize(494, 417)
+        self.centralwidget = QtWidgets.QWidget(module_heat_source)
         self.centralwidget.setObjectName("centralwidget")
         self.type = QtWidgets.QComboBox(self.centralwidget)
         self.type.setGeometry(QtCore.QRect(180, 20, 121, 26))
@@ -23,15 +33,15 @@ class Ui_moduleHeatSource(object):
         self.button_ok = QtWidgets.QPushButton(self.centralwidget)
         self.button_ok.setGeometry(QtCore.QRect(380, 330, 95, 26))
         self.button_ok.setObjectName("button_ok")
-        self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
-        self.stackedWidget.setGeometry(QtCore.QRect(30, 70, 441, 241))
-        self.stackedWidget.setObjectName("stackedWidget")
+        self.stacked_widget = QtWidgets.QStackedWidget(self.centralwidget)
+        self.stacked_widget.setGeometry(QtCore.QRect(30, 70, 441, 241))
+        self.stacked_widget.setObjectName("stacked_widget")
         self.home = QtWidgets.QWidget()
         self.home.setObjectName("home")
         self.label = QtWidgets.QLabel(self.home)
         self.label.setGeometry(QtCore.QRect(20, 50, 321, 141))
         self.label.setObjectName("label")
-        self.stackedWidget.addWidget(self.home)
+        self.stacked_widget.addWidget(self.home)
         self.goldak = QtWidgets.QWidget()
         self.goldak.setObjectName("goldak")
         self.goldak_a = QtWidgets.QTextEdit(self.goldak)
@@ -70,7 +80,7 @@ class Ui_moduleHeatSource(object):
         self.z_direction_1 = QtWidgets.QLabel(self.goldak)
         self.z_direction_1.setGeometry(QtCore.QRect(190, 210, 201, 18))
         self.z_direction_1.setObjectName("z_direction_1")
-        self.stackedWidget.addWidget(self.goldak)
+        self.stacked_widget.addWidget(self.goldak)
         self.ellipsoid = QtWidgets.QWidget()
         self.ellipsoid.setObjectName("ellipsoid")
         self.ellipsoid_a = QtWidgets.QTextEdit(self.ellipsoid)
@@ -103,47 +113,50 @@ class Ui_moduleHeatSource(object):
         self.z_direction_2 = QtWidgets.QLabel(self.ellipsoid)
         self.z_direction_2.setGeometry(QtCore.QRect(190, 210, 201, 18))
         self.z_direction_2.setObjectName("z_direction_2")
-        self.stackedWidget.addWidget(self.ellipsoid)
-        moduleHeatSource.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(moduleHeatSource)
+        self.stacked_widget.addWidget(self.ellipsoid)
+        module_heat_source.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(module_heat_source)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 494, 23))
         self.menubar.setObjectName("menubar")
-        moduleHeatSource.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(moduleHeatSource)
+        module_heat_source.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(module_heat_source)
         self.statusbar.setObjectName("statusbar")
-        moduleHeatSource.setStatusBar(self.statusbar)
+        module_heat_source.setStatusBar(self.statusbar)
 
-        self.retranslateUi(moduleHeatSource)
-        self.stackedWidget.setCurrentIndex(1)
-        QtCore.QMetaObject.connectSlotsByName(moduleHeatSource)
+        self.retranslateUi(module_heat_source)
+        self.stacked_widget.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(module_heat_source)
 
-    def retranslateUi(self, moduleHeatSource):
+    def retranslateUi(self, module_heat_source):
+        """
+        positioning
+        """
         _translate = QtCore.QCoreApplication.translate
-        moduleHeatSource.setWindowTitle(_translate("moduleHeatSource", "moduleHeatSource"))
-        self.type.setItemText(0, _translate("moduleHeatSource", "Goldak"))
-        self.type.setItemText(1, _translate("moduleHeatSource", "Ellipsoid"))
-        self.type_label.setText(_translate("moduleHeatSource", "Heat Source Type:"))
-        self.z_direction_1.setText(_translate("moduleHeatSource", "Welding direction - txn axis"))
-        self.z_direction_2.setText(_translate("moduleHeatSource", "Welding direction - txn axis"))
-        self.button_ok.setText(_translate("moduleHeatSource", "Ok"))
-        self.label.setText(_translate("moduleHeatSource", "Please select a heat source type..."))
-        self.goldak_cr_label.setText(_translate("moduleHeatSource", "cr"))
-        self.goldak_b_label.setText(_translate("moduleHeatSource", "b"))
-        self.goldak_measurement.setText(_translate("moduleHeatSource", "Length (mm):"))
-        self.goldak_a_label.setText(_translate("moduleHeatSource", "a"))
-        self.goldak_cf_label.setText(_translate("moduleHeatSource", "cf"))
-        self.ellipsoid_c_label.setText(_translate("moduleHeatSource", "c"))
-        self.ellipsoid_measurement.setText(_translate("moduleHeatSource", "Radius (mm):"))
-        self.ellipsoid_a_label.setText(_translate("moduleHeatSource", "a"))
-        self.ellipsoid_b_label.setText(_translate("moduleHeatSource", "b"))
+        module_heat_source.setWindowTitle(_translate("module_heat_source", "module_heat_source"))
+        self.type.setItemText(0, _translate("module_heat_source", "Goldak"))
+        self.type.setItemText(1, _translate("module_heat_source", "Ellipsoid"))
+        self.type_label.setText(_translate("module_heat_source", "Heat Source Type:"))
+        self.z_direction_1.setText(_translate("module_heat_source", "Welding direction - txn axis"))
+        self.z_direction_2.setText(_translate("module_heat_source", "Welding direction - txn axis"))
+        self.button_ok.setText(_translate("module_heat_source", "Ok"))
+        self.label.setText(_translate("module_heat_source", "Please select a heat source type..."))
+        self.goldak_cr_label.setText(_translate("module_heat_source", "cr"))
+        self.goldak_b_label.setText(_translate("module_heat_source", "b"))
+        self.goldak_measurement.setText(_translate("module_heat_source", "Length (mm):"))
+        self.goldak_a_label.setText(_translate("module_heat_source", "a"))
+        self.goldak_cf_label.setText(_translate("module_heat_source", "cf"))
+        self.ellipsoid_c_label.setText(_translate("module_heat_source", "c"))
+        self.ellipsoid_measurement.setText(_translate("module_heat_source", "Radius (mm):"))
+        self.ellipsoid_a_label.setText(_translate("module_heat_source", "a"))
+        self.ellipsoid_b_label.setText(_translate("module_heat_source", "b"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    moduleHeatSource = QtWidgets.QMainWindow()
-    ui = Ui_moduleHeatSource()
-    ui.setupUi(moduleHeatSource)
+    module_heat_source = QtWidgets.QMainWindow()
+    ui = UiModuleHeatSource()
+    ui.setupUi(module_heat_source)
     moduleHeatSource.show()
     sys.exit(app.exec_())
 

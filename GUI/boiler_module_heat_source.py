@@ -1,58 +1,79 @@
+"""
+author: EDF Energy R&D UKC
+"""
 import sys
 import os
 import subprocess
+import inspect
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import QtCore 
-import inspect
-
-from module_heat_source import Ui_moduleHeatSource
-
-class ModuleHeatSourceMainWindow:
-	
-	def __init__(self):
-		self.settings = QtCore.QSettings('wbSettings','app7')
-		print(self.settings.fileName())
-		self.ModuleHeatSourceMainWindow = QMainWindow()
-		self.ui = Ui_moduleHeatSource ()
-		self.ui.setupUi(self.ModuleHeatSourceMainWindow)
-
-		#Non standard template
-		# Events from Stage 1
-		self.ui.type.activated.connect(self.SelectType)
-		self.ui.button_ok.clicked.connect(self.clicked)
-
-	def SelectType(self):
-		if int(self.ui.type.currentIndex()) == 0:
-			self.ui.stackedWidget.setCurrentWidget(self.ui.goldak)
-		else:
-			self.ui.stackedWidget.setCurrentWidget(self.ui.ellipsoid)
-			
-	def clicked(self):
-		Lines = []
-		if int(self.ui.type.currentIndex()) == 0:
-			Lines.append('gui_heat_source_type = \'GOLDAK\'' + '\n')
-			Lines.append('gui_goldak_a = ' + str(self.ui.goldak_a.toPlainText().strip()) + '\n')
-			Lines.append('gui_goldak_b = ' + str(self.ui.goldak_b.toPlainText().strip()) + '\n')
-			Lines.append('gui_goldak_cr = ' + str(self.ui.goldak_cr.toPlainText().strip()) + '\n')
-			Lines.append('gui_goldak_cf = ' + str(self.ui.goldak_cf.toPlainText().strip()) + '\n')
-		else:
-			Lines.append('gui_heat_source_type = \'ELLIPSOID\'' + '\n')
-			Lines.append('gui_ellipsoid_a = ' + str(self.ui.ellipsoid_a.toPlainText().strip()) + '\n')
-			Lines.append('gui_ellipsoid_b = ' + str(self.ui.ellipsoid_b.toPlainText().strip()) + '\n')
-			Lines.append('gui_ellipsoid_c = ' + str(self.ui.ellipsoid_c.toPlainText().strip()) + '\n')
-		with open('HeatSource_outputs.txt', 'w') as f:
-			f.writelines(Lines)
-
-	def show(self):
-		self.ModuleHeatSourceMainWindow.show()
+from PyQt5.QtWidgets import QMainWindow, QWidget
+from PyQt5 import QtCore
+from module_heat_source2 import UiModuleHeatSource
 
 
+class ModuleHeatSourceMainWindow(QWidget):
+    """
+    Creates Heat source gui module
+    """
+    def __init__(self):
+        """
+        initialises class
+        """
+        super().__init__()
+        self.settings = QtCore.QSettings('wbSettings', 'app7')
+        print(self.settings.fileName())
+        self.module_heat_source_main_window = QMainWindow()
+        self.ui = UiModuleHeatSource()
+        self.ui.setupUi(self.module_heat_source_main_window)
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home)
+
+# Non standard template
+# Events from Stage 1
+        self.ui.type.activated.connect(self.select_type)
+        self.ui.button_ok.clicked.connect(self.clicked_ok)
+
+    def select_type(self):
+        """
+        User choice of heat source type
+        """
+        if int(self.ui.type.currentIndex()) == 0:
+            self.ui.stackedWidget.setCurrentWidget(self.ui.goldak)
+        else:
+            self.ui.stackedWidget.setCurrentWidget(self.ui.ellipsoid)
+
+    def clicked_ok(self):
+        """
+        OK Button event
+        """
+        lines = []
+        if int(self.ui.type.currentIndex()) == 0:
+            lines.append('gui_heat_source_type = \'GOLDAK\'' + '\n')
+            lines.append('gui_goldak_a = ' +
+                         str(self.ui.goldak_a.toPlainText().strip()) + '\n')
+
+            lines.append('gui_goldak_b = ' + str(self.ui.goldak_b.toPlainText().strip()) + '\n')
+            lines.append('gui_goldak_cr = ' + str(self.ui.goldak_cr.toPlainText().strip()) + '\n')
+            lines.append('gui_goldak_cf = ' + str(self.ui.goldak_cf.toPlainText().strip()) + '\n')
+        else:
+            lines.append('gui_heat_source_type = \'ELLIPSOID\'' + '\n')
+            lines.append('gui_ellipsoid_a = ' + str(self.ui.ellipsoid_a.
+                         toPlainText().strip()) + '\n')
+            lines.append('gui_ellipsoid_b = ' + str(self.ui.ellipsoid_b.
+                         toPlainText().strip()) + '\n')
+            lines.append('gui_ellipsoid_c = ' + str(self.ui.ellipsoid_c.
+                         toPlainText().strip()) + '\n')
+        with open('HeatSource_outputs.txt', 'w') as f:
+            f.writelines(lines)
+
+    def show(self):
+        """
+        show module
+        """
+        self.module_heat_source_main_window.show()
 
 if __name__ == '__main__':
-	app = QApplication(sys.argv)
-	ModuleHeatSourceMainWindow = ModuleHeatSourceMainWindow()
-	ModuleHeatSourceMainWindow.show()
-	sys.exit(app.exec_())
-
+    app = QApplication(sys.argv)
+    module_heat_source_main_window = ModuleHeatSourceMainWindow()
+    module_heat_source_main_window.show()
+    sys.exit(app.exec_())
