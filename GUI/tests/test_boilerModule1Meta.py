@@ -5,10 +5,9 @@ sys.path.insert(0, myPath + '/../')
 import boilerModule1Meta
 import pytest
 from pytestqt.plugin import QtBot
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtWidgets
 
-#from boilerModule1Meta import ModuleMetaMainWindow
-'''
+
 @pytest.fixture
 def app(qtbot):
 	# ARRANGE
@@ -18,24 +17,16 @@ def app(qtbot):
 
 
 def test_submit(app,qtbot):
-	#window=boilerModule1Meta.ModuleMetaMainWindow()
-	qtbot.mouseClick(app.ui.Finish, QtCore.Qt.LeftButton)
-	isFile = os.path.isfile('CCT_with_Cooling_Curves.png')
-	assert isFile == True
-'''
-def test_submit(qtbot):
-	# ARRANGE
-	window=boilerModule1Meta.ModuleMetaMainWindow()
-	window.ui.T_Aust.setPlainText("900.")
-	window.ui.T_End.setPlainText("20.")
-	window.ui.GS.setPlainText("6.")
-	window.ui.CR.setPlainText("0.1")
-	window.ui.USR.setPlainText("")
-	window.ui.GGM.setCurrentIndex(0)#IKAWA
-	window.ui.Material.setCurrentIndex(0)#SA508
-	window.ui.AE13.setCurrentIndex(0)#Grange
-	window.ui.CCT.setChecked(True)
-	window.ui.TTT.setChecked(True)
+	app.ui.T_Aust.setPlainText("900.")
+	app.ui.T_End.setPlainText("20.")
+	app.ui.GS.setPlainText("6.")
+	app.ui.CR.setPlainText("0.1")
+	app.ui.USR.setPlainText("")
+	app.ui.GGM.setCurrentIndex(0)#IKAWA
+	app.ui.Material.setCurrentIndex(0)#SA508
+	app.ui.AE13.setCurrentIndex(0)#Grange
+	app.ui.CCT.setChecked(True)
+	app.ui.TTT.setChecked(True)
 	
 
 	isFile = os.path.isfile('CCT_with_Cooling_Curves.png')
@@ -49,7 +40,7 @@ def test_submit(qtbot):
 		os.remove("CCT.66")
 
 	# ACT
-	qtbot.mouseClick(window.ui.Finish, QtCore.Qt.LeftButton)
+	qtbot.mouseClick(app.ui.Finish, QtCore.Qt.LeftButton)
 
 	# ASSERT
 	isFile = os.path.isfile('CCT_with_Cooling_Curves.png')
@@ -58,3 +49,6 @@ def test_submit(qtbot):
 	assert isFile == True
 	isFile = os.path.isfile('CCT.66')
 	assert isFile == True	
+
+
+

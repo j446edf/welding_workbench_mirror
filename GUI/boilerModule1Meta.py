@@ -2,15 +2,16 @@ import sys
 import os
 import subprocess
 from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QWidget
 from PyQt5 import QtCore 
 import inspect
 
-from module_metallurgy import Ui_moduleMeta
+from delme import Ui_moduleMeta
 
-class ModuleMetaMainWindow:
+class ModuleMetaMainWindow(QWidget):
 	
 	def __init__(self):
+		super().__init__()
 		self.settings = QtCore.QSettings('wbSettings','app3')
 		print(self.settings.fileName())
 		self.ModuleMetaMainWindow = QMainWindow()
@@ -35,6 +36,7 @@ class ModuleMetaMainWindow:
 		getAM = self.ui.AE13.currentText()
 		
 		my_env=os.environ.copy()
+		print(my_env["PATH"])
 		
 		if self.ui.CCT.isChecked():
 			my_env["CCT"]="Yes"
@@ -59,34 +61,9 @@ class ModuleMetaMainWindow:
 		my_env["M"]=getM
 		my_env["A_M"]=getAM
 		
-		command=[]		
-		#command.append("export T_A="+str(getT_Aust)+";")
-		#command.append("export T_E="+str(getT_End)+";")
-		#command.append("export G_S="+str(getGS)+";")
-		command.append("./basicBatchpro.sh;")
-		#command.append("unset T_A;")
-		#command.append("unset T_E;")
-		#command.append("unset G_S;")
-		command.append("$T_A;")
-		command.append("$T_E;")
-		command.append("$G_S;")
-		command.append("$C_R;")
-		command.append("$GG_M;")
-		command.append("$M;")
-		command.append("$A_M;")
-		commandMe=""
-		for i in command:
-			commandMe+=i
-		#print(getT_Aust)
-		#print(getT_End)
-		# print(getGS)
-		# print(commandMe)
-		#p=subprocess.Popen(["sh",commandMe], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env,)
-		#p=subprocess.Popen(["sh",commandMe,'getT_Aust'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env,)
-		#proc_fb = sub.Popen(["xterm", "-e",FOLDER_Supervisor+'/runFUELBRICK_MAIN.sh',str(globals.ramFB),str(globals.mpi_or_not),str(globals.ncpusfb)])
-		########p=subprocess.Popen(["sh","sudo","./basicBatchpro.sh","$T_A","$T_E","$G_S","$C_R","$GG_M","$M","$A_M"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,env=my_env)
+
+		print(my_env)
 		p=subprocess.Popen(["xterm","-e","./basicBatchpro.sh",],env=my_env)
-		#p=subprocess.Popen(["sh",commandMe], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 		outputCall = p.communicate()
 	
 	
