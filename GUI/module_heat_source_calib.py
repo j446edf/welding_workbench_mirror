@@ -63,6 +63,7 @@ class Ui_moduleHeatSourceCalib(object):
         self.pushButton_11 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_11.setGeometry(QtCore.QRect(420, 550, 386, 25))
         self.pushButton_11.setObjectName("pushButton_11")
+        self.pushButton_11.setEnabled(False)
         self.label_8 = QtWidgets.QLabel(self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(30, 550, 371, 17))
         self.label_8.setObjectName("label_8")

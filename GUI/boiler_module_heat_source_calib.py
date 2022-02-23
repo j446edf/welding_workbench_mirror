@@ -26,6 +26,8 @@ class ModuleHeatSourceCalibMainWindow:
 		#p=subprocess.Popen(["xterm","-e","./runSimConnect.sh",])
 		p=subprocess.Popen(["sh","./runSimConnect.sh",])
 		outputCall = p.communicate()
+		self.ui.pushButton_11.setEnabled(True)
+		
 	
 	
 	def show(self):
