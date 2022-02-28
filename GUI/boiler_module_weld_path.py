@@ -3,14 +3,15 @@ import os
 import subprocess
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QWidget
 import inspect
 
 from module_weld_path import UiModuleWeldPath
 
-class ModuleWeldPathMainWindow:
+class ModuleWeldPathMainWindow(QWidget):
 
     def __init__(self):
+        super().__init__()
         self.settings = QtCore.QSettings('wbSettings','app5')
         print(self.settings.fileName())
         self.ModuleWeldPathMainWindow = QMainWindow()
