@@ -9,7 +9,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
 from PyQt5.QtWidgets import QMainWindow, QWidget
 from PyQt5 import QtCore
-from module_heat_source2 import UiModuleHeatSource
+from module_heat_source import UiModuleHeatSource
 
 
 class ModuleHeatSourceMainWindow(QWidget):
