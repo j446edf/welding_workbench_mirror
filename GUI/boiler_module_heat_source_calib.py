@@ -12,7 +12,7 @@ from boiler_module_weld_path import ModuleWeldPathMainWindow
 from boiler_module_torch_param import ModuleTorchParamMainWindow
 from boiler_module_heat_source import ModuleHeatSourceMainWindow
 
-class ModuleHeatSourceCalibMainWindow:
+class ModuleHeatSourceCalibMainWindow(QWidget):
 
     def __init__(self):
         self.settings = QtCore.QSettings('wbSettings','app8')
