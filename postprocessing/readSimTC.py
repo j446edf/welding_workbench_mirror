@@ -4,6 +4,7 @@
 ### This file is generated automatically by SALOME v9.3.0 with dump python functionality
 ###
 
+import os
 import numpy as np
 import matplotlib
 import matplotlib.cm as cm
@@ -38,7 +39,8 @@ exp_y_int_pass=[]
 
 ## INTERPOLATE SIM DATA
 filesToRead=1
-tcNumber=6
+tcNumber=int(float(os.getenv('USER_INP_NO_OF_TC')))
+#tcNumber=5
 
 for i in range(0,filesToRead):
 	fig=plt.figure()
@@ -59,7 +61,8 @@ for i in range(0,filesToRead):
 			labels='TC_'+str(j+1)
 		else:
 			labels='TC_'+str(j+1+2)
-		plt.plot(x.subtract(0.),y,color=((5-j)/5.,0.,j/5.),label=labels)
+		#plt.plot(x.subtract(0.),y,color=((5-j)/5.,0.,j/5.),label=labels)
+		plt.plot(x.subtract(0.),y,color=((tcNumber-j)/tcNumber,0.,j/tcNumber),label=labels)
 		plt.legend(fontsize=FS)
 		sim_x_int_pass=[x_ints_sim]
 		sim_y_int_pass=[y_ints_sim]
@@ -67,15 +70,20 @@ for i in range(0,filesToRead):
 
 ## Interpolate EXP data
 # Manipulate cleaned csv data with Pandas
+################################ connect UI option so chosen file is read here (force correct format) ###########################
+exp_data=os.getenv('USER_INP_TC_EXP')
+print(exp_data)
 for i in range(0,filesToRead):
 	fileOpen2 = 'clean_TG8_2_3_B_passe'+str(i+1)+'.txt'
+	#fielOpen2 = str(exp_data)
+	#print(fileOpen2)
 	df = pd.read_csv(fileOpen2)
 	df_keys=df.keys()
 	
 
 	# Extract Time/Temp history for each TC
 	for j in range(0,10):
-		if j not in [3,4,8,9]:
+		if j not in [3,4,7,8,9]:
 			x=df[df_keys[(j*2)]]
 			y=df[df_keys[(j*2)+1]]
 			y_int_exp = np.interp(x_int_exp,x,y)
@@ -97,8 +105,10 @@ for i in range(0,len(x_ints_exp)):
 	else:
 		labels='TC_'+str(j+1+2)
 		labels_='SIM_TC_'+str(j+1+2)
-	plt.plot(x_ints_exp[i],y_ints_exp[i],color=((5-i)/5.,0.,i/5.),label=labels,marker='o',linewidth=2.,linestyle='-')
-	plt.plot(x_ints_sim[i],y_ints_sim[i],color=((5-i)/5.,0.,i/5.),label=labels_,linewidth=2.,linestyle='-')
+	#plt.plot(x_ints_exp[i],y_ints_exp[i],color=((5-i)/5.,0.,i/5.),label=labels,marker='o',linewidth=2.,linestyle='-')
+	#plt.plot(x_ints_sim[i],y_ints_sim[i],color=((5-i)/5.,0.,i/5.),label=labels_,linewidth=2.,linestyle='-')
+	plt.plot(x_ints_exp[i],y_ints_exp[i],color=((tcNumber-i)/tcNumber,0.,i/tcNumber),label=labels,marker='o',linewidth=2.,linestyle='-')
+	plt.plot(x_ints_sim[i],y_ints_sim[i],color=((tcNumber-i)/tcNumber,0.,i/tcNumber),label=labels_,linewidth=2.,linestyle='-')
 	plt.legend(fontsize=FS)
 	fig.savefig('crossCompare_TC'+str(i+1),bbox_inches='tight',pad_inches=BB)
 	deltaT_exp.append(max(y_ints_exp[i])-y_ints_exp[i][0])
@@ -112,6 +122,7 @@ print('dT sim',deltaT_sim)
 ## Calculate Error RMS
 # individual RMS
 
+######################### UI option for selecting near and far field tc needed ############################
 ind_RMS=[]
 for i in range(0,len(deltaT_exp)):
 	ind_RMS.append((((deltaT_sim[i]-deltaT_exp[i])/deltaT_exp[i])**2)**0.5)

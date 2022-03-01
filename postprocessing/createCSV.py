@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-fileToRead=4
-passToRead=2
-fileOpen = 'PASS'+str(passToRead)+'_TCMESH_'+str(fileToRead)+'.resu'
+fileToRead=5
+passToRead=1
+#fileOpen = 'PASS'+str(passToRead)+'_TCMESH_'+str(fileToRead)+'.resu'
+fileOpen = 'TCMESH_'+str(fileToRead)+'.resu'
 f=open(fileOpen,'r')
 datas=[]
 datas2=[]

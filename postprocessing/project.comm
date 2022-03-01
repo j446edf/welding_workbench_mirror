@@ -2,13 +2,14 @@
 import numpy as np
 POURSUITE(PAR_LOT='NON')
 ## LOAD USER DYNAMIC INPUTS
-INCLUDE(UNITE=90)
-
-basePath='/home/mbgm6aab/Documents/weldingworkbench/'
+#INCLUDE(UNITE=90)
+no_of_TC=int(float(os.getenv('USER_INP_NO_OF_TC')))
+pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
+#basePath='/home/talha/Documents/weldingworkbench/'
 THER2D=[None]*(no_of_TC)
 for i in range(0,no_of_TC):
-	fileNameTC=basePath+'meshing/TCMESH_'+str(i)+'.med'
-	fileNameResu=basePath+'postprocessing/TCMESH_'+str(i)+'.resu'
+	fileNameTC=pathToWorkbench+'/meshing/TCMESH_'+str(i)+'.med'
+	fileNameResu=pathToWorkbench+'/postprocessing/TCMESH_'+str(i+1)+'.resu'
 	DEFI_FICHIER(ACTION='ASSOCIER',UNITE=20,FICHIER=fileNameTC)
 	DEFI_FICHIER(ACTION='ASSOCIER',UNITE=81,FICHIER=fileNameResu)
 	MTC=LIRE_MAILLAGE(FORMAT='MED', UNITE=20)

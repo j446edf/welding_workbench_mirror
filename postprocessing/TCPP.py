@@ -4,7 +4,7 @@
 ### This file is generated automatically by SALOME v9.3.0 with dump python functionality
 ###
 
-
+import os
 import sys
 import salome
 
@@ -13,8 +13,21 @@ import salome_notebook
 notebook = salome_notebook.NoteBook()
 
 ################# USER INPUTS ##############################################
-pathToMeshing='/home/mbgm6aab/Documents/weldingworkbench/meshing'
-TC_LOCS = [[10.,0.,0.],[12.,0.,0.],[15.,0.,0.],[18.,0.,0.],[20.,0.,0.]]
+pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
+pathToMeshing=pathToWorkbench+'/meshing'
+print(pathToMeshing)
+TC_LOCS_str=os.getenv('USER_INP_TC_LOCS')
+TC_LOCS_strip = TC_LOCS_str.strip('()[]')
+TC_LOCS_strip = TC_LOCS_strip.split(',')
+TC_LOCS_list=[float(i) for i in TC_LOCS_strip]
+no_of_TC=int(float(os.getenv('USER_INP_NO_OF_TC')))
+TC_LOCS = []
+for i in range(no_of_TC):
+	TC = []
+	TC = [TC_LOCS_list[3*i], TC_LOCS_list[(3*i)+1], TC_LOCS_list[(3*i)+2]]
+	TC_LOCS.append(TC)
+print(TC_LOCS)
+#TC_LOCS = [[10.,0.,0.],[12.,0.,0.],[15.,0.,0.],[18.,0.,0.],[20.,0.,0.]]
 
 ############################################################################
 
@@ -54,7 +67,7 @@ geompy.addToStudy( OZ, 'OZ' )
 TC_VERTS = []
 for i in range(0,len(TC_LOCS)):
 	TC_VERTS.append(geompy.MakeVertex(TC_LOCS[i][0], TC_LOCS[i][1], TC_LOCS[i][2]))
-	geompy.addToStudy( TC_VERTS[i], 'TC_VERTS_'+str(i) )
+	geompy.addToStudy( TC_VERTS[i], 'TC_VERTS_'+str(i+1) )
 
 
 # Cube relative vertices
@@ -65,7 +78,7 @@ TC_CUBES=[]
 for i in range(0,len(TC_LOCS)):
 	TC_CUBES.append(geompy.MakeBoxDXDYDZ(1, 1, 1))
 	geompy.TranslateDXDYDZ(TC_CUBES[i], TC_LOCS[i][0]-0.5, TC_LOCS[i][1]-0.5, TC_LOCS[i][2]-0.5)
-	geompy.addToStudy( TC_CUBES[i], 'TC_CUBES_'+str(i) )
+	geompy.addToStudy( TC_CUBES[i], 'TC_CUBES_'+str(i+1) )
 
 
 ###
@@ -89,11 +102,11 @@ for i in range(0,len(TC_LOCS)):
 	Quadrangle_2D.append(TC_MESHES[i].Quadrangle(algo=smeshBuilder.QUADRANGLE))
 	Hexa_3D.append(TC_MESHES[i].Hexahedron(algo=smeshBuilder.Hexa))
 	isDone = TC_MESHES[i].Compute()
-	smesh.SetName(Regular_1D[i].GetAlgorithm(), 'Regular_1D_'+str(i))
-	smesh.SetName(Hexa_3D[i].GetAlgorithm(), 'Hexa_3D_'+str(i))
-	smesh.SetName(Quadrangle_2D[i].GetAlgorithm(), 'Quadrangle_2D_'+str(i))
-	smesh.SetName(Number_of_Segments_1[i], 'Number of Segments_1_'+str(i))
-	smesh.SetName(TC_MESHES[i].GetMesh(), 'Mesh_'+str(i))
+	smesh.SetName(Regular_1D[i].GetAlgorithm(), 'Regular_1D_'+str(i+1))
+	smesh.SetName(Hexa_3D[i].GetAlgorithm(), 'Hexa_3D_'+str(i+1))
+	smesh.SetName(Quadrangle_2D[i].GetAlgorithm(), 'Quadrangle_2D_'+str(i+1))
+	smesh.SetName(Number_of_Segments_1[i], 'Number of Segments_1_'+str(i+1))
+	smesh.SetName(TC_MESHES[i].GetMesh(), 'Mesh_'+str(i+1))
 	
 	
 	aCriteria = []
@@ -106,7 +119,7 @@ for i in range(0,len(TC_LOCS)):
 
 for i in range(0,len(TC_LOCS)):
 	try:
-		TC_MESHES[i].ExportMED(r''+pathToMeshing+'/TCMESH_'+str(i)+'.med',auto_groups=1,minor=40,overwrite=1,meshPart=None,autoDimension=1)
+		TC_MESHES[i].ExportMED(r''+pathToMeshing+'/TCMESH_'+str(i+1)+'.med',auto_groups=1,minor=40,overwrite=1,meshPart=None,autoDimension=1)
 		pass
 	except:
 		print('ExportMED() failed. Invalid file name?')
