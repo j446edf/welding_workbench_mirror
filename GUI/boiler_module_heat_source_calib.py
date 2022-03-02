@@ -11,10 +11,12 @@ from boiler_module_material_prop import ModuleMaterialPropMainWindow
 from boiler_module_weld_path import ModuleWeldPathMainWindow
 from boiler_module_torch_param import ModuleTorchParamMainWindow
 from boiler_module_heat_source import ModuleHeatSourceMainWindow
+from boiler_module_postproc_tc import ModulePostProcTCMainWindow
 
 class ModuleHeatSourceCalibMainWindow(QWidget):
 
     def __init__(self):
+        super().__init__()
         self.settings = QtCore.QSettings('wbSettings','app8')
         print(self.settings.fileName())
         self.ModuleHeatSourceCalibMainWindow = QMainWindow()
@@ -30,6 +32,10 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
 #        self.ui.pushButton_5.clicked.connect(self.clicked5) # <- REDUNDANT BUTTON
         self.ui.pushButton_6.clicked.connect(self.clicked6) # <- Specify input power
         self.ui.pushButton_7.clicked.connect(self.clicked7) # <- Specify heat source type
+        self.ui.pushButton_10.clicked.connect(self.clicked10) # <- Run error checking
+        self.ui.pushButton_9.clicked.connect(self.clicked9) # <- Load Simulation results
+        #self.ui.pushButton_8.setEnabled(True)
+        
 
 
     def clicked8(self):
@@ -48,7 +54,7 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
     def clicked3(self):
         self.ui.ModuleMaterialPropMainWindow=ModuleMaterialPropMainWindow()
         self.ui.ModuleMaterialPropMainWindow.show()
-        
+        self.ui.pushButton_4.setEnabled(True)
         
     def clicked4(self):
         self.ui.ModuleWeldPathMainWindow=ModuleWeldPathMainWindow()
@@ -65,6 +71,16 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.ModuleHeatSourceMainWindow.show()
         self.ui.pushButton_8.setEnabled(True)
 
+    def clicked10(self):
+        self.ui.ModulePostProcTCMainWindow=ModulePostProcTCMainWindow()
+        self.ui.ModulePostProcTCMainWindow.show()
+        
+    def clicked9(self):
+        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Open file', './', 'Results File (*.rmed)')
+        print(fname)
+        self.ui.label_5.setText(str(fname))
+        self.ui.pushButton_11.setEnabled(True)
+        self.ui.pushButton_10.setEnabled(True)
 
     def show(self):
         self.ModuleHeatSourceCalibMainWindow.show()
