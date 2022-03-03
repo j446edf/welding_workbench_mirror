@@ -315,7 +315,7 @@ for i in range(0,len(t)):
     CHS[i]=AFFE_CHAR_THER_F(MODELE=MOTH,
                       SOURCE=_F(TOUT='OUI',SOUR=FONC[i],),);
 
-s=input('Pause here')
+#s=input('Pause here')
 
 
 ##

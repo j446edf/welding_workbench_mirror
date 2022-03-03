@@ -1,51 +1,56 @@
-P actions make_etude
-P aster_root /home/talha/salome_meca/V2019.0.3_universal/tools/Code_aster_frontend-20190
-P consbtc oui
-P corefilesize unlimited
-P cpresok RESNOOK
-P debug nodebug
-P display ubudualboot:1
-P facmtps 1
-P follow_output yes
+P profastk mbgm6aab@DESKTOP-CETULEK:/home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.astk
+P serveur localhost
+P username mbgm6aab
+P aster_root /home/mbgm6aab/salome_meca/V2019.0.3_universal/tools/Code_aster_frontend-20190
+P platform Linux64
+P protocol_exec asrun.plugins.server.SSHServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P proxy_dir /tmp
+P noeud localhost
+P mclient DESKTOP-CETULEK
+P uclient mbgm6aab
+P version v14.4_smeca
 P lang en
-P mclient ubudualboot
-P memjob 8290304
-P memory_limit 8096.0
+P debug nodebug
 P mode interactif
+P ncpus 
 P mpi_nbcpu 1
 P mpi_nbnoeud 1
-P nbmaxnook 5
-P noeud localhost
-P nomjob goldak3D
+P classe 
+P depart 
+P after_job 
+P distrib 
+P exectool 
+P multiple 
+P nomjob steadystate
 P origine ASTK 2018.1.final
-P platform Linux64
-P profastk talha@ubudualboot:/home/talha/Desktop/copyhere/tekken/goldak3D.astk
-P protocol_copyfrom asrun.plugins.server.SCPServer
-P protocol_copyto asrun.plugins.server.SCPServer
-P protocol_exec asrun.plugins.server.SSHServer
-P proxy_dir /tmp
-P rep_trav /tmp/talha-ubudualboot-interactif_13078
-P serveur localhost
+P display DESKTOP-CETULEK:45.0
+A args 
+A memjeveux 1024.0
+A tpmax 13920
+P memjob 7388608
+P tpsjob 232
+P follow_output yes
+P nbmaxnook 5
+P cpresok RESNOOK
+P only_nook 
+P facmtps 1
+P corefilesize unlimited
+F comm /home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.comm D  1
+F mmed /home/talha/Documents/weldingworkbench/simulation/tmp/quickMesh_.med D  20
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/materialData.66 D  66
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/pythonFuncsGoldak.67 D  67
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/pythonFuncsDE.68 D  68
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/pathFuncs.49 D 49
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/environment.50 D 50
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/weldPath_NL.51 D 51
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/weldParams.52 D 52
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/heatsourcetype_NL.53 D 53
+F libr /home/talha/Documents/weldingworkbench/simulation/dynamic.inputs D 90
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.med.rmed R  81
+R base /home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base RC 0
+F mess /home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.mess R  6
+P consbtc oui
 P soumbtc oui
-P time_limit 13920.0
-P tpsjob 233
-P uclient talha
-P username talha
-P version v14.4_smeca
-A args -max_base 600000
-A memjeveux 10012.0
-A tpmax 139020.0
-F comm /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.comm D  1
-F mmed /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/quickMesh_.med D  20
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/materialData.66 D  66
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsGoldak.67 D  67
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsDE.68 D  68
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pathFuncs.49 D 49
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/environment.50 D 50
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldPath_NL.51 D 51
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldParams.52 D 52
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/heatsourcetype_NL.53 D 53
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/dynamic.inputs D 90
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.med.rmed R  81
-R base /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base RC 0
-F mess /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.mess R  6
+P actions make_etude
