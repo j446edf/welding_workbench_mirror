@@ -70,13 +70,13 @@ for i in range(0,filesToRead):
 
 ## Interpolate EXP data
 # Manipulate cleaned csv data with Pandas
-################################ connect UI option so chosen file is read here (force correct format) ###########################
-exp_data=os.getenv('USER_INP_TC_EXP')
-print(exp_data)
+exp_data_file = os.getenv('USER_INP_TC_EXP')
+#print(exp_data_file)
+#s =input('-------->')
 for i in range(0,filesToRead):
-	fileOpen2 = 'clean_TG8_2_3_B_passe'+str(i+1)+'.txt'
-	#fielOpen2 = str(exp_data)
-	#print(fileOpen2)
+	#fileOpen2 = 'clean_TG8_2_3_B_passe'+str(i+1)+'.txt'
+	#fileOpen2 = '/home/talha/Documents/weldingworkbench/postprocessing/clean_TG8_2_3_B_passe1.txt'
+	fileOpen2 = exp_data_file
 	df = pd.read_csv(fileOpen2)
 	df_keys=df.keys()
 	
@@ -122,14 +122,15 @@ print('dT sim',deltaT_sim)
 ## Calculate Error RMS
 # individual RMS
 
-######################### UI option for selecting near and far field tc needed ############################
 ind_RMS=[]
 for i in range(0,len(deltaT_exp)):
 	ind_RMS.append((((deltaT_sim[i]-deltaT_exp[i])/deltaT_exp[i])**2)**0.5)
-	if i  < 3:
-		print('TC_%s_RMS = ' % str(i), np.round(100.*ind_RMS[-1],decimals=1), '%')
-	else:
-		print('TC_%s_RMS = ' % str(i+2), np.round(100.*ind_RMS[-1],decimals=1), '%')
-
+	print('TC_%s_RMS = ' % str(i+1), np.round(100.*ind_RMS[-1],decimals=1), '%')
+	#if i  < 3:
+	#	print('TC_%s_RMS = ' % str(i), np.round(100.*ind_RMS[-1],decimals=1), '%')
+	#else:
+	#	print('TC_%s_RMS = ' % str(i+2), np.round(100.*ind_RMS[-1],decimals=1), '%')
+	
+######################### UI option for selecting near and far field tc for calibRMS needed ############################
 calibRMS = (0.5*( (((deltaT_sim[2]-deltaT_exp[2])/deltaT_exp[2])**2) +  (((deltaT_sim[4]-deltaT_exp[4])/deltaT_exp[4])**2) ))**0.5
 print('calibrated_RMS = ', np.round(100.*calibRMS,decimals=1), '%')

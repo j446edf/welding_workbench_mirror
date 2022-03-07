@@ -11,19 +11,21 @@ export USER_INP_TC_EXP
 export USER_INP_TC_LOCS
 export USER_INP_NO_OF_TC
 
+#echo $USER_INP_TC_EXP > outputMe
+
 cd $USER_WELDWB_srcDir/postprocessing
+$USER_WELDWB_pathToSalome/salome shell killSalome.py
 $USER_WELDWB_pathToSalome/salome $USER_WELDWB_srcDir/postprocessing/TCPP.py & 
-read -p 'kill salome' input
 $USER_WELDWB_pathToSalome/salome shell killSalome.py
 
 ./runErrorNL.sh
-read -p 'continue' input
+#read -p 'continue' input
 
 ./cleanResuSimHist.sh
-read -p 'continue' input
+#read -p 'continue' input
 
 ./checkRMS.sh
-read -p 'end' input
+#read -p 'end' input
 
 unset USER_INP_TC_EXP
 unset USER_INP_TC_LOCS

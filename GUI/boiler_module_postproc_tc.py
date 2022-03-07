@@ -55,7 +55,7 @@ class ModulePostProcTCMainWindow(QWidget):
                                        self.ModulePostProcTCMainWindow,
                                        'Open file', './',
                                        'Data files (*.txt)')
-        print(fname)
+        #print(fname)
         self.ui.label_3.setText(str(fname))
         #open filename and update self.ui.textBrowser
         #f = open(str(fname), "r")
@@ -86,7 +86,8 @@ class ModulePostProcTCMainWindow(QWidget):
         my_env = os.environ.copy()
         #print(tc_locs)
         fname = self.ui.label_3.text()
-        my_env['exp_tc'] = fname
+        fname = str(fname)
+        my_env["exp_tc"] = fname
         my_env["TC_LOCS_str"] = str(tc_locs)
         my_env["no_of_TC"] = str(len(tc_locs)/3)
         p=subprocess.Popen(["sh","./runErrorCheck.sh",],env=my_env)
