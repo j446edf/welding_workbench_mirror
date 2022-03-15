@@ -13,6 +13,7 @@ from boiler_module_torch_param import ModuleTorchParamMainWindow
 from boiler_module_heat_source import ModuleHeatSourceMainWindow
 from boiler_module_postproc_tc import ModulePostProcTCMainWindow
 
+
 class ModuleHeatSourceCalibMainWindow(QWidget):
 
     def __init__(self):
@@ -34,7 +35,7 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_7.clicked.connect(self.clicked7) # <- Specify heat source type
         self.ui.pushButton_10.clicked.connect(self.clicked10) # <- Run error checking
         self.ui.pushButton_9.clicked.connect(self.clicked9) # <- Load Simulation results
-        #self.ui.pushButton_8.setEnabled(True)
+        self.ui.pushButton_8.setEnabled(True)
         
 
 
@@ -42,11 +43,14 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         #p=subprocess.Popen(["xterm","-e","./runSimConnect.sh",])
         p=subprocess.Popen(["sh","./runSimConnect.sh",])
         outputCall = p.communicate()
+        #### dname_resu must be file path to .base file that is created when running sim
+        dname_resu = '/home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base'
+        self.ui.label_5.setText(dname_resu)
         self.ui.pushButton_11.setEnabled(True)
         self.ui.pushButton_10.setEnabled(True)
 
     def clicked2(self):
-        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Open file', './', 'outputs.txt (*.txt)')
+        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Data', './', '(*.txt)')
         print(fname)
         self.ui.pushButton_4.setEnabled(True)
 
@@ -72,13 +76,22 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_8.setEnabled(True)
 
     def clicked10(self):
+        my_env = os.environ.copy()
+        dname = self.ui.label_5.text()
+        dname = str(dname)
+        my_env["resu"] = dname
+        p=subprocess.Popen(["sh","./modifyErrorExportConnect.sh",],env=my_env)
+        outputCall = p.communicate()
         self.ui.ModulePostProcTCMainWindow=ModulePostProcTCMainWindow()
         self.ui.ModulePostProcTCMainWindow.show()
         
+        
     def clicked9(self):
-        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Open file', './', 'Results File (*.rmed)')
-        print(fname)
-        self.ui.label_5.setText(str(fname))
+        #fname_resu,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Open file', './', 'Results File (*.base)')
+        dname_resu=QFileDialog.getExistingDirectory(self.ModuleHeatSourceCalibMainWindow, 'Select Results Directory', './')
+        print(dname_resu)
+        dname_resu = str(dname_resu)
+        self.ui.label_5.setText(dname_resu)
         self.ui.pushButton_11.setEnabled(True)
         self.ui.pushButton_10.setEnabled(True)
 

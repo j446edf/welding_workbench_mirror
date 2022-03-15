@@ -8,7 +8,7 @@ pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
 #basePath='/home/talha/Documents/weldingworkbench/'
 THER2D=[None]*(no_of_TC)
 for i in range(0,no_of_TC):
-	fileNameTC=pathToWorkbench+'/meshing/TCMESH_'+str(i)+'.med'
+	fileNameTC=pathToWorkbench+'/meshing/TCMESH_'+str(i+1)+'.med'
 	fileNameResu=pathToWorkbench+'/postprocessing/TCMESH_'+str(i+1)+'.resu'
 	DEFI_FICHIER(ACTION='ASSOCIER',UNITE=20,FICHIER=fileNameTC)
 	DEFI_FICHIER(ACTION='ASSOCIER',UNITE=81,FICHIER=fileNameResu)
