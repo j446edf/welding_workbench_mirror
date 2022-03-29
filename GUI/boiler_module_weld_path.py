@@ -149,7 +149,7 @@ class ModuleWeldPathMainWindow(QWidget):
             f.writelines(Lines)
             
         my_env = os.environ.copy()
-        my_env["file_no_exp"] = str("94")
+        my_env["file_no_exp"] = str("92")
         my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()

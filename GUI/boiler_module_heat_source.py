@@ -67,7 +67,7 @@ class ModuleHeatSourceMainWindow(QWidget):
             f.writelines(lines)
         
         my_env = os.environ.copy()
-        my_env["file_no_exp"] = str("91")
+        my_env["file_no_exp"] = str("94")
         my_env["dynamic_inp"] = str("/GUI/heat_source_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()

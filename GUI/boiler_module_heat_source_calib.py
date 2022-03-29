@@ -28,8 +28,8 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         # Events from Stage 1
         self.ui.pushButton_2.clicked.connect(self.clicked2) # <- Specify Material data
         self.ui.pushButton_3.clicked.connect(self.clicked3) # <- Load MAterial data
-        self.ui.pushButton_5.clicked.connect(self.clicked5) # <- Load beam conditions
         self.ui.pushButton_4.clicked.connect(self.clicked4) # <- Specify beam conditions
+        self.ui.pushButton_5.clicked.connect(self.clicked5) # <- Load beam conditions
         self.ui.pushButton_6.clicked.connect(self.clicked6) # <- Specify input power
         self.ui.pushButton_7.clicked.connect(self.clicked7) # <- Specify heat source type
         self.ui.pushButton_8.clicked.connect(self.clicked8) # <- Run Simulation
@@ -44,9 +44,14 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_5.setEnabled(True)
 
     def clicked3(self):
-        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Data', './', '(*.txt)')
+        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Material Data', './', '(*.txt)')
         print(fname)
         fname = str(fname)
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("91")
+        my_env["load"] = fname
+        p=subprocess.Popen(["sh","./modifyExportLoad.sh",],env=my_env)
+        outputCall = p.communicate()
         #self.ui.label_13.setText(fname)
         self.ui.pushButton_4.setEnabled(True)
         self.ui.pushButton_5.setEnabled(True)
@@ -57,9 +62,13 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_6.setEnabled(True)
         
     def clicked5(self):
-        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Data', './', '(*.txt)')
+        fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Beam Conditions', './', '(*.txt)')
         print(fname)
         fname = str(fname)
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("92")
+        my_env["load"] = fname
+        p=subprocess.Popen(["sh","./modifyExportLoad.sh",],env=my_env)
         #self.ui.label_14.setText(fname)
         self.ui.pushButton_6.setEnabled(True)
         
