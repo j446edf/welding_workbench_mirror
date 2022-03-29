@@ -20,20 +20,21 @@
 ####################################################################################################################
 ### Set environment variables
 ####################################################################################################################
-source user.config
+source ../user.config
 
 ####################################################################################################################
 ### File Management
 ####################################################################################################################
-#rm -r $USER_WELDWB_srcDir/simulation/tmp
-#rm $USER_WELDWB_pathToHere/unsetMe
-#mkdir $USER_WELDWB_srcDir/simulation/tmp
+rm -r $USER_WELDWB_srcDir/simulation/tmp
+rm $USER_WELDWB_pathToHere/unsetMe
+mkdir $USER_WELDWB_srcDir/simulation/tmp
 
 ####################################################################################################################
 ### Launch simulation
 ####################################################################################################################
 pushd $USER_WELDWB_srcDir/simulation/tmp
 cp $USER_WELDWB_srcDir/templates/* .
+$USER_WELDWB_pathToSalome/salome shell killSalome.py	
 $USER_WELDWB_pathToSalome/salome shell -- as_run $USER_WELDWB_srcDir/simulation/tmp/nonlinearthermal.export
 $USER_WELDWB_pathToSalome/salome shell killSalome.py	
 popd	
