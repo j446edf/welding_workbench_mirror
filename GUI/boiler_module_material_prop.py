@@ -39,6 +39,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         self.ui.button_add4.clicked.connect(self.addRow4)
         self.ui.button_remove4.clicked.connect(self.removeRow4)
         self.ui.finish.clicked.connect(self.clicked)
+        self.ui.button_save.clicked.connect(self.save)
 
     def addRow1(self):
         """
@@ -198,8 +199,23 @@ class ModuleMaterialPropMainWindow(QWidget):
             Lines.append('user_choice_weld_def=2 #enthalpy' + '\n' + '\n')
             Lines.append('weld_enthalpy_from_GUI=' + str(Weld_2) + '\n' + '\n' + '\n')
 
-        with open('outputs.txt', 'w') as f:
+        with open('mat_prop_inputs.txt', 'w') as f:
             f.writelines(Lines)
+        
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("92")
+        my_env["dynamic_inp"] = str("/GUI/mat_prop_inputs.txt")
+        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        outputCall = p.communicate()
+        self.ui.button_save.setEnabled(True)
+        
+    def save(self):
+        sfile=QFileDialog.getSaveFileName(self.ModuleMaterialPropMainWindow, 'Save as', './')
+        sfilename = sfile[0]
+        my_env = os.environ.copy()
+        my_env["dynamic_inp"] = str("/GUI/mat_prop_inputs.txt")
+        my_env["input"] = str(sfilename)
+        p=subprocess.Popen(["sh","./saveInput.sh",],env=my_env)
 
     def show(self):
         """

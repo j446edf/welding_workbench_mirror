@@ -41,8 +41,14 @@ class ModuleTorchParamMainWindow(QWidget):
         lines.append('gui_weld_I = ' + str(self.ui.i.toPlainText().strip()) + '\n')
         lines.append('gui_weld_V = ' + str(self.ui.v.toPlainText().strip()) + '\n')
 
-        with open('param_outputs.txt', 'w') as f:
+        with open('torch_param_inputs.txt', 'w') as f:
                 f.writelines(lines)
+        
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("93")
+        my_env["dynamic_inp"] = str("/GUI/torch_param_inputs.txt")
+        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        outputCall = p.communicate()
 
     def show(self):
         """

@@ -131,6 +131,10 @@ class UiModuleMaterialProp(object):
         self.finish = QtWidgets.QPushButton(Form)
         self.finish.setGeometry(QtCore.QRect(740, 600, 95, 26))
         self.finish.setObjectName("finish")
+        self.button_save = QtWidgets.QPushButton(Form)
+        self.button_save.setGeometry(QtCore.QRect(620, 600, 95, 26))
+        self.button_save.setObjectName("button_apply")
+        self.button_save.setEnabled(False)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -171,6 +175,7 @@ class UiModuleMaterialProp(object):
         self.P2.setItemText(0, _translate("Form", "Thermal Diffusivity"))
         self.P2.setItemText(1, _translate("Form", "Enthalpy"))
         self.finish.setText(_translate("Form", "Submit"))
+        self.button_save.setText(_translate("Form", "Save"))
 
 
 if __name__ == "__main__":

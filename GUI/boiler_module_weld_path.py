@@ -15,7 +15,7 @@ class ModuleWeldPathMainWindow(QWidget):
         self.settings = QtCore.QSettings('wbSettings','app5')
         print(self.settings.fileName())
         self.ModuleWeldPathMainWindow = QMainWindow()
-        self.ui = UiModuleWeldPath ()
+        self.ui = UiModuleWeldPath()
         self.ui.setupUi(self.ModuleWeldPathMainWindow)
 
         self.ui.v_t_addRow_button.clicked.connect(self.addRow1)
@@ -29,6 +29,8 @@ class ModuleWeldPathMainWindow(QWidget):
         #self.ui.button_apply.clicked.connect(self.apply) #<-  REDUNDANT BUTTON
 
         self.ui.button_ok.clicked.connect(self.ok)
+        
+        self.ui.button_save.clicked.connect(self.save)
 
     def addRow1(self):
         rowCount1 = self.ui.v_t_table.rowCount()
@@ -143,8 +145,24 @@ class ModuleWeldPathMainWindow(QWidget):
             dir0.append(float(self.ui.dirz0.toPlainText().strip()))
             Lines.append("gui_torch_dir0=["+repr(dir0)+"]")
 
-        with open('path_outputs.txt', 'w') as f:
+        with open('weld_path_inputs.txt', 'w') as f:
             f.writelines(Lines)
+            
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("94")
+        my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
+        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        outputCall = p.communicate()
+        self.ui.button_save.setEnabled(True)
+
+        
+    def save(self):
+        sfile=QFileDialog.getSaveFileName(self.ModuleWeldPathMainWindow, 'Save as', './')
+        sfilename = sfile[0]
+        my_env = os.environ.copy()
+        my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
+        my_env["input"] = str(sfilename)
+        p=subprocess.Popen(["sh","./saveInput.sh",],env=my_env)
 
 
     def show(self):
