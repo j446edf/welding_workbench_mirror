@@ -11,7 +11,6 @@ export USER_INP_TC_EXP
 export USER_INP_TC_LOCS
 export USER_INP_NO_OF_TC
 
-#echo $USER_INP_TC_EXP > outputMe
 
 cd $USER_WELDWB_srcDir/postprocessing
 $USER_WELDWB_pathToSalome/salome shell killSalome.py

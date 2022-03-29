@@ -115,13 +115,13 @@ for i in range(0,len(x_ints_exp)):
 	deltaT_sim.append(max(y_ints_sim[i])-y_ints_sim[i][0])
 	#print(len(y_ints_exp[i]))
 	#print(float(max(y_ints_exp[i]))-float(y_ints_exp[i][0]))
-
 print('dT exp',deltaT_exp)
 print('dT sim',deltaT_sim)
 
 ## Calculate Error RMS
 # individual RMS
 
+print
 ind_RMS=[]
 for i in range(0,len(deltaT_exp)):
 	ind_RMS.append((((deltaT_sim[i]-deltaT_exp[i])/deltaT_exp[i])**2)**0.5)
