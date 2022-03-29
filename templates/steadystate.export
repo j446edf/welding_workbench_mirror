@@ -1,4 +1,4 @@
-P profastk mbgm6aab@DESKTOP-CETULEK:/home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.astk
+P profastk mbgm6aab@DESKTOP-CETULEK:/home/talha/Documents/weldingworkbench/simulation/tmp/steadystate.astk
 P serveur localhost
 P username mbgm6aab
 P aster_root /home/mbgm6aab/salome_meca/V2019.0.3_universal/tools/Code_aster_frontend-20190
@@ -29,7 +29,7 @@ P display DESKTOP-CETULEK:45.0
 A args 
 A memjeveux 1024.0
 A tpmax 13920
-P memjob 8388608
+P memjob 7388608
 P tpsjob 232
 P follow_output yes
 P nbmaxnook 5
@@ -37,19 +37,23 @@ P cpresok RESNOOK
 P only_nook 
 P facmtps 1
 P corefilesize unlimited
-F comm /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.comm D 1
-F mmed /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/Newpass1Mesh.med D 20
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/materialData.66 D 66
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsGoldak.67 D 67
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/pythonFuncsDE.68 D 68
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/environment.50 D 50
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldPath.51 D 51
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/weldParams.52 D 52
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/heatsourcetype.53 D 53
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/dynamic.inputs D 90
-F libr /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.rmed R 81
-R base /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.base RC 0
-F mess /home/mbgm6aab/Documents/weldingworkbench/simulation/tmp/steadystate.mess R 6
+F comm /home/talha/Documents/weldingworkbench/simulation/tmp/steadystate.comm D 1
+F mmed /home/talha/Documents/weldingworkbench/simulation/tmp/Newpass1Mesh.med D 20
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/materialData.66 D 66
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/pythonFuncsGoldak_LINEAR.67 D 67
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/pythonFuncsDE.68 D 68
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/environment.50 D 50
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/weldPath.51 D 51
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/weldParams.52 D 52
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/heatsourcetype.53 D 53
+F libr /home/talha/Documents/weldingworkbench/simulation/dynamic.inputs D 90
+F libr /home/talha/Documents/weldingworkbench/GUI/heat_source_inputs.txt D 91
+F libr /home/talha/Documents/weldingworkbench/GUI/mat_prop_inputs.txt D 92
+F libr /home/talha/Documents/weldingworkbench/GUI/torch_param_inputs.txt D 93
+F libr /home/talha/Documents/weldingworkbench/GUI/weld_path_inputs.txt D 94
+F libr /home/talha/Documents/weldingworkbench/simulation/tmp/steadystate.rmed R 81
+R base /home/talha/Documents/weldingworkbench/simulation/tmp/steadystate.base RC 0
+F mess /home/talha/Documents/weldingworkbench/simulation/tmp/steadystate.mess R 6
 P consbtc oui
 P soumbtc oui
 P actions make_etude
