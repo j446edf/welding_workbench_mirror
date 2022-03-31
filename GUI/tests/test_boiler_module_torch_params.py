@@ -30,13 +30,13 @@ def test_submit(app,qtbot):
     app.ui.ita.setPlainText("2.")
     app.ui.v.setPlainText("3.")
 
-    is_file = os.path.isfile('param_outputs.txt')
+    is_file = os.path.isfile('torch_param_inputs.txt')
     if is_file is True:
-        os.remove("param_outputs.txt")
+        os.remove("torch_param_inputs.txt")
 
 # ACT
     qtbot.mouseClick(app.ui.button_ok, QtCore.Qt.LeftButton)
 
 # ASSERT
-    is_file = os.path.isfile('param_outputs.txt')
+    is_file = os.path.isfile('torch_param_inputs.txt')
     assert is_file is True

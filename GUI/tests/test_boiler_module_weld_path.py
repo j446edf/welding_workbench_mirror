@@ -26,9 +26,9 @@ def test_submit(app,qtbot):
     Tests submit button on app
     """
 # ARRANGE
-    is_file = os.path.isfile('path_outputs.txt')
+    is_file = os.path.isfile('weld_path_inputs.txt')
     if is_file is True:
-        os.remove("path_outputs.txt")
+        os.remove("weld_path_inputs.txt")
     qtbot.mouseClick(app.ui.v_t_addRow_button, QtCore.Qt.LeftButton)
     app.ui.v_t_table.setItem(0, 0, QtWidgets.QTableWidgetItem("1."))
     app.ui.v_t_table.setItem(0, 1, QtWidgets.QTableWidgetItem("2."))
@@ -56,5 +56,5 @@ def test_submit(app,qtbot):
     app.ui.dirz0.setPlainText("104.")
     qtbot.mouseClick(app.ui.button_ok, QtCore.Qt.LeftButton)
 # ASSERT
-    is_file = os.path.isfile('path_outputs.txt')
+    is_file = os.path.isfile('weld_path_inputs.txt')
     assert is_file is True

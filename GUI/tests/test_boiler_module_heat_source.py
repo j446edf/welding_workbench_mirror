@@ -32,15 +32,15 @@ def test_submit(app,qtbot):
     app.ui.goldak_cr.setPlainText("3.")
     app.ui.goldak_cf.setPlainText("4.")
 
-    is_file = os.path.isfile('HeatSource_outputs.txt')
+    is_file = os.path.isfile('heat_source_inputs.txt')
     if is_file is True:
-        os.remove("HeatSource_outputs.txt")
+        os.remove("heat_source_inputs.txt")
 
 # ACT
     qtbot.mouseClick(app.ui.button_ok, QtCore.Qt.LeftButton)
 
 # ASSERT
-    is_file = os.path.isfile('HeatSource_outputs.txt')
+    is_file = os.path.isfile('heat_source_inputs.txt')
     assert is_file is True
 
 # ARRANGE
@@ -49,13 +49,13 @@ def test_submit(app,qtbot):
     app.ui.ellipsoid_b.setPlainText("2.")
     app.ui.ellipsoid_c.setPlainText("3.")
 
-    is_file = os.path.isfile('HeatSource_outputs.txt')
+    is_file = os.path.isfile('heat_source_inputs.txt')
     if is_file is True:
-        os.remove("HeatSource_outputs.txt")
+        os.remove("heat_source_inputs.txt")
 
 # ACT
     qtbot.mouseClick(app.ui.button_ok, QtCore.Qt.LeftButton)
 
 # ASSERT
-    is_file = os.path.isfile('HeatSource_outputs.txt')
+    is_file = os.path.isfile('heat_source_inputs.txt')
     assert is_file is True
