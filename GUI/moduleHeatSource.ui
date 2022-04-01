@@ -74,7 +74,7 @@
     </widget>
    </widget>
    <widget class="QWidget" name="goldak">
-    <widget class="QTextEdit" name="goldak_a_2">
+    <widget class="QTextEdit" name="goldak_a">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -84,7 +84,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QTextEdit" name="goldak_cr_2">
+    <widget class="QTextEdit" name="goldak_cr">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -94,7 +94,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_cr_label_2">
+    <widget class="QLabel" name="goldak_cr_label">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -107,7 +107,7 @@
       <string>cr</string>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_b_label_2">
+    <widget class="QLabel" name="goldak_b_label">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -120,7 +120,7 @@
       <string>b</string>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_measurement_2">
+    <widget class="QLabel" name="goldak_measurement">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -133,7 +133,7 @@
       <string>Length (mm):</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="goldak_cf_2">
+    <widget class="QTextEdit" name="goldak_cf">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -143,7 +143,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_image_2">
+    <widget class="QLabel" name="goldak_image">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -162,7 +162,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_a_label_2">
+    <widget class="QLabel" name="goldak_a_label">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -175,7 +175,7 @@
       <string>a</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="goldak_b_2">
+    <widget class="QTextEdit" name="goldak_b">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -185,7 +185,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="goldak_cf_label_2">
+    <widget class="QLabel" name="goldak_cf_label">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -208,7 +208,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Welding direction - z axis</string>
+      <string>Welding direction - t x n axis</string>
      </property>
     </widget>
    </widget>
@@ -324,7 +324,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Welding direction - z axis</string>
+      <string>Welding direction - t x n axis</string>
      </property>
     </widget>
    </widget>

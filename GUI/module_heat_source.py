@@ -126,12 +126,12 @@ class UiModuleHeatSource(object):
         self.goldak_measurement.setText(_translate("Form", "Length (mm):"))
         self.goldak_a_label.setText(_translate("Form", "a"))
         self.goldak_cf_label.setText(_translate("Form", "cf"))
-        self.z_direction_1.setText(_translate("Form", "Welding direction - z axis"))
+        self.z_direction_1.setText(_translate("Form", "Welding direction - t x n axis"))
         self.ellipsoid_c_label.setText(_translate("Form", "c"))
         self.ellipsoid_measurement.setText(_translate("Form", "Radius (mm):"))
         self.ellipsoid_a_label.setText(_translate("Form", "a"))
         self.ellipsoid_b_label.setText(_translate("Form", "b"))
-        self.z_direction_2.setText(_translate("Form", "Welding direction - z axis"))
+        self.z_direction_2.setText(_translate("Form", "Welding direction - t x n axis"))
         self.button_ok.setText(_translate("Form", "Ok"))
 
 
