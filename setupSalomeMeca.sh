@@ -105,8 +105,10 @@ then
 	#fi
 fi
 
-
-echo export USER_WELDWB_pathToSalome="'"$search_salome"'" > user.config
+rm -rf user.config
+echo export USER_WELDWB_pathToSalome="'"$search_salome"'" >> user.config
 echo export USER_WELDWB_pathToHere="$""("" pwd "")" >> user.config
 echo export USER_WELDWB_srcDir="\$USER_WELDWB_pathToHere" >> user.config
+
+./modifyUser.config.sh
 
