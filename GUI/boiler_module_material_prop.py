@@ -40,7 +40,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         self.ui.button_remove4.clicked.connect(self.removeRow4)
         self.ui.finish.clicked.connect(self.clicked)
         self.ui.button_save.clicked.connect(self.save)
-
+        
     def addRow1(self):
         """
         Add row p1
@@ -61,9 +61,9 @@ class ModuleMaterialPropMainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         item = self.ui.Table_P2.horizontalHeaderItem(1)
         if int(self.ui.P2.currentIndex()) == 0:
-            item.setText(_translate("MainWindow", "Thermal Diffusivity"))
+            item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy"))
+            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
     def addRow2(self):
         """
         Add row p2
@@ -73,9 +73,9 @@ class ModuleMaterialPropMainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         item = self.ui.Table_P2.horizontalHeaderItem(1)
         if int(self.ui.P2.currentIndex()) == 0:
-            item.setText(_translate("MainWindow", "Thermal Diffusivity"))
+            item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy"))
+            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
 
     def removeRow2(self):
         """
@@ -107,9 +107,9 @@ class ModuleMaterialPropMainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         item = self.ui.Table_W2.horizontalHeaderItem(1)
         if int(self.ui.W2.currentIndex()) == 0:
-            item.setText(_translate("MainWindow", "Thermal Diffusivity"))
+            item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy"))
+            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
 
     def removeRow4(self):
         """
@@ -125,9 +125,9 @@ class ModuleMaterialPropMainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         item = self.ui.Table_W2.horizontalHeaderItem(1)
         if int(self.ui.W2.currentIndex()) == 0:
-            item.setText(_translate("MainWindow", "Thermal Diffusivity"))
+            item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy"))
+            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
 
     def clicked(self):
         """
@@ -203,7 +203,7 @@ class ModuleMaterialPropMainWindow(QWidget):
             f.writelines(Lines)
         
         my_env = os.environ.copy()
-        my_env["file_no_exp"] = str("92")
+        my_env["file_no_exp"] = str("91")
         my_env["dynamic_inp"] = str("/GUI/mat_prop_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()
