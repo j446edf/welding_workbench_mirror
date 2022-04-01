@@ -15,63 +15,63 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class UiModuleTorchParam(object):
-    def setupUi(self, module_torch_param):
+    def setupUi(self, Form):
         """
         launch torch params module
         """
-        module_torch_param.setObjectName("module_torch_param")
-        module_torch_param.resize(400, 252)
-        self.v = QtWidgets.QTextEdit(module_torch_param)
+        Form.setObjectName("Form")
+        Form.resize(400, 252)
+        self.v = QtWidgets.QTextEdit(Form)
         self.v.setGeometry(QtCore.QRect(230, 130, 104, 31))
         self.v.setObjectName("v")
-        self.v_label = QtWidgets.QLabel(module_torch_param)
+        self.v_label = QtWidgets.QLabel(Form)
         self.v_label.setGeometry(QtCore.QRect(30, 140, 1511, 18))
         self.v_label.setObjectName("v_label")
-        self.button_ok = QtWidgets.QPushButton(module_torch_param)
+        self.button_ok = QtWidgets.QPushButton(Form)
         self.button_ok.setGeometry(QtCore.QRect(280, 190, 95, 26))
         self.button_ok.setObjectName("button_ok")
-        self.ita = QtWidgets.QTextEdit(module_torch_param)
+        self.ita = QtWidgets.QTextEdit(Form)
         self.ita.setGeometry(QtCore.QRect(230, 30, 104, 31))
         self.ita.setObjectName("ita")
-        self.i_label = QtWidgets.QLabel(module_torch_param)
+        self.i_label = QtWidgets.QLabel(Form)
         self.i_label.setGeometry(QtCore.QRect(30, 90, 151, 18))
         self.i_label.setObjectName("i_label")
-        self.i = QtWidgets.QTextEdit(module_torch_param)
+        self.i = QtWidgets.QTextEdit(Form)
         self.i.setGeometry(QtCore.QRect(230, 80, 104, 31))
         self.i.setObjectName("i")
-        self.ita_label = QtWidgets.QLabel(module_torch_param)
+        self.ita_label = QtWidgets.QLabel(Form)
         self.ita_label.setGeometry(QtCore.QRect(30, 40, 151, 18))
         self.ita_label.setObjectName("ita_label")
-        self.label_4 = QtWidgets.QLabel(module_torch_param)
+        self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setGeometry(QtCore.QRect(350, 40, 21, 18))
         self.label_4.setObjectName("label_4")
-        self.label_5 = QtWidgets.QLabel(module_torch_param)
+        self.label_5 = QtWidgets.QLabel(Form)
         self.label_5.setGeometry(QtCore.QRect(350, 140, 21, 18))
         self.label_5.setObjectName("label_5")
-        self.label_6 = QtWidgets.QLabel(module_torch_param)
+        self.label_6 = QtWidgets.QLabel(Form)
         self.label_6.setGeometry(QtCore.QRect(350, 90, 21, 18))
         self.label_6.setObjectName("label_6")
 
-        self.retranslateUi(module_torch_param)
-        QtCore.QMetaObject.connectSlotsByName(module_torch_param)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, module_torch_param):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        module_torch_param.setWindowTitle(_translate("module_torch_param", "module_torch_param"))
-        self.v_label.setText(_translate("module_torch_param", "Weld torch voltage"))
-        self.button_ok.setText(_translate("module_torch_param", "Ok"))
-        self.i_label.setText(_translate("module_torch_param", "Weld torch current"))
-        self.ita_label.setText(_translate("module_torch_param", "Weld torch efficiency"))
-        self.label_4.setText(_translate("module_torch_param", "%"))
-        self.label_5.setText(_translate("module_torch_param", "V"))
-        self.label_6.setText(_translate("module_torch_param", "A"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.v_label.setText(_translate("Form", "Weld torch voltage"))
+        self.button_ok.setText(_translate("Form", "Ok"))
+        self.i_label.setText(_translate("Form", "Weld torch current"))
+        self.ita_label.setText(_translate("Form", "Weld torch efficiency"))
+        self.label_4.setText(_translate("Form", "%"))
+        self.label_5.setText(_translate("Form", "V"))
+        self.label_6.setText(_translate("Form", "A"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    module_torch_param = QtWidgets.QWidget()
+    Form = QtWidgets.QWidget()
     ui = UiModuleTorchParam()
-    ui.setupUi(module_torch_param)
-    module_torch_param.show()
+    ui.setupUi(Form)
+    Form.show()
     sys.exit(app.exec_())
