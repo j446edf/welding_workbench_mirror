@@ -37,7 +37,13 @@ class ModulePostProcTCMainWindow(QWidget):
         Action on clicking 'add' button
         """
         row_count1 = self.ui.tableWidget.rowCount()
-        self.ui.tableWidget.insertRow(row_count1)
+        self.ui.tableWidget.insertRow(row_count1) 
+        row_count = str(row_count1+1)
+        self.ui.comboBox.addItem("")
+        self.ui.comboBox_2.addItem("")
+        _translate = QtCore.QCoreApplication.translate
+        self.ui.comboBox.setItemText(row_count1, _translate("MainWindow", row_count))
+        self.ui.comboBox_2.setItemText(row_count1, _translate("MainWindow", row_count))
 
     def remove_row(self):
         """
@@ -46,6 +52,9 @@ class ModulePostProcTCMainWindow(QWidget):
         if self.ui.tableWidget.rowCount() > 0:
             self.ui.tableWidget.removeRow(
             self.ui.tableWidget.rowCount()-1)
+            row_count1 = self.ui.tableWidget.rowCount()
+            self.ui.comboBox.removeItem(row_count1)
+            self.ui.comboBox_2.removeItem(row_count1)
 
     def browsefiles(self):
         """
@@ -87,9 +96,13 @@ class ModulePostProcTCMainWindow(QWidget):
         #print(tc_locs)
         fname = self.ui.label_3.text()
         fname = str(fname)
+        NearfieldTC = int(self.ui.comboBox.currentIndex())
+        FarfieldTC = int(self.ui.comboBox_2.currentIndex())
         my_env["exp_tc"] = fname
         my_env["TC_LOCS_str"] = str(tc_locs)
         my_env["no_of_TC"] = str(len(tc_locs)/3)
+        my_env["nearTC"] = str(NearfieldTC)
+        my_env["farTC"] = str(FarfieldTC)
         p=subprocess.Popen(["sh","./runErrorCheck.sh",],env=my_env)
         outputCall = p.communicate()
 

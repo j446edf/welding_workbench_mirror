@@ -131,6 +131,9 @@ for i in range(0,len(deltaT_exp)):
 	#else:
 	#	print('TC_%s_RMS = ' % str(i+2), np.round(100.*ind_RMS[-1],decimals=1), '%')
 	
+near_field_tc = int(os.getenv('USER_INP_NF_TC'))
+far_field_tc = int(os.getenv('USER_INP_FF_TC'))
+
 ######################### UI option for selecting near and far field tc for calibRMS needed ############################
-calibRMS = (0.5*( (((deltaT_sim[2]-deltaT_exp[2])/deltaT_exp[2])**2) +  (((deltaT_sim[4]-deltaT_exp[4])/deltaT_exp[4])**2) ))**0.5
+calibRMS = (0.5*( (((deltaT_sim[near_field_tc]-deltaT_exp[near_field_tc])/deltaT_exp[near_field_tc])**2) +  (((deltaT_sim[far_field_tc]-deltaT_exp[far_field_tc])/deltaT_exp[far_field_tc])**2) ))**0.5
 print('calibrated_RMS = ', np.round(100.*calibRMS,decimals=1), '%')
