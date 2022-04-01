@@ -125,19 +125,19 @@ gui_f_sym = 0.
 gui_torch_path = 'USER' # 'LINEAR' OR 'CIRCULAR' OR 'USER'
 
 
-if gui_torch_path == 'LINEAR' :
-    # The following appear in the case of 'LINEAR'
-    gui_torch_lin_vnom = 1.17
-    gui_torch_x0 = 0.
-    gui_torch_y0 = 30.
-    gui_torch_z0 = 0.
+# if gui_torch_path == 'LINEAR' :
+    # # The following appear in the case of 'LINEAR'
+    # gui_torch_lin_vnom = 1.17
+    # gui_torch_x0 = 0.
+    # gui_torch_y0 = 30.
+    # gui_torch_z0 = 0.
 
-if gui_torch_path == 'USER' :
-    # The following appear in the case of 'LINEAR'
-    gui_torch_lin_vnom = 1.17
-    gui_torch_x0 = 0.
-    gui_torch_y0 = 30.
-    gui_torch_z0 = 0.
+# if gui_torch_path == 'USER' :
+    # # The following appear in the case of 'LINEAR'
+    # gui_torch_lin_vnom = 1.17
+    # gui_torch_x0 = 0.
+    # gui_torch_y0 = 30.
+    # gui_torch_z0 = 0.
 
 # #### USER ARBITRARY PATH
 
