@@ -40,10 +40,13 @@ class ModuleMeshingMainWindow(QWidget):
         """
         if int(self.ui.weld.currentIndex()) == 0:
             self.ui.stackedWidget.setCurrentWidget(self.ui.Edge_Weld)
+            self.ui.button_ok.setEnabled(True)
         elif int(self.ui.weld.currentIndex()) == 1:
             self.ui.stackedWidget.setCurrentWidget(self.ui.TG9)
+            self.ui.button_ok.setEnabled(False)
         else:
             self.ui.stackedWidget.setCurrentWidget(self.ui.Tekken)
+            self.ui.button_ok.setEnabled(False)
 
     def clicked_ok(self):
         """
@@ -88,6 +91,8 @@ class ModuleMeshingMainWindow(QWidget):
             print("Tekken mesh builder not setup yet")
             my_env = os.environ.copy()
             my_env["geom"] = 2
+        self.ui.button_save.setEnabled(True)
+
             
     def clicked_save(self):
         sfile=QFileDialog.getSaveFileName(self.ModuleMeshingMainWindow, 'Save as', './', '*.med')
