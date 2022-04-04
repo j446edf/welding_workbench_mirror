@@ -100,7 +100,7 @@ class UiModuleMeshing(object):
         self.a.setGeometry(QtCore.QRect(180, 40, 51, 31))
         self.a.setObjectName("a")
         self.edge_weld_image = QtWidgets.QLabel(self.Edge_Weld)
-        self.edge_weld_image.setGeometry(QtCore.QRect(240, 0, 381, 201))
+        self.edge_weld_image.setGeometry(QtCore.QRect(240, 0, 421, 221))
         self.edge_weld_image.setText("")
         self.edge_weld_image.setPixmap(QtGui.QPixmap("EdgeWelded.png"))
         self.edge_weld_image.setScaledContents(True)
