@@ -22,8 +22,19 @@ from salome.geom import geomBuilder
 import math
 import SALOMEDS
 
-#Inputs
+################# USER INPUTS ##########################################
+pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
+pathToMeshing=pathToWorkbench+'/meshing'
 #Base plate (Full)
+l = float(os.getenv('USER_INP_B'))
+h = float(os.getenv('USER_INP_D'))
+th = float(os.getenv('USER_INP_A'))
+
+pl = float(os.getenv('USER_INP_B'))
+ph = float(os.getenv('USER_INP_C'))
+pth = float(os.getenv('USER_INP_A'))
+
+'''
 l = 250 #Base plate length
 h = 70 #Base plate height
 th = 10 #Base plate thickness
@@ -32,7 +43,8 @@ th = 10 #Base plate thickness
 pl = 250 #Weld pass length
 ph = 8 #Weld pass height
 pth = 10 #Weld pass thickness
-
+'''
+########################################################################
 geompy = geomBuilder.New()
 
 O = geompy.MakeVertex(0, 0, 0)
@@ -159,19 +171,33 @@ Quadrangle_Parameters_WELD = Quadrangle_2D.QuadrangleParameters(StdMeshersBuilde
 def round_up_to_even(f):
     return math.ceil(f / 2.) * 2
 
-######## User Inputs Meshing ########
+######## User Inputs Meshing ###########################################
+#Element length
+mesh_a_inp=float(os.getenv('USER_INP_F'))
+mesh_b_inp=float(os.getenv('USER_INP_E'))
+mesh_c_inp=float(os.getenv('USER_INP_H'))
+mesh_d_inp=float(os.getenv('USER_INP_G'))
+
 #Weld
-Mesh_a = 8 #Number of elements along Weld width
-Mesh_b = 8 #Number of elements along weld height
+Mesh_a = pth/mesh_a_inp #Number of elements along Weld width
+Mesh_b = ph/mesh_b_inp #Number of elements along weld height
 
 #Base plate
-Mesh_c = 6 #Number of elements along base plate width (bottom edge)
-Mesh_d = 30 #Number of elements along base plate height
-D_d = [ 0, 0.5, 0.3, 1, 0.5, 3, 0.7, 1, 1, 0.5 ] # Density distribution [x1, density1, x2, density2, x3, density3, ...] (x from 0 to 1)
+Mesh_c = th/mesh_c_inp #Number of elements along base plate width (bottom edge)
+Mesh_d = h/mesh_d_inp #Number of elements along base plate height
+#D_d = [ 0, 0.5, 0.3, 1, 0.5, 3, 0.7, 1, 1, 0.5 ] # Density distribution [x1, density1, x2, density2, x3, density3, ...] (x from 0 to 1)
 # change density distribution for refinement at top of base plate
-
+'''
+Mesh_a = 8
+Mesh_b = 8
+Mesh_c = 6
+Mesh_d = 30
+'''
 Mesh_a_corrected = round_up_to_even(Mesh_a)
+Mesh_b_corrected = math.ceil(Mesh_b)
 Mesh_c_corrected = round_up_to_even(Mesh_c)
+Mesh_d_corrected = math.ceil(Mesh_d)
+########################################################################
 
 # weld meshing
 #########################
@@ -179,7 +205,7 @@ Regular_1D = Mesh_Weld.Segment(geom=Edge_Weld_Base)
 Number_of_Segments_Weld_Base = Regular_1D.NumberOfSegments(Mesh_a_corrected,None,[])
 
 Regular_1D_1 = Mesh_Weld.Segment(geom=Edge_Weld_Side)
-Number_of_Segments_Weld_Side = Regular_1D_1.NumberOfSegments(Mesh_b,None,[])
+Number_of_Segments_Weld_Side = Regular_1D_1.NumberOfSegments(Mesh_b_corrected,None,[])
 
 
 #Parent meshing
@@ -189,7 +215,7 @@ Regular_1D_2 = Mesh_Weld.Segment(geom=Edge_Base)
 Number_of_Segments_Base = Regular_1D_2.NumberOfSegments(Mesh_c_corrected,None,[])
 
 Regular_1D_3 = Mesh_Weld.Segment(geom=Edge_Side)
-Number_of_Segments_Side = Regular_1D_3.NumberOfSegments(Mesh_d,None,[])
+Number_of_Segments_Side = Regular_1D_3.NumberOfSegments(Mesh_d_corrected,None,[])
 
 
 
@@ -202,11 +228,18 @@ Sub_mesh_C = Regular_1D_3.GetSubMesh()
 isDone = Mesh_Weld.Compute()
 
 
-
+######## User Inputs Meshing 2##########################################
 #translate, extrude, concatenate & mirror mesh
+Fine_mm = float(os.getenv('USER_INP_K'))
+Coarse1_mm = float(os.getenv('USER_INP_J'))
+Coarse2_mm = float(os.getenv('USER_INP_I'))
+Coarse1_l = float(os.getenv('USER_INP_L'))
+Fine_l = float(os.getenv('USER_INP_M'))
+
+'''
 Fine_mm =1 #element length in fine zone
 Fine_l = 10 #distance from centre in z of end of fine zone (0 < Fine_l < l/2)
-Fine = int(Fine_l/Fine_mm)
+
 
 Coarse1_mm = 2 #element length in first coarse zone
 Coarse1_l = 60 #distance from centre in z of end of first coarse zone(Fine_l < Coarse1_l < l/2
@@ -214,7 +247,12 @@ Coarse1 = int((Coarse1_l-Fine_l)/Coarse1_mm)
 
 Coarse2_mm = 5 #element length in second coarse zone (up to end of weld)
 Coarse2 = int(((l/2)-Coarse1_l)/Coarse2_mm)
+'''
 
+Fine = int(Fine_l/Fine_mm)
+Coarse1 = int((Coarse1_l-Fine_l)/Coarse1_mm)
+Coarse2 = int(((l/2)-Coarse1_l)/Coarse2_mm)
+########################################################################
 Mesh_WELD_translated = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Fine_l ], 1, 'Mesh_WELD_translated' )
 Mesh_WELD_translated_2 = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Coarse1_l ], 1, 'Mesh_WELD_translated' )
 Mesh_Weld.ExtrusionSweepObjects( [ Mesh_Weld ], [ Mesh_Weld ], [ Mesh_Weld ], [ 0, 0, Fine_mm ], Fine, 1 )
@@ -316,6 +354,12 @@ smesh.SetName(Regular_1D.GetAlgorithm(), 'Regular_1D')
 smesh.SetName(Quadrangle_Parameters_WELD, 'Quadrangle Parameters_WELD')
 smesh.SetName(Mesh_Weld.GetMesh(), 'Mesh_Weld')
 smesh.SetName(Mesh_Weld_3D.GetMesh(), 'Mesh_Weld_3D')
+
+try:
+	Mesh_Weld_3D.ExportMED(r''+pathToMeshing+'/Edge_Welded_Beam_fromGUI.med',auto_groups=1,minor=40,overwrite=1,meshPart=None,autoDimension=1)
+	pass
+except:
+	print('ExportMED() failed. Invalid file name?')
 
 if salome.sg.hasDesktop():
   salome.sg.updateObjBrowser()
