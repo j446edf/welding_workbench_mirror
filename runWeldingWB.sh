@@ -59,5 +59,5 @@ fi
 ### Launch Workbench
 ####################################################################################################################
 pushd $USER_WELDWB_pathToHere/GUI
-python boiler.py &
+./venv/bin/python boiler_module_main_workflow.py &
 popd

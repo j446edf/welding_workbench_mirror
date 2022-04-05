@@ -10,6 +10,8 @@ from PyQt5.QtWidgets import QApplication, QFileDialog, QDialog, QPlainTextEdit
 from PyQt5.QtWidgets import QMainWindow, QWidget
 from PyQt5 import QtCore
 from module_meshing import UiModuleMeshing
+pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
+pathToMeshing=pathToWorkbench+'/meshing'
 
 
 class ModuleMeshingMainWindow(QWidget):
@@ -52,8 +54,9 @@ class ModuleMeshingMainWindow(QWidget):
         """
         OK Button event
         """
+        my_env = os.environ.copy()
         if int(self.ui.weld.currentIndex()) == 0:
-            my_env = os.environ.copy()
+            my_env["model"] = str("/meshing/Edge_Welded_Beam_fromGUI.med")
             get_a = self.ui.a.toPlainText().strip()
             get_b = self.ui.b.toPlainText().strip()
             get_c = self.ui.c.toPlainText().strip()
@@ -85,18 +88,24 @@ class ModuleMeshingMainWindow(QWidget):
             outputCall = p.communicate()
         elif int(self.ui.weld.currentIndex()) == 1:
             print("TG9 mesh builder not setup yet")
-            my_env = os.environ.copy()
-            my_env["geom"] = 1
+            my_env["model"] = str("/meshing/TG9_fromGUI.med")
+            my_env["geom"] = str("1")
         else:
-            print("Tekken mesh builder not setup yet")
-            my_env = os.environ.copy()
-            my_env["geom"] = 2
+            print("Tekken mesh builder not setup yet")            
+            my_env["model"] = str("/meshing/Tekken_fromGUI.med")
+            my_env["geom"] = str("2")
+        p=subprocess.Popen(["sh","./modifyExportMesh.sh",],env=my_env)
+        outputCall = p.communicate()
         self.ui.button_save.setEnabled(True)
 
             
     def clicked_save(self):
-        sfile=QFileDialog.getSaveFileName(self.ModuleMeshingMainWindow, 'Save as', './', '*.med')
+        sfile=QFileDialog.getSaveFileName(self.ModuleMeshingMainWindow, 'Save as', pathToMeshing, '*.med')
         sfilename = sfile[0]
+        if str(sfilename).endswith('.med'):
+            sfilename = str(sfilename)
+        else:
+            sfilename = str(sfilename)+'.med'
         my_env = os.environ.copy()
         if int(self.ui.weld.currentIndex()) == 0:
             my_env["mesh_file"] = str("/meshing/Edge_Welded_Beam_fromGUI.med")

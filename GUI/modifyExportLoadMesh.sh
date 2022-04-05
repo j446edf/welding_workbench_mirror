@@ -4,15 +4,12 @@
 
 export USER_WELDWB_srcDir
 
-USER_INP_FILE=$load
-FILE_NO=$file_no_exp
+USER_INP_FILE=$model
 export USER_INP_FILE
-export FILE_NO
 
 #echo $USER_WELDWB_srcDir$USER_INP_FILE > outputMe
 
 cd $USER_WELDWB_srcDir/templates
-sed -i "s@.*D $FILE_NO.*@F libr $USER_INP_FILE D $FILE_NO@g" nonlinearthermal.export
+sed -i "s@.*D 20.*@F mmed $USER_INP_FILE D 20@g" nonlinearthermal.export
 
 unset USER_INP_FILE
-unset FILE_NO
