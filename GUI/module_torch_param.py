@@ -25,7 +25,7 @@ class UiModuleTorchParam(object):
         self.v.setGeometry(QtCore.QRect(230, 130, 104, 31))
         self.v.setObjectName("v")
         self.v_label = QtWidgets.QLabel(Form)
-        self.v_label.setGeometry(QtCore.QRect(30, 140, 1511, 18))
+        self.v_label.setGeometry(QtCore.QRect(30, 140, 151, 18))
         self.v_label.setObjectName("v_label")
         self.button_ok = QtWidgets.QPushButton(Form)
         self.button_ok.setGeometry(QtCore.QRect(280, 190, 95, 26))
