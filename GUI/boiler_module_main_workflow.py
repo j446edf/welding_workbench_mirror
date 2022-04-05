@@ -29,7 +29,7 @@ class ModuleMainWorkflowMainWindow(QWidget):
         self.ui.pushButton_2.clicked.connect(self.clicked2) # <- Mesh module
         self.ui.pushButton_5.clicked.connect(self.clicked5) # <- Load Mesh
         self.ui.pushButton_4.clicked.connect(self.clicked4) # <- Heat Source Module
-        #self.ui.pushButton_8.clicked.connect(self.clicked8) # <- Load heat source results
+        self.ui.pushButton_8.clicked.connect(self.clicked8) # <- Load heat source results
         
     def clicked2(self):
         self.ui.ModuleMeshingMainWindow=ModuleMeshingMainWindow()
@@ -65,10 +65,11 @@ class ModuleMainWorkflowMainWindow(QWidget):
         #self.ui.label_19.setText(resuFile)
         
     def clicked8(self):
-        fname,_=QFileDialog.getOpenFileName(self.ModuleMainWorkflowMainWindow, 'Load Heat Source Calibration Results', pathToResults, '(*.rmed)')
-        print(fname)
-        fname = str(fname)
-        self.ui.label_20.setText(fname)
+        #fname,_=QFileDialog.getOpenFileName(self.ModuleMainWorkflowMainWindow, 'Load Heat Source Calibration Results', pathToResults, '(*.base)')
+        dname=QFileDialog.getExistingDirectory(self.ModuleMainWorkflowMainWindow, 'Load Heat Source Calibration Results', 'pathToResults')
+        print(dname)
+        fname = str(dname)
+        self.ui.label_20.setText(dname)
         
     def show(self):
         self.ModuleMainWorkflowMainWindow.show()

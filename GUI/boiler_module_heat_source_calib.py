@@ -114,7 +114,7 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.ModulePostProcTCMainWindow.show()
         
     def clicked12(self):
-        sfile=QFileDialog.getSaveFileName(self.ModuleHeatSourceCalibMainWindow, 'Save as', pathToWorkbench, '*.med')
+        sfile=QFileDialog.getSaveFileName(self.ModuleHeatSourceCalibMainWindow, 'Save as', pathToWorkbench, '*.base')
         sfilename = sfile[0]
         if str(sfilename).endswith('.base'):
             sfilename = str(sfilename)
