@@ -12,7 +12,8 @@ from boiler_module_weld_path import ModuleWeldPathMainWindow
 from boiler_module_torch_param import ModuleTorchParamMainWindow
 from boiler_module_heat_source import ModuleHeatSourceMainWindow
 from boiler_module_postproc_tc import ModulePostProcTCMainWindow
-
+pathToWorkbench=os.getenv('USER_WELDWB_srcDir')
+pathToResults = pathToWorkbench+'/simulation/tmp/nonlinearthermal.base'
 
 class ModuleHeatSourceCalibMainWindow(QWidget):
 
@@ -35,6 +36,7 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_8.clicked.connect(self.clicked8) # <- Run Simulation
         self.ui.pushButton_9.clicked.connect(self.clicked9) # <- Load Simulation results
         self.ui.pushButton_10.clicked.connect(self.clicked10) # <- Run error checking
+        self.ui.pushButton_12.clicked.connect(self.clicked12) # <- Save Simulation results
         #self.ui.pushButton_8.setEnabled(True)
         
     def clicked2(self):
@@ -87,10 +89,10 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         p=subprocess.Popen(["sh","./runSimConnect.sh",])
         outputCall = p.communicate()
         #### dname_resu must be file path to .base file that is created when running sim
-        dname_resu = '/home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base'
-        self.ui.label_5.setText(dname_resu)
+        self.ui.label_5.setText(pathToResults)
         self.ui.pushButton_11.setEnabled(True)
         self.ui.pushButton_10.setEnabled(True)
+        self.ui.pushButton_12.setEnabled(True)
     
     def clicked9(self):
         #fname_resu,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Open file', './', 'Results File (*.base)')
@@ -111,7 +113,17 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.ModulePostProcTCMainWindow=ModulePostProcTCMainWindow()
         self.ui.ModulePostProcTCMainWindow.show()
         
-        
+    def clicked12(self):
+        sfile=QFileDialog.getSaveFileName(self.ModuleHeatSourceCalibMainWindow, 'Save as', pathToWorkbench, '*.med')
+        sfilename = sfile[0]
+        if str(sfilename).endswith('.base'):
+            sfilename = str(sfilename)
+        else:
+            sfilename = str(sfilename)+'.base'
+        my_env = os.environ.copy()
+        my_env["resu_file"] = pathToResults
+        my_env["input"] = str(sfilename)
+        p=subprocess.Popen(["sh","./saveResu.sh",],env=my_env)
     
 
     def show(self):
