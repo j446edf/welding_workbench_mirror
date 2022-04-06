@@ -60,4 +60,4 @@ then
 	echo 'Location: '$USER_WELDWB_srcDir'/meshing/Edge_Welded_Beam_fromGUI.med'
 fi
 
-$USER_WELDWB_pathToSalome/salome shell killSalome.py
+#$USER_WELDWB_pathToSalome/salome shell killSalome.py
