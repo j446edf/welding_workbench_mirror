@@ -35,7 +35,7 @@ P version v14.4_smeca
 A args 
 A memjeveux 901.9296875
 A tpmax 13920.0
-F comm /home/talha/Documents/weldingworkbench/postprocessing/project.comm D  1
-F libr /home/talha/Documents/weldingworkbench/postprocessing/dynamic.inputs D  90
-R base /home/talha/Documents/weldingworkbench/simulation/tmp/nonlinearthermal.base DC 0
-F mess /home/talha/Documents/weldingworkbench/postprocessing/proj.mess R  6
+F comm ReplaceMe/postprocessing/project.comm D  1
+F libr ReplaceMe/postprocessing/dynamic.inputs D  90
+R base /home/b04999tk/Documents/nonlinearthermal.base DC 0
+F mess ReplaceMe/postprocessing/proj.mess R  6

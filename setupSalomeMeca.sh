@@ -111,4 +111,5 @@ echo export USER_WELDWB_pathToHere="$""("" pwd "")" >> user.config
 echo export USER_WELDWB_srcDir="\$USER_WELDWB_pathToHere" >> user.config
 
 ./modifyUser.config.sh
+./modifyExportPath.sh
 
