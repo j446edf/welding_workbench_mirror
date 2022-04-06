@@ -554,9 +554,9 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>251</x>
       <y>0</y>
-      <width>852</width>
+      <width>721</width>
       <height>101</height>
      </rect>
     </property>
@@ -593,12 +593,18 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>91</width>
+      <width>231</width>
       <height>91</height>
      </rect>
     </property>
     <property name="text">
-     <string>INSERT LOGO</string>
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>sindri_logo.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

@@ -63,7 +63,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         if int(self.ui.P2.currentIndex()) == 0:
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
+            item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
     def addRow2(self):
         """
         Add row p2
@@ -75,7 +75,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         if int(self.ui.P2.currentIndex()) == 0:
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
+            item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
 
     def removeRow2(self):
         """
@@ -109,7 +109,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         if int(self.ui.W2.currentIndex()) == 0:
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
+            item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
 
     def removeRow4(self):
         """
@@ -127,7 +127,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         if int(self.ui.W2.currentIndex()) == 0:
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
-            item.setText(_translate("MainWindow", "Enthalpy (JK/kg)"))
+            item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
 
     def clicked(self):
         """

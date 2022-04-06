@@ -250,11 +250,13 @@ Coarse2 = int(((l/2)-Coarse1_l)/Coarse2_mm)
 '''
 
 Fine = int(Fine_l/Fine_mm)
-Coarse1 = int((Coarse1_l-Fine_l)/Coarse1_mm)
-Coarse2 = int(((l/2)-Coarse1_l)/Coarse2_mm)
+Fine_l_corrected = Fine*Fine_mm
+Coarse1 = int((Coarse1_l-Fine_l_corrected)/Coarse1_mm)
+Coarse1_l_corrected = (Coarse1*Coarse1_mm)+Fine_l_corrected
+Coarse2 = int(((l/2)-Coarse1_l_corrected)/Coarse2_mm)
 ########################################################################
-Mesh_WELD_translated = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Fine_l ], 1, 'Mesh_WELD_translated' )
-Mesh_WELD_translated_2 = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Coarse1_l ], 1, 'Mesh_WELD_translated' )
+Mesh_WELD_translated = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Fine_l_corrected ], 1, 'Mesh_WELD_translated' )
+Mesh_WELD_translated_2 = Mesh_Weld.TranslateObjectMakeMesh( Mesh_Weld, [ 0, 0, Coarse1_l_corrected], 1, 'Mesh_WELD_translated' )
 Mesh_Weld.ExtrusionSweepObjects( [ Mesh_Weld ], [ Mesh_Weld ], [ Mesh_Weld ], [ 0, 0, Fine_mm ], Fine, 1 )
 Mesh_WELD_translated.ExtrusionSweepObjects( [ Mesh_WELD_translated ], [ Mesh_WELD_translated ], [ Mesh_WELD_translated ], [ 0, 0, Coarse1_mm ], Coarse1, 1 )
 Mesh_WELD_translated_2.ExtrusionSweepObjects( [ Mesh_WELD_translated_2 ], [ Mesh_WELD_translated_2 ], [ Mesh_WELD_translated_2 ], [ 0, 0, Coarse2_mm ], Coarse2, 1 )
