@@ -143,7 +143,8 @@ class ModuleWeldPathMainWindow(QWidget):
             dir0.append(float(self.ui.dirx0.toPlainText().strip()))
             dir0.append(float(self.ui.diry0.toPlainText().strip()))
             dir0.append(float(self.ui.dirz0.toPlainText().strip()))
-            Lines.append("gui_torch_dir0=["+repr(dir0)+"]")
+            Lines.append("gui_torch_dir0=["+repr(dir0)+"]" + '/n' + '/n')
+            Lines.append("gui_torch_path = 'USER'")
 
         with open('weld_path_inputs.txt', 'w') as f:
             f.writelines(Lines)
@@ -151,7 +152,7 @@ class ModuleWeldPathMainWindow(QWidget):
         my_env = os.environ.copy()
         my_env["file_no_exp"] = str("92")
         my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
-        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        p=subprocess.Popen(["sh","./modifyExport_NL.sh",],env=my_env)
         outputCall = p.communicate()
         self.ui.button_save.setEnabled(True)
         self.ModuleWeldPathMainWindow.close()
@@ -252,6 +253,7 @@ class ModuleWeldPathMainWindow(QWidget):
             dir0.append(float(self.ui.diry0.toPlainText().strip()))
             dir0.append(float(self.ui.dirz0.toPlainText().strip()))
             Lines.append("gui_torch_dir0=["+repr(dir0)+"]")
+            Lines.append("gui_torch_path = 'USER'")
 
         with open('weld_path_inputs.txt', 'w') as f:
             f.writelines(Lines)
@@ -259,7 +261,7 @@ class ModuleWeldPathMainWindow(QWidget):
         my_env = os.environ.copy()
         my_env["file_no_exp"] = str("92")
         my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
-        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        p=subprocess.Popen(["sh","./modifyExport_NL.sh",],env=my_env)
         outputCall = p.communicate()
         sfile=QFileDialog.getSaveFileName(self.ModuleWeldPathMainWindow, 'Save as', './')
         sfilename = sfile[0]

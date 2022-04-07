@@ -9,6 +9,7 @@ import inspect
 from module_heat_source_calib import UiModuleHeatSourceCalib
 from boiler_module_material_prop import ModuleMaterialPropMainWindow
 from boiler_module_weld_path import ModuleWeldPathMainWindow
+from boiler_module_weld_path_steady import ModuleWeldPathSteadyMainWindow
 from boiler_module_torch_param import ModuleTorchParamMainWindow
 from boiler_module_heat_source import ModuleHeatSourceMainWindow
 from boiler_module_postproc_tc import ModulePostProcTCMainWindow
@@ -53,7 +54,10 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.ModuleMaterialPropMainWindow=ModuleMaterialPropMainWindow()
         self.ui.ModuleMaterialPropMainWindow.show()
         self.ui.pushButton_4.setEnabled(True)
-        self.ui.pushButton_5.setEnabled(True)
+        if self.ui.radioButton_3.isChecked():
+            self.ui.pushButton_5.setEnabled(True)
+        else:
+            self.ui.pushButton_5.setEnabled(False)
 
     def clicked3(self):
         fname,_=QFileDialog.getOpenFileName(self.ModuleHeatSourceCalibMainWindow, 'Load Material Data', './', '(*.txt)')
@@ -66,11 +70,18 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         outputCall = p.communicate()
         #self.ui.label_13.setText(fname)
         self.ui.pushButton_4.setEnabled(True)
-        self.ui.pushButton_5.setEnabled(True)
+        if self.ui.radioButton_3.isChecked():
+            self.ui.pushButton_5.setEnabled(True)
+        else:
+            self.ui.pushButton_5.setEnabled(False)
 
     def clicked4(self):
-        self.ui.ModuleWeldPathMainWindow=ModuleWeldPathMainWindow()
-        self.ui.ModuleWeldPathMainWindow.show()
+        if self.ui.radioButton_4.isChecked():
+            self.ui.ModuleWeldPathSteadyMainWindow=ModuleWeldPathSteadyMainWindow()
+            self.ui.ModuleWeldPathSteadyMainWindow.show()
+        else:
+            self.ui.ModuleWeldPathMainWindow=ModuleWeldPathMainWindow()
+            self.ui.ModuleWeldPathMainWindow.show()
         self.ui.pushButton_6.setEnabled(True)
         
     def clicked5(self):
@@ -80,7 +91,7 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         my_env = os.environ.copy()
         my_env["file_no_exp"] = str("92")
         my_env["load"] = fname
-        p=subprocess.Popen(["sh","./modifyExportLoad.sh",],env=my_env)
+        p=subprocess.Popen(["sh","./modifyExportLoad_NL.sh",],env=my_env)
         #self.ui.label_14.setText(fname)
         self.ui.pushButton_6.setEnabled(True)
         
