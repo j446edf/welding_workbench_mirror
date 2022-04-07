@@ -41,7 +41,7 @@ class UiModuleWeldPath(object):
         self.button_save = QtWidgets.QPushButton(Form)
         self.button_save.setGeometry(QtCore.QRect(590, 670, 95, 26))
         self.button_save.setObjectName("button_save")
-        self.button_save.setEnabled(False)
+        #self.button_save.setEnabled(False)
         self.path_plot = QtWidgets.QLabel(Form)
         self.path_plot.setGeometry(QtCore.QRect(560, 410, 241, 161))
         self.path_plot.setText("")

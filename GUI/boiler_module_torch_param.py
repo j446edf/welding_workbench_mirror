@@ -49,6 +49,8 @@ class ModuleTorchParamMainWindow(QWidget):
         my_env["dynamic_inp"] = str("/GUI/torch_param_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()
+        self.ModuleTorchParamMainWindow.close()
+
 
     def show(self):
         """

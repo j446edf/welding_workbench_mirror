@@ -71,6 +71,7 @@ class ModuleHeatSourceMainWindow(QWidget):
         my_env["dynamic_inp"] = str("/GUI/heat_source_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()
+        self.module_heat_source_main_window.close()
 
     def show(self):
         """

@@ -154,9 +154,113 @@ class ModuleWeldPathMainWindow(QWidget):
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()
         self.ui.button_save.setEnabled(True)
-
+        self.ModuleWeldPathMainWindow.close()
         
     def save(self):
+        Lines = []
+        dsdt = []
+        beam = []
+        path = []
+        normals = []
+        dir0 = []
+        rowCount1 = self.ui.v_t_table.rowCount()
+        rowCount2 = self.ui.path_table.rowCount()
+        columnCount1 = 2
+        columnCount2 = 3
+        end = 0
+
+        for i in range(rowCount1):
+            if self.ui.v_t_table.item(i,0) and self.ui.v_t_table.item(i,0).text():
+                if self.ui.v_t_table.item(i,1) and self.ui.v_t_table.item(i,1).text():
+                    for j in range(columnCount1):
+                        dsdt.append(float(self.ui.v_t_table.item(i,j).text()))
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+        if not dsdt:
+            Lines.append('gui_torch_dsdt=[[ ]]' + '\n' + '\n')
+        else:            
+            end = float(dsdt[len(dsdt)-2])
+            Lines.append('gui_torch_dsdt=[[ ' + str(dsdt[0]) + ' ,  ' + str(dsdt[1]) + ' ]')
+            print('JEF', len(dsdt),type(dsdt))
+            for i in range((len(dsdt)//2)-1):  ### <----------------------------NEEDS TO BE AN INT. / = float division, // = int division
+                Lines.append(',' + '\n' + '   [ ' + str(dsdt[2*i+2]) + ' ,  ' + str(dsdt[2*i+3]) + ' ]')
+            Lines.append(']' + '\n' + '\n')
+
+        if str(self.ui.beam_on.toPlainText().strip()) == '':
+            Lines.append('gui_torch_beam=[[ ]]' + '\n' + '\n')
+        elif str(self.ui.beam_off.toPlainText().strip()) == '':
+            Lines.append('gui_torch_beam=[[ ]]' + '\n' + '\n')
+        else:
+            b_on = float(self.ui.beam_on.toPlainText().strip())
+            b_off = float(self.ui.beam_off.toPlainText().strip())
+            beam = [0., 0., (b_on-0.01), 0., b_on, 1., b_off, 1., (b_off+0.01), 0, end, 0.]
+            Lines.append('gui_torch_beam=[[ ' + str(beam[0]) + ' ,  ' + str(beam[1]) + ' ]')
+            for i in range(5):
+                Lines.append(',' + '\n' + '   [ ' + str(beam[2*i+2]) + ' ,  ' + str(beam[2*i+3]) + ' ]')
+            Lines.append(']' + '\n' + '\n')
+
+        for i in range(rowCount2):
+            if self.ui.path_table.item(i,0) and self.ui.path_table.item(i,0).text():
+                if self.ui.path_table.item(i,1) and self.ui.path_table.item(i,1).text():
+                    if self.ui.path_table.item(i,2) and self.ui.path_table.item(i,2).text():
+                        for j in range(columnCount2):
+                            path.append(float(self.ui.path_table.item(i,j).text()))
+                    else:
+                        print("Cell empty --> Next row")
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+        if not path:
+            Lines.append('gui_torch_path_torch=[[ ]]' + '\n' + '\n')
+        else:
+            Lines.append('gui_torch_path_torch=[[ ' + str(path[0]) + ' ,  ' + str(path[1]) + ' ,  ' + str(path[2]) + ' ]')
+            for i in range((len(path)//3)-1): ### <----------------------------NEEDS TO BE AN INT. / = float division, // = int division
+                Lines.append(',' + '\n' + '   [ ' + str(path[(3*i)+3]) + ' ,  ' + str(path[(3*i)+4]) + ' ,  ' + str(path[(3*i)+5]) + ' ]')
+            Lines.append(']' + '\n' + '\n')
+
+        for i in range(rowCount2):
+            if self.ui.path_table.item(i,3) and self.ui.path_table.item(i,3).text():
+                if self.ui.path_table.item(i,4) and self.ui.path_table.item(i,4).text():
+                    if self.ui.path_table.item(i,5) and self.ui.path_table.item(i,5).text():
+                        for j in range(columnCount2):
+                            normals.append(float(self.ui.path_table.item(i,j+3).text()))
+                    else:
+                        print("Cell empty --> Next row")
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+        if not path:
+            Lines.append('gui_torch_pathNormals_torch=[[ ]]' + '\n' + '\n')
+        else:
+            Lines.append('gui_torch_pathNormals_torch=[[ ' + str(normals[0]) + ' ,  ' + str(normals[1]) + ' ,  ' + str(normals[2]) + ' ]')
+            for i in range((len(normals)//3)-1): ### <----------------------------NEEDS TO BE AN INT. / = float division, // = int division
+                Lines.append(',' + '\n' + '   [ ' + str(normals[(3*i)+3]) + ' ,  ' + str(normals[(3*i)+4]) + ' ,  ' + str(normals[(3*i)+5]) + ' ]')
+            Lines.append(']' + '\n' + '\n')
+
+        if str(self.ui.dirx0.toPlainText().strip()) == '':
+            Lines.append('gui_torch_dir0=[[ ]]' + '\n' + '\n')
+        elif str(self.ui.diry0.toPlainText().strip()) == '':
+            Lines.append('gui_torch_dir0=[[ ]]' + '\n' + '\n')
+        elif str(self.ui.dirz0.toPlainText().strip()) == '':
+            Lines.append('gui_torch_dir0=[[ ]]' + '\n' + '\n')
+        else:
+            dir0.append(float(self.ui.dirx0.toPlainText().strip()))
+            dir0.append(float(self.ui.diry0.toPlainText().strip()))
+            dir0.append(float(self.ui.dirz0.toPlainText().strip()))
+            Lines.append("gui_torch_dir0=["+repr(dir0)+"]")
+
+        with open('weld_path_inputs.txt', 'w') as f:
+            f.writelines(Lines)
+            
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("92")
+        my_env["dynamic_inp"] = str("/GUI/weld_path_inputs.txt")
+        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        outputCall = p.communicate()
         sfile=QFileDialog.getSaveFileName(self.ModuleWeldPathMainWindow, 'Save as', './')
         sfilename = sfile[0]
         my_env = os.environ.copy()

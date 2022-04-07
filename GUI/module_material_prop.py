@@ -142,7 +142,7 @@ class UiModuleMaterialProp(object):
         self.button_save = QtWidgets.QPushButton(Form)
         self.button_save.setGeometry(QtCore.QRect(620, 600, 95, 26))
         self.button_save.setObjectName("button_apply")
-        self.button_save.setEnabled(False)
+        #self.button_save.setEnabled(False)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

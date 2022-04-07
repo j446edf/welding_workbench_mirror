@@ -47,6 +47,7 @@ class ModuleMaterialPropMainWindow(QWidget):
         """
         rowCount1 = self.ui.Table_P1.rowCount()
         self.ui.Table_P1.insertRow(rowCount1)
+        
     def removeRow1(self):
         """
         Remove row p1
@@ -64,6 +65,7 @@ class ModuleMaterialPropMainWindow(QWidget):
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
             item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
+            
     def addRow2(self):
         """
         Add row p2
@@ -76,7 +78,7 @@ class ModuleMaterialPropMainWindow(QWidget):
             item.setText(_translate("MainWindow", "Thermal Diffusivity (mm²/s)"))
         else:
             item.setText(_translate("MainWindow", "Enthalpy (kJ/kg)"))
-
+            
     def removeRow2(self):
         """
         Remove row p2
@@ -207,9 +209,85 @@ class ModuleMaterialPropMainWindow(QWidget):
         my_env["dynamic_inp"] = str("/GUI/mat_prop_inputs.txt")
         p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
         outputCall = p.communicate()
-        self.ui.button_save.setEnabled(True)
+        #self.ui.button_save.setEnabled(True)
+        self.ModuleMaterialPropMainWindow.close()
         
     def save(self):
+        Parent_cond = []
+        Parent_2 = []
+        Weld_cond = []
+        Weld_2 = []
+        rowCount1 = self.ui.Table_P1.rowCount()
+        rowCount2 = self.ui.Table_P2.rowCount()
+        rowCount3 = self.ui.Table_W1.rowCount()
+        rowCount4 = self.ui.Table_W2.rowCount()
+        columnCount = 2
+        for i in range(rowCount1):
+            if self.ui.Table_P1.item(i,0) and self.ui.Table_P1.item(i,0).text():
+                if self.ui.Table_P1.item(i,1) and self.ui.Table_P1.item(i,1).text():
+                    for j in range(columnCount):
+                        Parent_cond.append(float(self.ui.Table_P1.item(i,j).text()))
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+
+        for i in range(rowCount2):
+            if self.ui.Table_P2.item(i,0) and self.ui.Table_P2.item(i,0).text():
+                if self.ui.Table_P2.item(i,1) and self.ui.Table_P2.item(i,1).text():
+                    for j in range(columnCount):
+                        Parent_2.append(float(self.ui.Table_P2.item(i,j).text()))
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+
+        for i in range(rowCount3):
+            if self.ui.Table_W1.item(i,0) and self.ui.Table_W1.item(i,0).text():
+                if self.ui.Table_W1.item(i,1) and self.ui.Table_W1.item(i,1).text():
+                    for j in range(columnCount):
+                        Weld_cond.append(float(self.ui.Table_W1.item(i,j).text()))
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+
+        for i in range(rowCount4):
+            if self.ui.Table_W2.item(i,0) and self.ui.Table_W2.item(i,0).text():
+                if self.ui.Table_W2.item(i,1) and self.ui.Table_W2.item(i,1).text():
+                    for j in range(columnCount):
+                        Weld_2.append(float(self.ui.Table_W2.item(i,j).text()))
+                else:
+                    print("Cell empty --> Next row")
+            else:
+                print("Cell empty --> Next row")
+
+        Lines = []
+        Lines.append('parent_lsa_from_GUI=' + str(Parent_cond) + '\n' + '\n')
+        if int(self.ui.P2.currentIndex()) == 0:
+            Lines.append('user_choice_parent_def=1 #diffusivity' + '\n' + '\n')
+            Lines.append('parent_lrhocpsa_from_GUI=' + str(Parent_2) + '\n' + '\n' + '\n')
+        else:
+            Lines.append('user_choice_parent_def=2 #enthalpy' + '\n' + '\n')
+            Lines.append('parent_enthalpy_from_GUI=' + str(Parent_2) + '\n' + '\n' + '\n')
+
+        Lines.append('weld_lsa_from_GUI= ' + str(Weld_cond) + '\n' + '\n')
+        if int(self.ui.W2.currentIndex()) == 0:
+            Lines.append('user_choice_weld_def=1 #diffusivity' + '\n' + '\n')
+            Lines.append('weld_rhocpsa_from_GUI=' + str(Weld_2) + '\n' + '\n' + '\n')
+        else:
+            Lines.append('user_choice_weld_def=2 #enthalpy' + '\n' + '\n')
+            Lines.append('weld_enthalpy_from_GUI=' + str(Weld_2) + '\n' + '\n' + '\n')
+
+        with open('mat_prop_inputs.txt', 'w') as f:
+            f.writelines(Lines)
+        
+        my_env = os.environ.copy()
+        my_env["file_no_exp"] = str("91")
+        my_env["dynamic_inp"] = str("/GUI/mat_prop_inputs.txt")
+        p=subprocess.Popen(["sh","./modifyExport.sh",],env=my_env)
+        outputCall = p.communicate()
+        #self.ui.button_save.setEnabled(True)
         sfile=QFileDialog.getSaveFileName(self.ModuleMaterialPropMainWindow, 'Save as', './')
         sfilename = sfile[0]
         my_env = os.environ.copy()
