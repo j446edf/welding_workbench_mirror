@@ -37,24 +37,24 @@ P cpresok RESNOOK
 P only_nook 
 P facmtps 1
 P corefilesize unlimited
-F comm ReplaceMesimulation/tmp/nonlinearthermal.comm D  1
-F mmed ReplaceMesimulation/tmp/quickMesh_.med D  20
-F libr ReplaceMesimulation/tmp/materialData.66 D  66
-F libr ReplaceMesimulation/tmp/pythonFuncsGoldak.67 D  67
-F libr ReplaceMesimulation/tmp/pythonFuncsDE.68 D  68
-F libr ReplaceMesimulation/tmp/pathFuncs.49 D  49
-F libr ReplaceMesimulation/tmp/environment.50 D  50
-F libr ReplaceMesimulation/tmp/weldPath_NL.51 D  51
-F libr ReplaceMesimulation/tmp/weldParams.52 D  52
-F libr ReplaceMesimulation/tmp/heatsourcetype_NL.53 D  53
-F libr ReplaceMesimulation/dynamic.inputs D  90
+F comm ReplaceMe/simulation/tmp/nonlinearthermal.comm D  1
+F mmed ReplaceMe/simulation/tmp/quickMesh_.med D  20
+F libr ReplaceMe/simulation/tmp/materialData.66 D  66
+F libr ReplaceMe/simulation/tmp/pythonFuncsGoldak.67 D  67
+F libr ReplaceMe/simulation/tmp/pythonFuncsDE.68 D  68
+F libr ReplaceMe/simulation/tmp/pathFuncs.49 D  49
+F libr ReplaceMe/simulation/tmp/environment.50 D  50
+F libr ReplaceMe/simulation/tmp/weldPath_NL.51 D  51
+F libr ReplaceMe/simulation/tmp/weldParams.52 D  52
+F libr ReplaceMe/simulation/tmp/heatsourcetype_NL.53 D  53
+F libr ReplaceMe/simulation/dynamic.inputs D  90
 F libr D  91
 F libr D  92
 F libr D  93
 F libr D 94
-F libr ReplaceMesimulation/tmp/nonlinearthermal.med.rmed R  81
-R base ReplaceMesimulation/tmp/nonlinearthermal.base RC 0
-F mess ReplaceMesimulation/tmp/nonlinearthermal.mess R  6
+F libr ReplaceMe/simulation/tmp/nonlinearthermal.med.rmed R  81
+R base ReplaceMe/simulation/tmp/nonlinearthermal.base RC 0
+F mess ReplaceMe/simulation/tmp/nonlinearthermal.mess R  6
 P consbtc oui
 P soumbtc oui
 P actions make_etude
