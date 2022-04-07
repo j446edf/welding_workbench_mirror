@@ -37,7 +37,17 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         self.ui.pushButton_9.clicked.connect(self.clicked9) # <- Load Simulation results
         self.ui.pushButton_10.clicked.connect(self.clicked10) # <- Run error checking
         self.ui.pushButton_12.clicked.connect(self.clicked12) # <- Save Simulation results
+        self.ui.radioButton_3.clicked.connect(self.NL)
+        self.ui.radioButton_4.clicked.connect(self.steady)        
         #self.ui.pushButton_8.setEnabled(True)
+        
+    def steady(self):
+        self.ui.pushButton_2.setEnabled(True)
+        self.ui.pushButton_3.setEnabled(True)
+        
+    def NL(self):
+        self.ui.pushButton_2.setEnabled(True)
+        self.ui.pushButton_3.setEnabled(True)
         
     def clicked2(self):
         self.ui.ModuleMaterialPropMainWindow=ModuleMaterialPropMainWindow()
@@ -86,7 +96,12 @@ class ModuleHeatSourceCalibMainWindow(QWidget):
         
     def clicked8(self):
         #p=subprocess.Popen(["xterm","-e","./runSimConnect.sh",])
-        p=subprocess.Popen(["sh","./runSimConnect.sh",])
+        my_env = os.environ.copy()
+        if self.ui.radioButton_3.isChecked():
+            my_env["sim_type"] = str("1")
+        else:
+            my_env["sim_type"] = str("0")
+        p=subprocess.Popen(["sh","./runSimConnect.sh",],env=my_env)
         outputCall = p.communicate()
         #### dname_resu must be file path to .base file that is created when running sim
         self.ui.label_5.setText(pathToResults)
