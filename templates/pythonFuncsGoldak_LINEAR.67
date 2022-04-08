@@ -1,0 +1,47 @@
+#DEBUT=()
+def heat_source_loc(x0,y0,z0):
+	HSL = [x0,y0,z0]
+	return HSL
+	
+def calc_qfr(x,y,z):
+	global a
+	global b
+	global cr
+	global fr
+	global Q
+	q_fr = (6. * (3**0.5)*fr *Q / (a*b*cr*np.pi*(np.pi**0.5))) * np.exp( -( (3*(x/a)**2)  + (3*(y/b)**2) + (3*(z/cr)**2) ) )
+	return q_fr
+	
+def calc_qff(x,y,z):
+	global a
+	global b
+	global cf
+	global ff
+	global Q
+	q_ff = (6. * (3**0.5)*ff *Q / (a*b*cf*np.pi*(np.pi**0.5))) * np.exp( -( (3*(x/a)**2)  + (3*(y/b)**2) + (3*(z/cf)**2) ) )
+	return q_ff
+
+def run_q_calc(xm,ym,zm,HSL):
+	global a
+	global b
+	global cf
+	global cr
+	global ff
+	global fr
+	global Q
+	# Transform to Zeta coordinate (Realtive to moving heat source)
+	x=xm-HSL[0] # x-position relative to HSL
+	y=ym-HSL[1] # y-position relative to HSL
+	z=zm-HSL[2] # z-position relative to HSL
+	if z >= 0.: # You are in Front half ellipse
+		if y > 0: # You are in top of the ellipsoid
+			q_xyz = 0.
+		else:
+			q_xyz = calc_qff(x,y,z)
+	else: # You are in rear half ellipse
+		if y > 0: # You are in top of the ellipsoid
+			q_xyz = 0.
+		else:
+			q_xyz = calc_qfr(x,y,z)
+	return q_xyz
+

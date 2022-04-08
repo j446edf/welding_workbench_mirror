@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>899</width>
+    <height>679</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="W">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>0</y>
+     <width>74</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Weld</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="W2_label">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>300</y>
+     <width>151</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Second Parameter:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="P">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>0</y>
+     <width>74</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Parent</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_remove3">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>240</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_add2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>560</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="P2_label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>300</y>
+     <width>151</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Second Parameter:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_remove2">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>560</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="W2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>320</y>
+     <width>201</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Thermal Diffusivity</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Enthalpy</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="button_add1">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>240</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_remove1">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>240</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="Line" name="split">
+   <property name="geometry">
+    <rect>
+     <x>426</x>
+     <y>-10</y>
+     <width>20</width>
+     <height>651</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="Table_P2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>360</y>
+     <width>391</width>
+     <height>190</height>
+    </rect>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>false</bool>
+   </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <property name="rowCount">
+    <number>0</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>190</number>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>32</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Temperature (C)</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Thermal Conductivity</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="Table_P1">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>391</width>
+     <height>190</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>false</bool>
+   </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <property name="rowCount">
+    <number>0</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>190</number>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>32</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Temperature (C)</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Thermal Conductivity</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="button_remove4">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>560</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="Table_W1">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>40</y>
+     <width>391</width>
+     <height>190</height>
+    </rect>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>false</bool>
+   </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <property name="rowCount">
+    <number>0</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>190</number>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>32</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Temperature (C)</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Thermal Conductivity</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="Table_W2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>360</y>
+     <width>391</width>
+     <height>190</height>
+    </rect>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>false</bool>
+   </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <property name="rowCount">
+    <number>0</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>190</number>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>32</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Temperature (C)</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Thermal Conductivity</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="button_add4">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>560</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_add3">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>240</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="P2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>320</y>
+     <width>201</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Thermal Diffusivity</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Enthalpy</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="finish">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>600</y>
+     <width>95</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Submit</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

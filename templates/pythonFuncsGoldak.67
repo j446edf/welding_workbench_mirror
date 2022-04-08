@@ -2,7 +2,44 @@
 def heat_source_loc(x0,y0,z0):
 	HSL = [x0,y0,z0]
 	return HSL
-	
+
+def transform2Local(x,y,z,tau_t,n_t,txn_t):
+	V_mat=np.array([[tau_t[0],n_t[0],txn_t[0]],[tau_t[1],n_t[1],txn_t[1]],[tau_t[2],n_t[2],txn_t[2]]]) # <-- Construct Vmat from local coordinates
+	V_inv=np.linalg.inv(V_mat)
+	U_mat = np.array([[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]) # <-- Global coordinate axes
+	C_mat = np.matmul(U_mat,V_inv)
+	a_vect = np.array([[x,y,z]]) # <-- point p in global coordinates
+	b_vect = np.matmul(a_vect,C_mat)
+	return b_vect.tolist()
+'''	
+def transform2Localtau(x,y,z,tau_t,n_t,txn_t):
+	V_mat=np.array([[tau_t[0],n_t[0],txn_t[0]],[tau_t[1],n_t[1],txn_t[1]],[tau_t[2],n_t[2],txn_t[2]]]) # <-- Construct Vmat from local coordinates
+	V_inv=np.linalg.inv(V_mat)
+	U_mat = np.array([[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]) # <-- Global coordinate axes
+	C_mat = np.matmul(U_mat,V_inv)
+	a_vect = np.array([[x,y,z]]) # <-- point p in global coordinates
+	b_vect = np.matmul(a_vect,C_mat)
+	x_out=b_vect.tolist()[0][0]
+	return x_out
+def transform2Localpnorm(x,y,z,tau_t,n_t,txn_t):
+	V_mat=np.array([[tau_t[0],n_t[0],txn_t[0]],[tau_t[1],n_t[1],txn_t[1]],[tau_t[2],n_t[2],txn_t[2]]]) # <-- Construct Vmat from local coordinates
+	V_inv=np.linalg.inv(V_mat)
+	U_mat = np.array([[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]) # <-- Global coordinate axes
+	C_mat = np.matmul(U_mat,V_inv)
+	a_vect = np.array([[x,y,z]]) # <-- point p in global coordinates
+	b_vect = np.matmul(a_vect,C_mat)
+	x_out=b_vect.tolist()[0][1]
+	return x_out
+def transform2Localn(x,y,z,tau_t,n_t,txn_t):
+	V_mat=np.array([[tau_t[0],n_t[0],txn_t[0]],[tau_t[1],n_t[1],txn_t[1]],[tau_t[2],n_t[2],txn_t[2]]]) # <-- Construct Vmat from local coordinates
+	V_inv=np.linalg.inv(V_mat)
+	U_mat = np.array([[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]) # <-- Global coordinate axes
+	C_mat = np.matmul(U_mat,V_inv)
+	a_vect = np.array([[x,y,z]]) # <-- point p in global coordinates
+	b_vect = np.matmul(a_vect,C_mat)
+	x_out=b_vect.tolist()[0][2]
+	return x_out
+'''
 def calc_qfr(x,y,z):
 	global a
 	global b
@@ -21,7 +58,7 @@ def calc_qff(x,y,z):
 	q_ff = (6. * (3**0.5)*ff *Q / (a*b*cf*np.pi*(np.pi**0.5))) * np.exp( -( (3*(x/a)**2)  + (3*(y/b)**2) + (3*(z/cf)**2) ) )
 	return q_ff
 
-def run_q_calc(xm,ym,zm,HSL):
+def run_q_calc(xm,ym,zm,HSL,V_vectors):
 	global a
 	global b
 	global cf
@@ -29,19 +66,46 @@ def run_q_calc(xm,ym,zm,HSL):
 	global ff
 	global fr
 	global Q
-	# Transform to Zeta coordinate (Realtive to moving heat source)
-	x=xm-HSL[0] # x-position relative to HSL
-	y=ym-HSL[1] # y-position relative to HSL
-	z=zm-HSL[2] # z-position relative to HSL
+	#
+	#print('JEF: Inside run_q_calc')
+	bvect = transform2Local(xm,ym,zm,V_vectors[0],V_vectors[1],V_vectors[2])
+	bvect_0 = np.array(HSL)
+	tau_vector = np.array([[V_vectors[0][0]],[V_vectors[0][1]],[V_vectors[0][2]]])
+	n_vector = np.array([[V_vectors[1][0]],[V_vectors[1][1]],[V_vectors[1][2]]])
+	tauxn_vector = np.array([[V_vectors[2][0]],[V_vectors[2][1]],[V_vectors[2][2]]])
+	
+	
+	# Position relative to heat source
+	z=np.matmul(bvect,tau_vector) - np.matmul(bvect_0,tau_vector)# tau-position relative to HSL
+	y=np.matmul(bvect,n_vector) - np.matmul(bvect_0,n_vector)# pathNormals-position relative to HSL
+	x=np.matmul(bvect,tauxn_vector) - np.matmul(bvect_0,tauxn_vector)# normals-position relative to HSL
+	
+	#print('Node',bvect)
+	#print('HSL0',bvect_0)
+	#print('t',tau_vector)
+	#print('n',n_vector)
+	#print('tvx',tauxn_vector)
+	#print('z',z)
+	#print('y',y)
+	#print('x',x)
 	if z >= 0.: # You are in Front half ellipse
 		if y > 0: # You are in top of the ellipsoid
 			q_xyz = 0.
 		else:
-			q_xyz = calc_qff(x,y,z)
+			q_xyz = calc_qff(x[0][0],y[0][0],z[0][0])
 	else: # You are in rear half ellipse
 		if y > 0: # You are in top of the ellipsoid
 			q_xyz = 0.
 		else:
-			q_xyz = calc_qfr(x,y,z)
+			q_xyz = calc_qfr(x[0][0],y[0][0],z[0][0])
+	#print('JEF: ',q_xyz)
+	#s=input('pause inside run_q_calc')
 	return q_xyz
+'''
+def echosomething():
+	print('Hello from the echo function')
 
+def callEcho():
+	print('im inside callEcho')
+	return echosomething()
+'''
