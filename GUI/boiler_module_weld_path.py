@@ -143,8 +143,13 @@ class ModuleWeldPathMainWindow(QWidget):
             dir0.append(float(self.ui.dirx0.toPlainText().strip()))
             dir0.append(float(self.ui.diry0.toPlainText().strip()))
             dir0.append(float(self.ui.dirz0.toPlainText().strip()))
+<<<<<<< HEAD
             Lines.append("gui_torch_dir0=["+repr(dir0)+"]" + '\n' + '\n')
             Lines.append("gui_torch_path = 'USER'")
+=======
+            Lines.append('gui_torch_dir0=['+repr(dir0)+']' + '\n')
+            Lines.append('gui_torch_path = "USER"')
+>>>>>>> 574574ec4198b7317c30b2669add34155f0aa208
 
         with open('weld_path_inputs.txt', 'w') as f:
             f.writelines(Lines)

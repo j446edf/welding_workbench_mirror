@@ -332,6 +332,10 @@ THNONLI2=THER_NON_LINE(MODELE=MOTH,
 
 
 CHAR_W=AFFE_CHAR_THER_F(MODELE=MOTH,
+<<<<<<< HEAD
+=======
+			 #FLUX_REP=_F(GROUP_MA='Group_base',FLUN=F_SYM,),
+>>>>>>> 574574ec4198b7317c30b2669add34155f0aa208
 			 FLUX_REP=_F(GROUP_MA='Group_conduction',FLUN=F_SYM,),
                          ECHANGE=(_F(GROUP_MA=('Group_convection','Group_radiation',),COEF_H=HECHA,TEMP_EXT=TIMPO_W,),),
                          RAYONNEMENT=_F(GROUP_MA=('Group_radiation',),SIGMA=SIG,EPSILON=EPS,TEMP_EXT=TIMPO_W,),
